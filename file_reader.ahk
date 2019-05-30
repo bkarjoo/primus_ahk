@@ -3,10 +3,10 @@
 LoadFile(file_name)
 {
   global
-  in_parenthesis_block := false
-  ; a line with a single ( makes in_parenthesis_block true
-  ; a line with a single ) makes in_parenthesis_block false
-  parenthesis_block_content := ""
+  in_bracket_block := false
+  ; a line with a single { makes in_bracket_block true
+  ; a line with a single } makes in_bracket_block false
+  bracket_block_content := ""
   name := ""
   Loop
   {
@@ -26,60 +26,59 @@ LoadFile(file_name)
       if (SubStr(line,1,1) = "#")
         continue
 
-      MsgBox %line%
 
-      if (line = ")") {
-        in_parenthesis_block := false
-        ; assign parenthesis_block_content to a variable
+      if (line = "}") {
+        in_bracket_block := false
+        ; assign bracket_block_content to a variable
         if (name = "position_sizing")
-          position_sizing := parenthesis_block_content
+          position_sizing := bracket_block_content
         else if (name = "basket_rules")
-          basket_rules := parenthesis_block_content
+          basket_rules := bracket_block_content
         else if (name = "basket_symbols")
-          basket_symbols := parenthesis_block_content
+          basket_symbols := bracket_block_content
         else if (name = "basket_exclude")
-          basket_exclude := parenthesis_block_content
+          basket_exclude := bracket_block_content
         else if (name = "basket_htb")
-          basket_htb := parenthesis_block_content
+          basket_htb := bracket_block_content
         else if (name = "entry_trigger")
-          entry_trigger := parenthesis_block_content
+          entry_trigger := bracket_block_content
         else if (name = "entry_order_limit")
-          entry_order_limit := parenthesis_block_content
+          entry_order_limit := bracket_block_content
         else if (name = "entry_order_stop")
-          entry_order_stop := parenthesis_block_content
+          entry_order_stop := bracket_block_content
         else if (name = "target_limit")
-          target_limit := parenthesis_block_content
+          target_limit := bracket_block_content
         else if (name = "ael_trigger")
-          ael_trigger := parenthesis_block_content
+          ael_trigger := bracket_block_content
         else if (name = "ael_price")
-          ael_price := parenthesis_block_content
+          ael_price := bracket_block_content
         else if (name = "ael_time_increment")
-          ael_time_increment := parenthesis_block_content
+          ael_time_increment := bracket_block_content
         else if (name = "ael_price_increment")
-          ael_price_increment := parenthesis_block_content
+          ael_price_increment := bracket_block_content
         else if (name = "stop_price")
-          stop_price := parenthesis_block_content
+          stop_price := bracket_block_content
         else if (name = "trail_trigger")
-          trail_trigger := parenthesis_block_content
+          trail_trigger := bracket_block_content
         else if (name = "trail_how")
-          trail_how := parenthesis_block_content
+          trail_how := bracket_block_content
         else if (name = "trail_increment")
-          trail_increment := parenthesis_block_content
+          trail_increment := bracket_block_content
         else if (name = "launch_rules")
-          launch_rules := parenthesis_block_content
-        ; TODO erase parenthesis_block_content
-        parenthesis_block_content := ""
+          launch_rules := bracket_block_content
+        ; TODO erase bracket_block_content
+        bracket_block_content := ""
         continue
       }
 
-      if (line = "(") {
-        in_parenthesis_block := true
+      if (line = "{") {
+        in_bracket_block := true
         continue
       }
 
-      if (in_parenthesis_block) {
+      if (in_bracket_block) {
         ; build block content line by line
-        parenthesis_block_content := parenthesis_block_content . " " . line
+        bracket_block_content := bracket_block_content . " " . line
       }
       else {
         ; name value pair line, split by equal
@@ -88,7 +87,7 @@ LoadFile(file_name)
         value := Trim(tokens[2])
         ; TODO if value is not nothing assign it to a variable, otherwise it's a () block
         if (value = "")
-          continue ; value will be concatenated in_parenthesis_block
+          continue ; value will be concatenated in_bracket_block
 
         if (name = "box_name")
           box_name := value
@@ -183,3 +182,4 @@ LoadFile(file_name)
 }
 
 LoadFile("test_file.i")
+MsgBox %stop_price%
