@@ -17,6 +17,17 @@ LoadFile(file_name)
         break
       }
 
+      if (line = "")
+        continue
+
+      if (SubStr(line, 1, 1) = ";")
+        continue
+
+      if (SubStr(line,1,1) = "#")
+        continue
+
+      MsgBox %line%
+
       if (line = ")") {
         in_parenthesis_block := false
         ; assign parenthesis_block_content to a variable
@@ -170,3 +181,5 @@ LoadFile(file_name)
   }
   return
 }
+
+LoadFile("test_file.i")
