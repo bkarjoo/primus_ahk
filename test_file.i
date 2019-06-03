@@ -58,7 +58,7 @@ basket_htb =
 ; entry----------------------------------------------------------------------
 entry_trigger =
 {
-
+There's no rule here 
 }
 entry_order_type = LIMIT
 entry_order_side = BUY

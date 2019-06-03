@@ -1,4 +1,4 @@
-
+; general options --------------------------------------------------------------
 box_name = Any Name
 black_box_description = some description
 black_box_side = LONG
@@ -10,7 +10,7 @@ enter_on_snapshot = FALSE
 enter_on_new_minute = FALSE
 enable_stop_trailing_on_new_second = FALSE
 
-; time options----------------------------------------------------------------------
+; time options------------------------------------------------------------------
 use_time_options = TRUE
 start_subscription = 9:21:00
 start_entering_positions = 9:30:00
@@ -19,7 +19,7 @@ cancel_all_pending_orders = 3:58:30
 close_all_open_positions = 3:59:00
 place_OPG_orders = 9:27:00
 
-; position sizing----------------------------------------------------------------------
+; position sizing---------------------------------------------------------------
 use_strict_mode = TRUE
 enable_position_sizing_scheme = TRUE
 enable_black_box_risk_management = TRUE
@@ -29,7 +29,7 @@ position_sizing =
 
 )
 
-; basket----------------------------------------------------------------------
+; basket------------------------------------------------------------------------
 basket_name = some name
 basket_description = ''
 activate_dynamic_basket_rules = TRUE
@@ -51,7 +51,7 @@ basket_htb =
 
 )
 
-; entry----------------------------------------------------------------------
+; entry-------------------------------------------------------------------------
 entry_trigger =
 (
 
@@ -71,7 +71,7 @@ entry_order_stop =
 
 )
 
-; target----------------------------------------------------------------------
+; target------------------------------------------------------------------------
 target_order_type = PRIMUS_AEL
 target_order_side = BUY
 target_destination = CSFB
@@ -102,7 +102,7 @@ ael_price_increment =
 )
 
 
-; stop----------------------------------------------------------------------
+; stop--------------------------------------------------------------------------
 stop_order_type = PRIMUS_STOP
 stop_order_side = BUY
 stop_size = 100
@@ -124,7 +124,7 @@ trail_increment =
 
 )
 
-; launch rules----------------------------------------------------------------------
+; launch rules------------------------------------------------------------------
 launch_rules =
 (
 

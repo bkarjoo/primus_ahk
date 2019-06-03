@@ -180,6 +180,3 @@ LoadFile(file_name)
   }
   return
 }
-
-LoadFile("test_file.i")
-MsgBox %stop_price%

@@ -1,9 +1,39 @@
 #include launcher_clicks.ahk
+#include black_boc_clicks.ahk
+#include file_reader.ahk
 
-BuildBox()
+SetBlackBoxProperties(file_name)
 {
-  ClickNewBox()
+  global
+  
 }
 
+AddNewEntryOrder()
+{
+  OpenNewEntryOrder()
+}
 
-BuildBox()
+UpdateExistingEntryOrder()
+{
+  OpenExistingEntryOrder()
+}
+
+AddNewTargetOrder()
+{
+  OpenNewTargetOrder()
+}
+
+UpdateExistingTargetOrder()
+{
+  OpenExistingTargetOrder()
+}
+
+AddNewStopOrder()
+{
+  OpenNewStopOrder()
+}
+
+UpdateExistingStopOrder()
+{
+  OpenExistingStopOrder()
+}
