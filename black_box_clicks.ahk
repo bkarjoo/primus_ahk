@@ -7,14 +7,75 @@
 #include launcher_clicks.ahk
 #include file_reader.ahk
 
+; OpenBlackBoxDesign() is launcher_clicks.ahk responsibility
+
+ActivateBlackBoxDesign()
+{
+  WinActivate, PRIMU$ - Black Box Design
+  WinWait, PRIMU$ - Black Box Design
+  sleep, 100
+}
+
 UpdateBoxName(name)
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   MouseClick, Left, 252, 63
   Send, ^a
-  Send, %name%
+  SendRaw, %name%
 }
+
+UpdateBoxDescription(desc)
+{
+  MouseClick, Left, 325, 125
+  Send, ^a
+  SendRaw, %desc%
+}
+
+SetBlackBoxSide(side)
+{
+  MouseClick, Left, 200, 200
+  sleep, 100
+  if (side = "LONG")
+    send, {Up}
+  else if (side = "SHORT")
+    send, {Down}
+}
+
+SetBlackBoxScheme(scheme)
+{
+  MouseClick, Left, 285, 225
+  sleep, 100
+  if (scheme = "OPG")
+    MouseClick, Left, 285, 255
+  else
+    MouseClick, Left, 285, 240
+}
+
+; takes a point array with x being first item and y the second
+IsChecked(checkbox_point)
+{
+  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+31, checkbox_point[2]+20, checked.PNG
+  return (ErrorLevel = 0)
+}
+
+
+TriggerCheckBox(checkbox_point)
+{
+  x := checkbox_point[1] + 10
+  y := checkbox_point[2] + 10
+  MouseClick, Left, %x%, %y%
+}
+
+permit_backtesting_check_box := [609, 120]
+enter_on_last_check_box := [760, 69]
+enter_on_bid_check_box := [760, 94]
+enter_on_ask_check_box := [760, 119]
+enter_on_pmi_check_box := [760, 144]
+enter_on_imbalance_check_box := [760, 169]
+enter_on_snapshot_check_box := [760, 194]
+enter_on_new_minute_check_box := [760, 219]
+enter_on_stock_event_check_box := [760, 242]
+use_strict_mode_check_box := [12, 258]
+
 
 UpdateEntryTrigger(rule)
 {
@@ -134,9 +195,6 @@ SetOrderLimitRule(rule)
 }
 
 
-
-
-SetOrderLimitRule("Some Other Rule")
 
 SetAelTriggerRule()
 {

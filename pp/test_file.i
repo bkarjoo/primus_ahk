@@ -1,8 +1,8 @@
 #include "../etc/function"
-box_name = Any Name
-black_box_description = some description
-black_box_side = LONG
-black_box_scheme = OPG
+box_name = New Name plus
+black_box_description = some description more description, and then some more
+black_box_side = SHORT
+black_box_scheme = PlainVanilla
 enter_on_last = TRUE
 enter_on_bid = FALSE
 enter_on_ask = FALSE
@@ -58,7 +58,7 @@ basket_htb =
 ; entry----------------------------------------------------------------------
 entry_trigger =
 {
-There's no rule here 
+There's no rule here
 }
 entry_order_type = LIMIT
 entry_order_side = BUY
