@@ -2,13 +2,16 @@
 box_name = New Name plus
 black_box_description = some description more description, and then some more
 black_box_side = SHORT
-black_box_scheme = PlainVanilla
+black_box_scheme = OPG
 enter_on_last = TRUE
-enter_on_bid = FALSE
-enter_on_ask = FALSE
-enter_on_snapshot = FALSE
-enter_on_new_minute = FALSE
-enable_stop_trailing_on_new_second = FALSE
+enter_on_bid = TRUE
+enter_on_ask = TRUE
+enter_on_pmi = TRUE
+enter_on_imbalance = TRUE
+enter_on_snapshot = TRUE
+enter_on_new_minute = TRUE
+enter_on_stock_event = TRUE
+use_strict_mode = TRUE
 
 ; time options----------------------------------------------------------------------
 use_time_options = TRUE
@@ -20,7 +23,6 @@ close_all_open_positions = 3:59:00
 place_OPG_orders = 9:27:00
 
 ; position sizing----------------------------------------------------------------------
-use_strict_mode = TRUE
 enable_position_sizing_scheme = TRUE
 enable_black_box_risk_management = TRUE
 maximum_order_shares = 2000

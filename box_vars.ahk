@@ -6,9 +6,13 @@ black_box_scheme = OPG
 enter_on_last = TRUE
 enter_on_bid = FALSE
 enter_on_ask = FALSE
+enter_on_pmi = FALSE
+enter_on_imbalance = FALSE
 enter_on_snapshot = FALSE
 enter_on_new_minute = FALSE
+enter_on_stock_event = FALSE
 enable_stop_trailing_on_new_second = FALSE
+verify_code_during_validate_procedure = FALSE
 
 ; time options------------------------------------------------------------------
 use_time_options = TRUE

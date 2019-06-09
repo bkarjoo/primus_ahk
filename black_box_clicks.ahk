@@ -65,7 +65,19 @@ TriggerCheckBox(checkbox_point)
   MouseClick, Left, %x%, %y%
 }
 
-permit_backtesting_check_box := [609, 120]
+SetCheckBox(value, check_box)
+{
+  if (value = "TRUE")
+  {
+    if (!IsChecked(check_box))
+      TriggerCheckBox(check_box)
+  } else {
+    if (IsChecked(check_box))
+      TriggerCheckBox(check_box)
+  }
+}
+
+permit_backtesting_check_box := [616, 120]
 enter_on_last_check_box := [760, 69]
 enter_on_bid_check_box := [760, 94]
 enter_on_ask_check_box := [760, 119]
@@ -75,6 +87,8 @@ enter_on_snapshot_check_box := [760, 194]
 enter_on_new_minute_check_box := [760, 219]
 enter_on_stock_event_check_box := [760, 242]
 use_strict_mode_check_box := [12, 258]
+enable_stop_trailing_on_new_second_check_box := [17,877]
+verify_code_during_validate_procedure_check_box := [515,930]
 
 
 UpdateEntryTrigger(rule)
