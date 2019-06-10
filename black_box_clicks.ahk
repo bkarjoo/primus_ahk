@@ -1,13 +1,8 @@
 ; this file contains code to manipulate the black box designer
-; assumes that the black box designer is already opened by the launcher_clicks.ahk
-
-
-
-
+; assumes that the black box designer is already opened
+; opening the black box is the responsibility the launcher_clicks.ahk
 #include launcher_clicks.ahk
 #include file_reader.ahk
-
-; OpenBlackBoxDesign() is launcher_clicks.ahk responsibility
 
 ActivateBlackBoxDesign()
 {
@@ -53,27 +48,27 @@ SetBlackBoxScheme(scheme)
 ; takes a point array with x being first item and y the second
 IsChecked(checkbox_point)
 {
-  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+31, checkbox_point[2]+20, checked.PNG
+  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, checked.PNG
   return (ErrorLevel = 0)
 }
 
 
 TriggerCheckBox(checkbox_point)
 {
-  x := checkbox_point[1] + 10
-  y := checkbox_point[2] + 10
+  x := checkbox_point[1]
+  y := checkbox_point[2]
   MouseClick, Left, %x%, %y%
 }
 
-SetCheckBox(value, check_box)
+SetCheckBox(value, check_box, trigger_point)
 {
   if (value = "TRUE")
   {
     if (!IsChecked(check_box))
-      TriggerCheckBox(check_box)
+      TriggerCheckBox(trigger_point)
   } else {
     if (IsChecked(check_box))
-      TriggerCheckBox(check_box)
+      TriggerCheckBox(trigger_point)
   }
 }
 
@@ -91,10 +86,21 @@ enable_stop_trailing_on_new_second_check_box := [17,877]
 verify_code_during_validate_procedure_check_box := [515,930]
 
 
+permit_backtesting_trigger_point := [628,130]
+enter_on_last_trigger_point := [770, 79]
+enter_on_bid_trigger_point := [770, 104]
+enter_on_ask_trigger_point := [770, 129]
+enter_on_pmi_trigger_point := [770, 154]
+enter_on_imbalance_trigger_point := [770, 179]
+enter_on_snapshot_trigger_point := [770, 204]
+enter_on_new_minute_trigger_point := [770, 229]
+enter_on_stock_event_trigger_point := [770, 252]
+use_strict_mode_trigger_point := [23,267]
+enable_stop_trailing_on_new_second_trigger_point := [27,884]
+verify_code_during_validate_procedure_trigger_point := [533,943]
+
 UpdateEntryTrigger(rule)
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   MouseClick, Left, 450, 350
   Send, ^a
   Send, %rule%
@@ -102,16 +108,12 @@ UpdateEntryTrigger(rule)
 
 OpenNewEntryOrder()
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   MouseClick, Left, 900, 425
   WinWait, PRIMU$ - Add/Edit Order Form <ENTRY_ORDER>
 }
 
 OpenExistingEntryOrder()
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 445
   sleep, 100
@@ -122,8 +124,6 @@ OpenExistingEntryOrder()
 
 OpenNewTargetOrder()
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   MouseClick, Left, 900, 600
   WinWait, PRIMU$ - Add/Edit Order Form <EXIT_LIMIT_ORDER>
 }
@@ -131,8 +131,6 @@ OpenNewTargetOrder()
 
 OpenExistingTargetOrder()
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 625
   sleep, 100
@@ -143,8 +141,6 @@ OpenExistingTargetOrder()
 
 OpenNewStopOrder()
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   MouseClick, Left, 900, 750
   WinWait, PRIMU$ - Add/Edit Order Form <EXIT_LIMIT_ORDER>
 }
@@ -152,86 +148,12 @@ OpenNewStopOrder()
 
 OpenExistingStopOrder()
 {
-  WinActivate, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 775
   sleep, 100
   MouseClick, Left, 900, 785
   WinWait, PRIMU$ - Add/Edit Order Form <EXIT_LIMIT_ORDER>
 }
-
-ClearExpressionBuilderCode()
-{
-  ; assumes expression builder is open
-  ; clear existing code by pressing the clear button
-  MouseClick, Left, 760, 230
-  sleep, 10
-}
-
-ClickExpressionBuilderOk()
-{
-  MouseClick, Left, 900, 550 ; press expression builder ok
-  sleep, 10
-}
-
-SetExpressionBuilderCode(rule)
-{
-  ; assumes expression builder is open
-  ClearExpressionBuilderCode()
-
-  ; click the text area
-  MouseClick, Left, 500, 100
-  sleep, 100
-  ; add the rule
-  Send, %rule%
-  sleep, 100
-
-  ClickExpressionBuilderOk()
-}
-
-OpenLimitOrderExpressionBuilder()
-{
-  MouseClick, Left, 540, 150
-  WinWait, PRIMU$ - Expression Builder
-}
-
-
-SetOrderLimitRule(rule)
-{
-  ; assumes the order window is open
-  ; use this function with entry and target orders
-  ; open the edit window
-  WinActivate, PRIMU$ - Add/Edit Order Form
-  WinWait, PRIMU$ - Add/Edit Order Form
-  OpenLimitOrderExpressionBuilder()
-  SetExpressionBuilderCode(rule)
-}
-
-
-
-SetAelTriggerRule()
-{
-
-}
-
-SetAelHowRule()
-{
-
-}
-
-SetAelPriceIncrement()
-{
-
-}
-
-SetAelTimeIncrement()
-{
-
-}
-
-;LoadFile("test_file.i")
-;MsgBox, %entry_order_limit%
 
 
 /*
