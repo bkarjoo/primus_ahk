@@ -23,7 +23,8 @@ SetExpressionBuilderCode(rule)
   MouseClick, Left, 500, 100
   sleep, 100
   ; add the rule
-  Send, %rule%
+  Clipboard := rule
+  Send, ^v
   sleep, 100
 
   ClickExpressionBuilderOk()

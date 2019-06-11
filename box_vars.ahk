@@ -70,6 +70,10 @@ entry_order_limit =
 (
 
 )
+entry_aggregated_TIF = FALSE
+entry_calculate_limit_during_placement = TRUE
+entry_tif2 = SECONDS
+entry_tif2_seconds = 30
 entry_order_stop =
 (
 
@@ -115,6 +119,8 @@ stop_price =
 
 )
 enable_trailing = FALSE
+trail_after_entry_complete = TRUE
+trail_once = FALSE
 trail_trigger =
 (
 

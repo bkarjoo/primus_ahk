@@ -3,6 +3,11 @@
 ; opening the order form is the responsibility of black_box_clicks.ahk
 #include black_box_clicks.ahk
 
+click_order_form_save_button()
+{
+  MouseClick, Left, 530, 480
+}
+
 set_order_form_order_type(type)
 {
   ; acceptable types: LIMIT, STOP_LIMIT, PRIMUS_STOP, PRIMUS_AEL
@@ -157,9 +162,9 @@ open_trail_increment_expression_builder()
   WinWait, PRIMU$ - Expression Builder
 }
 
-enable_trailing_check_box := [22,210]
+enable_trailing_check_box := [27,214]
 trail_after_entry_complete_check_box := [128,213]
-trail_once_check_box := [275,210]
+trail_once_check_box := [280, 214]
 
 enable_trailing_trigger_point := [36,221]
 trail_after_entry_complete_trigger_point := [138,221]

@@ -62,12 +62,12 @@ entry_trigger =
 {
 There's no rule here
 }
-entry_order_type = LIMIT
+entry_order_type = STOP_LIMIT
 entry_order_side = BUY
 entry_destination = CSFB
 entry_size = 100
-entry_tif = TIF_DAY
-entry_tif_seconds = ''
+entry_tif = SECONDS
+entry_tif_seconds = 60
 entry_order_limit =
 {
   IF(
@@ -81,6 +81,11 @@ entry_order_limit =
     0
   )
 }
+
+entry_aggregated_TIF = FALSE
+entry_calculate_limit_during_placement = FALSE
+entry_tif2 = SECONDS
+entry_tif2_seconds = 30
 entry_order_stop =
 {
   IF(
@@ -97,44 +102,46 @@ entry_order_stop =
 
 ; target----------------------------------------------------------------------
 target_order_type = PRIMUS_AEL
-target_order_side = BUY
+target_order_side = SELL
 target_destination = CSFB
 target_size = 100
 target_limit =
 {
     ExecutionPrice * .8
 }
-ael_on_last = FALSE
-ael_on_second = TRUE
-ael_on_bid_ask = FALSE
-ael_convert_to_stop = FALSE
+ael_on_last = TRUE
+ael_on_second = FALSE
+ael_on_bid_ask = TRUE
+ael_convert_to_stop = TRUE
 ael_trigger =
 {
-
+  ael trigger
 }
 ael_price =
 {
-
+  ael price
 }
 ael_time_increment =
 {
-
+  ael timee
 }
 ael_price_increment =
 {
-
+  ael price
 }
 
 
 ; stop----------------------------------------------------------------------
 stop_order_type = PRIMUS_STOP
-stop_order_side = BUY
+stop_order_side = SELL
 stop_size = 100
 stop_price =
 {
   AdjustedClosePrice(P1) * 1.08
 }
-enable_trailing = FALSE
+enable_trailing = TRUE
+trail_after_entry_complete = TRUE
+trail_once = FALSE
 trail_trigger =
 {
   TickTimeSeconds - PositionEntryTime > 60
