@@ -6,6 +6,8 @@
 #include black_box_clicks.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
+#include check_boxes.ahk
+#include basket_edit_form_clicks.ahk
 
 /*
 InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
@@ -109,7 +111,7 @@ OpenNewStopOrder()
 
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
-*/
+
 SetCheckBox(enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
 
 if (enable_trailing = "TRUE")
@@ -128,3 +130,37 @@ open_stop_price_expression_builder()
 SetExpressionBuilderCode(stop_price)
 
 click_order_form_save_button()
+
+; basket -----------------------------------------------------------------------
+click_symbols_tab()
+click_choose_basket()
+create_new_basket()
+
+set_basket_name(basket_name)
+set_basket_description(basket_description)
+
+SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
+SetCheckBox(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
+
+if (basket_rules != "")
+  set_basket_rule(basket_rules)
+
+if (basket_symbols != "")
+  set_basket_symbols(basket_symbols)
+if (basket_exclude != "")
+  set_basket_always_exclude_symbols(basket_exclude)
+if (basket_htb != "")
+  set_basket_hard_to_borrow_allowed_symbols(basket_htb)
+click_edit_basket_save_button()
+click_basket_manager_ok_button()
+*/
+
+; options ----------------------------------------------------------------------
+
+; time options -----------------------------------------------------------------
+
+; position sizing --------------------------------------------------------------
+
+; risk management --------------------------------------------------------------
+
+; launch rule ------------------------------------------------------------------
