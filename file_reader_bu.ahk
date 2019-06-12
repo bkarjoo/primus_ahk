@@ -195,6 +195,8 @@ LoadFileBU(file_name)
           stop_size_bu := value
         else if (name = "enable_trailing")
           enable_trailing_bu := value
+        else if (name = "enable_black_box_launch_rule")
+          enable_black_box_launch_rule_bu := value 
       }
 
   }

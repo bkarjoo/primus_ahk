@@ -14,9 +14,10 @@ click_basket_manager_sub_folder()
 create_new_basket()
 {
   click_basket_manager_private_tab()
+  sleep, 200
   click_basket_manager_sub_folder()
   MouseClick, Right, 320, 115
-  sleep, 100
+  sleep, 200
   MouseClick, Left, 405, 127
   sleep, 500
 }

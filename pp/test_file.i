@@ -1,8 +1,8 @@
 #include "../etc/function"
 box_name = New Name plus
 black_box_description = some description more description, and then some more
-black_box_side = SHORT
-black_box_scheme = OPG
+black_box_side = LONG
+black_box_scheme = PlainVanilla
 enter_on_last = TRUE
 enter_on_bid = TRUE
 enter_on_ask = TRUE
@@ -35,7 +35,7 @@ position_sizing =
 basket_name = some name
 basket_description = some description about the baset, has to be all on one line
 activate_dynamic_basket_rules = TRUE
-apply_dynamic_basket_rules_to_all_available_symbols = TRUE
+apply_dynamic_basket_rules_to_all_available_symbols = FALSE
 basket_rules =
 {
   AvgDayVolume(ALL_VENUES, 20, NO) > 300000
@@ -201,6 +201,7 @@ trail_increment =
 }
 
 ; launch rules----------------------------------------------------------------------
+enable_black_box_launch_rule = TRUE
 launch_rules =
 {
   (CurrentDate >= #2012-07-9# AND

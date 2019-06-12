@@ -9,20 +9,21 @@
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
 
-/*
+;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
 If (response = "n")
   ExitApp
-*/
+;-----------------------------------------------------------------------------------------------
+
 file_name = %1%
 LoadFile(file_name)
 
-/*
+
 ClickNewBox()
-*/
+
 ActivateBlackBoxDesign()
 
-/*
+
 ; box name and description -----------------------------------------------------
 UpdateBoxName(box_name)
 sleep 100
@@ -48,6 +49,9 @@ SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_
 ; Entry Trigger ----------------------------------------------------------------
 if (black_box_scheme = "PlainVanilla")
   UpdateEntryTrigger(entry_trigger)
+
+
+
 ; Entry Order ------------------------------------------------------------------
 
 OpenNewEntryOrder()
@@ -73,6 +77,7 @@ if (entry_order_type = "STOP_LIMIT")
 }
 
 click_order_form_save_button()
+
 
 ; target order -----------------------------------------------------------------
 OpenNewTargetOrder()
@@ -105,10 +110,11 @@ if (target_order_type = "LIMIT") {
 
 click_order_form_save_button()
 
+
+
 ; stop order -------------------------------------------------------------------
 
 OpenNewStopOrder()
-
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
 
@@ -130,6 +136,7 @@ open_stop_price_expression_builder()
 SetExpressionBuilderCode(stop_price)
 
 click_order_form_save_button()
+
 
 ; basket -----------------------------------------------------------------------
 click_symbols_tab()
@@ -153,14 +160,38 @@ if (basket_htb != "")
   set_basket_hard_to_borrow_allowed_symbols(basket_htb)
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
-*/
 
-; options ----------------------------------------------------------------------
+
 
 ; time options -----------------------------------------------------------------
+click_options_tab()
+SetCheckBox(use_time_options, use_time_options_check_box, use_time_options_trigger_point)
+
+set_time_option(start_subscription_trigger_point, start_subscription)
+set_time_option(start_entering_positions_trigger_point, start_entering_positions)
+set_time_option(stop_entering_positions_trigger_point, stop_entering_positions)
+set_time_option(cancel_all_pending_orders_trigger_point, cancel_all_pending_orders)
+set_time_option(close_all_open_positions_trigger_point, close_all_open_positions)
+set_time_option(place_OPG_orders_trigger_point, place_OPG_orders)
+
+
 
 ; position sizing --------------------------------------------------------------
+SetCheckBox(enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
+set_position_sizing_scheme(position_sizing)
+
+
 
 ; risk management --------------------------------------------------------------
+click_risk_management_tab()
+SetCheckBox(enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
+set_maximum_order_shares(maximum_order_shares)
+
+
 
 ; launch rule ------------------------------------------------------------------
+click_launch_rule_tab()
+SetCheckBox(enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
+set_launch_rule(launch_rules)
+
+click_validate_and_close()

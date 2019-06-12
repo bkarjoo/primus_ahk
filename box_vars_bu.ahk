@@ -135,6 +135,7 @@ trail_increment_bu =
 )
 
 ; launch rules------------------------------------------------------------------
+enable_black_box_launch_rule_bu = TRUE
 launch_rules_bu =
 (
 

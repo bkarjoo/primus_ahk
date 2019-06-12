@@ -82,4 +82,5 @@ set_basket_hard_to_borrow_allowed_symbols(symbols)
 click_edit_basket_save_button()
 {
   MouseClick, Left, 805, 40
+  WinWait, Basket Manager (prms-rdgw.primustrade.com)
 }
