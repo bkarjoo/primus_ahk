@@ -24,6 +24,9 @@ ClickNewBox()
 ActivateBlackBoxDesign()
 
 
+
+Loop
+{
 ; box name and description -----------------------------------------------------
 UpdateBoxName(box_name)
 sleep 100
@@ -46,6 +49,19 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
+
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for entry? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
+
+}
+
+Loop
+{
 ; Entry Trigger ----------------------------------------------------------------
 if (black_box_scheme = "PlainVanilla")
   UpdateEntryTrigger(entry_trigger)
@@ -78,7 +94,18 @@ if (entry_order_type = "STOP_LIMIT")
 
 click_order_form_save_button()
 
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for target? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
+
+loop
+{
 ; target order -----------------------------------------------------------------
 OpenNewTargetOrder()
 
@@ -110,8 +137,18 @@ if (target_order_type = "LIMIT") {
 
 click_order_form_save_button()
 
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for Stop? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
 
+loop
+{
 ; stop order -------------------------------------------------------------------
 
 OpenNewStopOrder()
@@ -136,8 +173,18 @@ open_stop_price_expression_builder()
 SetExpressionBuilderCode(stop_price)
 
 click_order_form_save_button()
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for basket? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
 
+loop
+{
 ; basket -----------------------------------------------------------------------
 click_symbols_tab()
 click_choose_basket()
@@ -160,9 +207,18 @@ if (basket_htb != "")
   set_basket_hard_to_borrow_allowed_symbols(basket_htb)
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for time options? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
 
-
+loop
+{
 ; time options -----------------------------------------------------------------
 click_options_tab()
 SetCheckBox(use_time_options, use_time_options_check_box, use_time_options_trigger_point)
@@ -174,24 +230,61 @@ set_time_option(cancel_all_pending_orders_trigger_point, cancel_all_pending_orde
 set_time_option(close_all_open_positions_trigger_point, close_all_open_positions)
 set_time_option(place_OPG_orders_trigger_point, place_OPG_orders)
 
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for time position sizing? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
 
+loop
+{
 ; position sizing --------------------------------------------------------------
 SetCheckBox(enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
 set_position_sizing_scheme(position_sizing)
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for time risk management? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
 
-
+loop
+{
 ; risk management --------------------------------------------------------------
 click_risk_management_tab()
 SetCheckBox(enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
 set_maximum_order_shares(maximum_order_shares)
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question,  Ready for launch rules? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
 
+}
 
-
+loop
+{
 ; launch rule ------------------------------------------------------------------
 click_launch_rule_tab()
 SetCheckBox(enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
 set_launch_rule(launch_rules)
 
 click_validate_and_close()
+;-----------------------------------------------------------------------------------------------
+InputBox, response, Question, Done? (enter y or n or q)
+If (response = "q")
+  ExitApp
+If (response = "y")
+  break
+;-----------------------------------------------------------------------------------------------
+
+}

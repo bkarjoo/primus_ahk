@@ -6,11 +6,13 @@
 click_order_form_save_button()
 {
   MouseClick, Left, 530, 480
+  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
 }
 
 set_order_form_order_type(type)
 {
   ; acceptable types: LIMIT, STOP_LIMIT, PRIMUS_STOP, PRIMUS_AEL
+  sleep, 100
   MouseClick, Left, 190, 64
   sleep, 100
   if (type = "LIMIT")
@@ -31,6 +33,7 @@ set_order_form_order_type(type)
 set_order_form_order_side(side)
 {
   ; acceptable types: BUY, SELL, SHORT
+  sleep, 100
   MouseClick, Left, 190, 90
   sleep, 100
   if (side = "BUY")
@@ -49,6 +52,7 @@ set_order_form_order_side(side)
 set_order_form_destination(dest)
 {
   ; acceptable types: CSFB
+  sleep, 100
   MouseClick, Left, 374, 63
   sleep, 100
   if (dest = "CSFB")
@@ -64,12 +68,14 @@ set_order_form_destination(dest)
 
 open_limit_price_expression_builder()
 {
+  sleep, 100
   MouseClick, Left, 540, 150
   WinWait, PRIMU$ - Expression Builder
 }
 
 open_stop_price_expression_builder()
 {
+  sleep, 100
   MouseClick, Left, 540, 240
   WinWait, PRIMU$ - Expression Builder
 }
@@ -79,6 +85,7 @@ open_stop_price_expression_builder()
 set_order_form_TIF(tif)
 {
   ; acceptable types: SECONDS, TIF_OPENING, TIF_DAY
+  sleep, 100
   MouseClick, Left, 199, 307
   sleep, 100
   if (tif = "SECONDS")
@@ -97,6 +104,7 @@ set_order_form_TIF(tif)
 set_order_form_TIF2(tif)
 {
   ; acceptable types: SECONDS, TIF_IOC, TIF_DAY
+  sleep, 100
   MouseClick, Left, 465, 330
   sleep, 100
   if (tif = "SECONDS")
@@ -114,6 +122,7 @@ set_order_form_TIF2(tif)
 
 set_order_form_TIF_seconds(seconds)
 {
+  sleep, 100
   MouseClick, Left, 243, 308
   sleep, 100
   Send, ^a
@@ -123,6 +132,7 @@ set_order_form_TIF_seconds(seconds)
 
 set_order_form_TIF2_seconds(seconds)
 {
+  sleep, 100
   MouseClick, Left, 507, 332
   sleep, 100
   Send, ^a
@@ -146,18 +156,21 @@ is_proactive_trigger_point := [35,357]
 
 open_trail_trigger_expression_builder()
 {
+  sleep, 100
   MouseClick, Left, 540, 250
   WinWait, PRIMU$ - Expression Builder
 }
 
 open_trail_how_expression_builder()
 {
+  sleep, 100
   MouseClick, Left, 540, 330
   WinWait, PRIMU$ - Expression Builder
 }
 
 open_trail_increment_expression_builder()
 {
+  sleep, 100
   MouseClick, Left, 540, 390
   WinWait, PRIMU$ - Expression Builder
 }
@@ -173,14 +186,16 @@ trail_once_trigger_point := [288,221]
 
 click_common_order_parameters_tab()
 {
-  MouseClick, Left, 84, 121
   sleep, 100
+  MouseClick, Left, 84, 121
+  sleep, 500
 }
 
 click_primus_stop_order_tab()
 {
-  MouseClick, Left, 241, 121
   sleep, 100
+  MouseClick, Left, 241, 121
+  sleep, 500
 }
 
 ; ael order properties ---------------------------------------------------------
@@ -188,24 +203,28 @@ click_primus_stop_order_tab()
 
 open_ael_trigger_expression_builder()
 {
+sleep, 100
 MouseClick, Left, 540, 160
 WinWait, PRIMU$ - Expression Builder
 }
 
 open_ael_how_expression_builder()
 {
+sleep, 100
 MouseClick, Left, 540, 200
 WinWait, PRIMU$ - Expression Builder
 }
 
 open_ael_time_increment_expression_builder()
 {
+sleep, 100
 MouseClick, Left, 540, 250
 WinWait, PRIMU$ - Expression Builder
 }
 
 open_ael_price_increment_expression_builder()
 {
+sleep, 100
 MouseClick, Left, 540, 300
 WinWait, PRIMU$ - Expression Builder
 }

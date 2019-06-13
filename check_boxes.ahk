@@ -1,6 +1,7 @@
 ; takes a point array with x being first item and y the second
 IsChecked(checkbox_point)
 {
+  sleep, 100
   ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, checked.PNG
   return (ErrorLevel = 0)
 }
