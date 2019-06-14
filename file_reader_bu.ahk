@@ -2,12 +2,15 @@
 
 LoadFileBU(file_name)
 {
+
   global
-  in_bracket_block_bu := false
+
+
+  in_bracket_block := false
   ; a line with a single { makes in_bracket_block true
   ; a line with a single } makes in_bracket_block false
-  bracket_block_content_bu := ""
-  name_bu := ""
+  bracket_block_content := ""
+  name := ""
   Loop
   {
       FileReadLine, line, %file_name%, %A_Index%
@@ -28,7 +31,7 @@ LoadFileBU(file_name)
 
 
       if (line = "}") {
-        in_bracket_block_bu := false
+        in_bracket_block := false
         ; assign bracket_block_content to a variable
         if (name = "position_sizing")
           position_sizing_bu := bracket_block_content
@@ -67,24 +70,24 @@ LoadFileBU(file_name)
         else if (name = "launch_rules")
           launch_rules_bu := bracket_block_content
         ; TODO erase bracket_block_content
-        bracket_block_content_bu := ""
+        bracket_block_content := ""
         continue
       }
 
       if (line = "{") {
-        in_bracket_block_bu := true
+        in_bracket_block := true
         continue
       }
 
       if (in_bracket_block) {
         ; build block content line by line
-        bracket_block_content_bu := bracket_block_content . " " . line
+        bracket_block_content := bracket_block_content . " " . line
       }
       else {
         ; name value pair line, split by equal
-        tokens_bu := StrSplit(line, "=")
-        name_bu := Trim(tokens[1])
-        value_bu := Trim(tokens[2])
+        tokens := StrSplit(line, "=")
+        name := Trim(tokens[1])
+        value := Trim(tokens[2])
         ; TODO if value is not nothing assign it to a variable, otherwise it's a () block
         if (value = "")
           continue ; value will be concatenated in_bracket_block
@@ -114,9 +117,9 @@ LoadFileBU(file_name)
         else if (name = "enable_stop_trailing_on_new_second")
           enable_stop_trailing_on_new_second_bu := value
         else if (name = "trail_after_entry_complete")
-          trail_after_entry_complete := value
+          trail_after_entry_complete_bu := value
         else if (name = "trail_once")
-          trail_once := value
+          trail_once_bu := value
         else if (name = "verify_code_during_validate_procedure")
           verify_code_during_validate_procedure_bu := value
         else if (name = "enter_on_new_minute")
@@ -196,7 +199,7 @@ LoadFileBU(file_name)
         else if (name = "enable_trailing")
           enable_trailing_bu := value
         else if (name = "enable_black_box_launch_rule")
-          enable_black_box_launch_rule_bu := value 
+          enable_black_box_launch_rule_bu := value
       }
 
   }
