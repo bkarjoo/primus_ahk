@@ -173,7 +173,7 @@ OpenExistingStopOrder()
   MouseClick, Left, 400, 775
   sleep, 100
   MouseClick, Left, 900, 785
-  WinWait, PRIMU$ - Add/Edit Order Form <EXIT_LIMIT_ORDER>
+  WinWait, PRIMU$ - Add/Edit Order Form <EXIT_STOP_ORDER>
 }
 
 ; symbols tab section ----------------------------------------------------------

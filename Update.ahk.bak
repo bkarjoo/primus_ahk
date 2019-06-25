@@ -120,7 +120,7 @@ if (entry_order_type != entry_order_type_bu
     {
       if (entry_order_stop != entry_order_stop_bu
         or entry_aggregated_TIF != entry_aggregated_TIF_bu
-        or entry_calculate_limit_during_placement != entry_calculate_limit_during_placement_bu
+        or entry_calculate_limit_during_placement != entry_calculate_limit_during_placement_bu)
         or entry_tif2 != entry_tif2_bu
         or entry_tif2_seconds != entry_tif2_seconds_bu)
         {
@@ -186,19 +186,19 @@ if (target_order_type != target_order_type_bu
       SetExpressionBuilderCode(target_limit)
     }
   } else if (target_order_type = "PRIMUS_AEL") {
-    if (ael_trigger != ael_trigger_bu or target_order_type_bu != "PRIMUS_AEL") {
+    if (ael_trigger != ael_trigger_bu) {
       open_ael_trigger_expression_builder()
       SetExpressionBuilderCode(ael_trigger)
     }
-    if (ael_price != ael_price_bu or target_order_type_bu != "PRIMUS_AEL") {
+    if (ael_price != ael_price_bu) {
       open_ael_how_expression_builder()
       SetExpressionBuilderCode(ael_price)
     }
-    if (ael_time_increment != ael_time_increment_bu or target_order_type_bu != "PRIMUS_AEL") {
+    if (ael_time_increment != ael_time_increment_bu) {
       open_ael_time_increment_expression_builder()
       SetExpressionBuilderCode(ael_time_increment)
     }
-    if (ael_price_increment != ael_price_increment_bu or target_order_type_bu != "PRIMUS_AEL") {
+    if (ael_price_increment != ael_price_increment_bu) {
       open_ael_price_increment_expression_builder()
       SetExpressionBuilderCode(ael_price_increment)
     }
@@ -238,7 +238,7 @@ or stop_price != stop_price_bu)
   {
   ; stop order -------------------------------------------------------------------
 
-  OpenExistingStopOrder()
+  OpenNewStopOrder()
 
   if (stop_order_side != stop_order_side_bu)
     set_order_form_order_side(stop_order_side)
@@ -249,7 +249,6 @@ or stop_price != stop_price_bu)
 
   if (enable_trailing = "TRUE")
   {
-    click_primus_stop_order_tab()
     SetCheckBox(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
     SetCheckBox(trail_once, trail_once_check_box, trail_once_trigger_point)
 
