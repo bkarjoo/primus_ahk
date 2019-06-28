@@ -124,7 +124,10 @@ UpdateEntryTrigger(rule)
 {
   MouseClick, Left, 450, 350
   Send, ^a
-  Send, %rule%
+  Clipboard := rule
+  sleep, 100
+  Send, ^v
+  sleep, 100
 }
 
 OpenNewEntryOrder()
