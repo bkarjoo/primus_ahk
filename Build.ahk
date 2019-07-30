@@ -9,6 +9,8 @@
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
 #include backup.ahk
+#include box_vars.ahk
+
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
 If (response = "n")
@@ -16,7 +18,14 @@ If (response = "n")
 ;-----------------------------------------------------------------------------------------------
 
 file_name = %1%
-LoadFile(file_name)
+LoadFile("rules/basket.c")
+LoadFile("rules/entry.c")
+LoadFile("rules/general_settings.txt")
+LoadFile("rules/launch_rules.c")
+LoadFile("rules/position_sizing.c")
+LoadFile("rules/stop.c")
+LoadFile("rules/target.c")
+LoadFile("rules/time_options.txt")
 
 
 ClickNewBox()
@@ -289,4 +298,12 @@ If (response = "y")
 
 }
 
-backup(file_name)
+
+backup("rules/basket.c")
+backup("rules/entry.c")
+backup("rules/general_settings.txt")
+backup("rules/launch_rules.c")
+backup("rules/position_sizing.c")
+backup("rules/stop.c")
+backup("rules/target.c")
+backup("rules/time_options.txt")

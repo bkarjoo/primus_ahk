@@ -1,4 +1,3 @@
-#include box_vars.ahk
 
 LoadFile(file_name)
 {
