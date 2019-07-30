@@ -1,5 +1,5 @@
-box_name =
-black_box_description =
+box_name = test_box
+black_box_description = test box 2
 black_box_side = LONG
 black_box_scheme = PlainVanilla
 enter_on_last = TRUE

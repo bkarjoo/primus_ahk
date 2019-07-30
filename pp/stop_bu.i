@@ -1,21 +1,20 @@
-#include "../../etc/functions.h"
 stop_order_type = PRIMUS_STOP
 stop_order_side = SELL
 stop_size = 100
 stop_price =
 {
-  execution * .99
+  ExecutionPrice * .99
 }
 enable_trailing = TRUE
 trail_after_entry_complete = TRUE
 trail_once = FALSE
 trail_trigger =
 {
-  time_from_open_sec > 60
+  TimeFromStockOpenSeconds > 60
 }
 trail_how =
 {
-  minute_low(1) - minute_range(1)
+  MinuteLow(ALL_VENUES, 1, CURRENT, NO, False) - (MinuteHigh(ALL_VENUES, 1, CURRENT, NO, False) - MinuteLow(ALL_VENUES, 1, CURRENT, NO, False))
 }
 trail_increment =
 {

@@ -10,14 +10,62 @@
 #include basket_edit_form_clicks.ahk
 #include backup.ahk
 #include file_reader_bu.ahk
+#include box_vars.ahk
+#include box_vars_bu.ahk
+#include file_status.ahk
+#include clipboard_paste.ahk
 
-main_file = %1%
+basket_updated := updated("basket")
+entry_updated := updated("entry")
+target_updated := updated("target")
+stop_updated := updated("stop")
+time_options_updated := updated("time_options")
+general_settings_updated := updated("general_settings")
+position_sizing_updated := updated("position_sizing")
+launch_rules_updated := updated("launch_rules")
 
-backup_file := get_backup_file_name(main_file)
+if not (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated or launch_rules_updated)
+{
+  Msgbox, Nothng to update.
+  return
+}
 
-MsgBox, loading files %main_file% and %backup_file%
-LoadFile(main_file)
-LoadFileBU(backup_file)
+if basket_updated
+  clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
+if entry_updated
+  clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
+if launch_rules_updated
+  clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
+if position_sizing_updated
+  clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
+if stop_updated
+  clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
+if target_updated
+  clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
+if general_settings_updated
+  clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+if time_options_updated
+  clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+
+
+LoadFile("pp/basket.i")
+LoadFile("pp/entry.i")
+LoadFile("pp/general_settings.i")
+LoadFile("pp/launch_rules.i")
+LoadFile("pp/position_sizing.i")
+LoadFile("pp/stop.i")
+LoadFile("pp/target.i")
+LoadFile("pp/time_options.i")
+
+LoadFileBU("pp/basket_bu.i")
+LoadFileBU("pp/entry_bu.i")
+LoadFileBU("pp/general_settings_bu.i")
+LoadFileBU("pp/launch_rules_bu.i")
+LoadFileBU("pp/position_sizing_bu.i")
+LoadFileBU("pp/stop_bu.i")
+LoadFileBU("pp/target_bu.i")
+LoadFileBU("pp/time_options_bu.i")
+
 
 
 ;-----------------------------------------------------------------------------------------------
@@ -67,7 +115,7 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-
+backup("pp/general_settings.i")
 
 
 
@@ -150,6 +198,7 @@ if (entry_order_type != entry_order_type_bu
     ;-----------------------------------------------------------------------------------------------
 
   }
+  backup("pp/entry.i")
 }
 
 ; target order -----------------------------------------------------------------
@@ -222,6 +271,7 @@ if (target_order_type != target_order_type_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
+  backup("pp/target.i")
 }
 
 if (stop_order_side != stop_order_side_bu
@@ -279,7 +329,7 @@ or stop_price != stop_price_bu)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
-
+  backup("pp/stop.i")
   }
 }
 
@@ -325,6 +375,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
 
   }
+  backup("pp/basket.i")
 }
 
 if (use_time_options != use_time_options_bu
@@ -362,6 +413,7 @@ or place_OPG_orders != place_OPG_orders_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
+  backup("pp/time_options.i")
 }
 
 if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
@@ -382,6 +434,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
+  backup("pp/position_sizing.i")
 }
 
 if (enable_black_box_risk_management != enable_black_box_risk_management_bu
@@ -402,6 +455,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
+  backup("pp/position_sizing.i")
 }
 
 if (enable_black_box_launch_rule != enable_black_box_launch_rule_bu
@@ -424,9 +478,7 @@ or launch_rules != launch_rules_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
+  backup("pp/launch_rules.i")
 }
 
 click_validate_and_close()
-
-
-backup(main_file)

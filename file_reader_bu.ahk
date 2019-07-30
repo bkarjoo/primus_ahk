@@ -1,4 +1,4 @@
-#include box_vars_bu.ahk
+
 
 LoadFileBU(file_name)
 {

@@ -10,6 +10,7 @@
 #include basket_edit_form_clicks.ahk
 #include backup.ahk
 #include box_vars.ahk
+#include clipboard_paste.ahk
 
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
@@ -17,15 +18,23 @@ If (response = "n")
   ExitApp
 ;-----------------------------------------------------------------------------------------------
 
-file_name = %1%
-LoadFile("rules/basket.c")
-LoadFile("rules/entry.c")
-LoadFile("rules/general_settings.txt")
-LoadFile("rules/launch_rules.c")
-LoadFile("rules/position_sizing.c")
-LoadFile("rules/stop.c")
-LoadFile("rules/target.c")
-LoadFile("rules/time_options.txt")
+clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
+clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
+clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
+clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
+clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
+clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
+clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+
+LoadFile("pp/basket.i")
+LoadFile("pp/entry.i")
+LoadFile("pp/general_settings.i")
+LoadFile("pp/launch_rules.i")
+LoadFile("pp/position_sizing.i")
+LoadFile("pp/stop.i")
+LoadFile("pp/target.i")
+LoadFile("pp/time_options.i")
 
 
 ClickNewBox()
@@ -299,11 +308,11 @@ If (response = "y")
 }
 
 
-backup("rules/basket.c")
-backup("rules/entry.c")
-backup("rules/general_settings.txt")
-backup("rules/launch_rules.c")
-backup("rules/position_sizing.c")
-backup("rules/stop.c")
-backup("rules/target.c")
-backup("rules/time_options.txt")
+backup("pp/basket.i")
+backup("pp/entry.i")
+backup("pp/general_settings.i")
+backup("pp/launch_rules.i")
+backup("pp/position_sizing.i")
+backup("pp/stop.i")
+backup("pp/target.i")
+backup("pp/time_options.i")
