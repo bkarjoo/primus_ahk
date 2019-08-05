@@ -1,7 +1,7 @@
 
 clipboard_paste(text) {
   Clipboard := text
-  Send, ^y
+  Send, ^v
   Send, {Enter}
   sleep, 1000
   return
