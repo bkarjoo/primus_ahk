@@ -15,6 +15,7 @@
 #include file_status.ahk
 #include clipboard_paste.ahk
 
+clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 LoadFile("pp/general_settings.i")
 
 basket_updated := updated("basket", box_acronym)
@@ -30,7 +31,8 @@ if not (basket_updated or entry_updated or target_updated or stop_updated or tim
 {
   Msgbox, Nothng to update.
   return
-}
+}gcc rules/basket.c -E -o pp/basket.i -P
+
 
 if basket_updated
   clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
