@@ -90,6 +90,8 @@ LoadFile(file_name)
 
         if (name = "box_name")
           box_name := value
+        else if (name = "box_acronym")
+          box_acronym := value
         else if (name = "black_box_description")
           black_box_description := value
         else if (name = "black_box_side")

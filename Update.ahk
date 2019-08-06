@@ -57,14 +57,16 @@ LoadFile("pp/stop.i")
 LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
 
-LoadFileBU("pp/basket_bu.i")
-LoadFileBU("pp/entry_bu.i")
-LoadFileBU("pp/general_settings_bu.i")
-LoadFileBU("pp/launch_rules_bu.i")
-LoadFileBU("pp/position_sizing_bu.i")
-LoadFileBU("pp/stop_bu.i")
-LoadFileBU("pp/target_bu.i")
-LoadFileBU("pp/time_options_bu.i")
+
+; at this point we have the box_acronym
+LoadFileBU("../bu/" . box_acronym . "/basket_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/entry_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/general_settings_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/launch_rules_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/position_sizing_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/stop_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/target_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/time_options_bu.i")
 
 
 
@@ -115,7 +117,7 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-backup("pp/general_settings.i")
+backup("../bu/" . box_acronym . "/general_settings.i")
 
 
 
@@ -198,7 +200,7 @@ if (entry_order_type != entry_order_type_bu
     ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("pp/entry.i")
+  backup("../bu/" . box_acronym . "/entry.i")
 }
 
 ; target order -----------------------------------------------------------------
@@ -271,7 +273,7 @@ if (target_order_type != target_order_type_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("pp/target.i")
+  backup("../bu/" . box_acronym . "/target.i")
 }
 
 if (stop_order_side != stop_order_side_bu
@@ -329,7 +331,7 @@ or stop_price != stop_price_bu)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
-  backup("pp/stop.i")
+  backup("../bu/" . box_acronym . "/stop.i")
   }
 }
 
@@ -375,7 +377,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("pp/basket.i")
+  backup("../bu/" . box_acronym . "/basket.i")
 }
 
 if (use_time_options != use_time_options_bu
@@ -413,7 +415,7 @@ or place_OPG_orders != place_OPG_orders_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("pp/time_options.i")
+  backup("../bu/" . box_acronym . "/time_options.i")
 }
 
 if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
@@ -434,7 +436,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("pp/position_sizing.i")
+  backup("../bu/" . box_acronym . "/position_sizing.i")
 }
 
 if (enable_black_box_risk_management != enable_black_box_risk_management_bu
@@ -455,7 +457,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("pp/position_sizing.i")
+  backup("../bu/" . box_acronym . "/position_sizing.i")
 }
 
 if (enable_black_box_launch_rule != enable_black_box_launch_rule_bu
@@ -478,7 +480,7 @@ or launch_rules != launch_rules_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("pp/launch_rules.i")
+  backup("../bu/" . box_acronym . "/launch_rules.i")
 }
 
 click_validate_and_close()

@@ -94,6 +94,8 @@ LoadFileBU(file_name)
 
         if (name = "box_name")
           box_name_bu := value
+        else if (name = "box_acronym")
+          box_acronym_bu := value
         else if (name = "black_box_description")
           black_box_description_bu := value
         else if (name = "black_box_side")
