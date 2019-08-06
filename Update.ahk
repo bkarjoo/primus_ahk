@@ -120,7 +120,7 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-backup("general_settings")
+backup("general_settings", box_acronym)
 
 
 
@@ -203,7 +203,7 @@ if (entry_order_type != entry_order_type_bu
     ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("entry")
+  backup("entry", box_acronym)
 }
 
 ; target order -----------------------------------------------------------------
@@ -276,7 +276,7 @@ if (target_order_type != target_order_type_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("target")
+  backup("target", box_acronym)
 }
 
 if (stop_order_side != stop_order_side_bu
@@ -334,7 +334,7 @@ or stop_price != stop_price_bu)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
-  backup("stop")
+  backup("stop", box_acronym)
   }
 }
 
@@ -380,7 +380,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("basket")
+  backup("basket", box_acronym)
 }
 
 if (use_time_options != use_time_options_bu
@@ -418,7 +418,7 @@ or place_OPG_orders != place_OPG_orders_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("time_options")
+  backup("time_options", box_acronym)
 }
 
 if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
@@ -439,7 +439,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("position_sizing")
+  backup("position_sizing", box_acronym)
 }
 
 if (enable_black_box_risk_management != enable_black_box_risk_management_bu
@@ -460,7 +460,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("position_sizing")
+  backup("position_sizing", box_acronym)
 }
 
 if (enable_black_box_launch_rule != enable_black_box_launch_rule_bu
@@ -483,7 +483,7 @@ or launch_rules != launch_rules_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("launch_rules")
+  backup("launch_rules", box_acronym)
 }
 
 click_validate_and_close()
