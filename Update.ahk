@@ -31,8 +31,7 @@ if not (basket_updated or entry_updated or target_updated or stop_updated or tim
 {
   Msgbox, Nothng to update.
   return
-}gcc rules/basket.c -E -o pp/basket.i -P
-
+}
 
 if basket_updated
   clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
@@ -121,7 +120,7 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-backup("../bu/" . box_acronym . "/general_settings.i")
+backup("general_settings")
 
 
 
@@ -204,7 +203,7 @@ if (entry_order_type != entry_order_type_bu
     ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("../bu/" . box_acronym . "/entry.i")
+  backup("entry")
 }
 
 ; target order -----------------------------------------------------------------
@@ -277,7 +276,7 @@ if (target_order_type != target_order_type_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("../bu/" . box_acronym . "/target.i")
+  backup("target")
 }
 
 if (stop_order_side != stop_order_side_bu
@@ -335,7 +334,7 @@ or stop_price != stop_price_bu)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
-  backup("../bu/" . box_acronym . "/stop.i")
+  backup("stop")
   }
 }
 
@@ -381,7 +380,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("../bu/" . box_acronym . "/basket.i")
+  backup("basket")
 }
 
 if (use_time_options != use_time_options_bu
@@ -419,7 +418,7 @@ or place_OPG_orders != place_OPG_orders_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("../bu/" . box_acronym . "/time_options.i")
+  backup("time_options")
 }
 
 if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
@@ -440,7 +439,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("../bu/" . box_acronym . "/position_sizing.i")
+  backup("position_sizing")
 }
 
 if (enable_black_box_risk_management != enable_black_box_risk_management_bu
@@ -461,7 +460,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("../bu/" . box_acronym . "/position_sizing.i")
+  backup("position_sizing")
 }
 
 if (enable_black_box_launch_rule != enable_black_box_launch_rule_bu
@@ -484,7 +483,7 @@ or launch_rules != launch_rules_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("../bu/" . box_acronym . "/launch_rules.i")
+  backup("launch_rules")
 }
 
 click_validate_and_close()

@@ -1,12 +1,9 @@
 
-get_backup_file_name(file_name)
-{
-  return SubStr(file_name, 1, StrLen(file_name) - 2) . "_bu.i"
-}
 
 
-backup(file_name)
+backup(file_name, acronym)
 {
-  target := get_backup_file_name(file_name)
-  FileCopy, %file_name%, %target%, 1
+  source := "pp/" . file_name . ".i"
+  target := "../bu/" . acronym . "/" . file_name . "_bu.i"
+  FileCopy, %source%, %target%, 1
 }
