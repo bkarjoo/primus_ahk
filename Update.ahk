@@ -15,14 +15,16 @@
 #include file_status.ahk
 #include clipboard_paste.ahk
 
-basket_updated := updated("basket")
-entry_updated := updated("entry")
-target_updated := updated("target")
-stop_updated := updated("stop")
-time_options_updated := updated("time_options")
-general_settings_updated := updated("general_settings")
-position_sizing_updated := updated("position_sizing")
-launch_rules_updated := updated("launch_rules")
+LoadFile("pp/general_settings.i")
+
+basket_updated := updated("basket", box_acronym)
+entry_updated := updated("entry", box_acronym)
+target_updated := updated("target", box_acronym)
+stop_updated := updated("stop", box_acronym)
+time_options_updated := updated("time_options", box_acronym)
+general_settings_updated := updated("general_settings", box_acronym)
+position_sizing_updated := updated("position_sizing", box_acronym)
+launch_rules_updated := updated("launch_rules", box_acronym)
 
 if not (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated or launch_rules_updated)
 {
