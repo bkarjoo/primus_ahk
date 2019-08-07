@@ -11,6 +11,7 @@
 #include backup.ahk
 #include box_vars.ahk
 #include clipboard_paste.ahk
+#include box_name_builder.ahk
 
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
@@ -46,7 +47,8 @@ ActivateBlackBoxDesign()
 Loop
 {
 ; box name and description -----------------------------------------------------
-UpdateBoxName(box_name)
+bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 40))
+UpdateBoxName(bname)
 sleep 100
 UpdateBoxDescription(black_box_description)
 sleep 100

@@ -14,6 +14,7 @@
 #include box_vars_bu.ahk
 #include file_status.ahk
 #include clipboard_paste.ahk
+#include box_name_builder.ahk
 
 clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 LoadFile("pp/general_settings.i")
@@ -85,7 +86,8 @@ ActivateBlackBoxDesign()
 ; box name and description -----------------------------------------------------
 if (box_name != box_name_bu)
 {
-  UpdateBoxName(box_name)
+  bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 40))
+  UpdateBoxName(bname)
   sleep 100
 }
 
