@@ -19,6 +19,7 @@ If (response = "n")
   ExitApp
 ;-----------------------------------------------------------------------------------------------
 
+Clipboard_paste("if not exist pp mkdir pp")
 clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
 clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
 clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
@@ -227,6 +228,7 @@ if (basket_htb != "")
   set_basket_hard_to_borrow_allowed_symbols(basket_htb)
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
+
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Ready for time options? (enter y or n or q)
 If (response = "q")
