@@ -47,7 +47,7 @@ ActivateBlackBoxDesign()
 Loop
 {
 ; box name and description -----------------------------------------------------
-bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 40))
+bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 80))
 UpdateBoxName(bname)
 sleep 100
 UpdateBoxDescription(black_box_description)

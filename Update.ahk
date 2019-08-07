@@ -84,12 +84,12 @@ ClickEditBox()
 ActivateBlackBoxDesign()
 
 ; box name and description -----------------------------------------------------
-if (box_name != box_name_bu)
-{
+;if (box_name != box_name_bu)
+;{
   bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 40))
   UpdateBoxName(bname)
   sleep 100
-}
+;}
 
 if (black_box_description != black_box_description_bu)
 {
