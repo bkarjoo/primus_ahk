@@ -323,6 +323,8 @@ or stop_price != stop_price_bu)
       SetExpressionBuilderCode(trail_increment)
     }
   }
+
+
   if (stop_price != stop_price_bu) {
     click_common_order_parameters_tab()
     open_stop_price_expression_builder()
@@ -336,8 +338,9 @@ or stop_price != stop_price_bu)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
-  backup("stop", box_acronym)
+
   }
+  backup("stop", box_acronym)
 }
 
 if (basket_name != basket_name_bu
