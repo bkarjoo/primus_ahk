@@ -29,9 +29,22 @@ clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
 clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
 
+LoadFile("pp/general_settings.i")
+
+InputBox, response, Question,  Initiate git repo? (enter y or n)
+If (response = "y")
+{
+  clipboard_paste("rm -r .git")
+  clipboard_paste("git init")
+  commit_message := box_acronym . " " . box_name . " " .  black_box_description
+  clipboard_paste("git add -A")
+  clipboard_paste("git commit -m " . """" . commit_message . """")
+}
+
+
 LoadFile("pp/basket.i")
 LoadFile("pp/entry.i")
-LoadFile("pp/general_settings.i")
+
 LoadFile("pp/launch_rules.i")
 LoadFile("pp/position_sizing.i")
 LoadFile("pp/stop.i")

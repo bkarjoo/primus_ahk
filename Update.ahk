@@ -19,6 +19,16 @@
 clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 LoadFile("pp/general_settings.i")
 
+; at this point we have the box_acronym
+LoadFileBU("../bu/" . box_acronym . "/basket_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/entry_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/general_settings_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/launch_rules_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/position_sizing_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/stop_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/target_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/time_options_bu.i")
+
 basket_updated := updated("basket", box_acronym)
 entry_updated := updated("entry", box_acronym)
 target_updated := updated("target", box_acronym)
@@ -35,44 +45,58 @@ if not (basket_updated or entry_updated or target_updated or stop_updated or tim
 }
 
 if basket_updated
+{
   clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
+  backup("basket", box_acronym)
+}
 if entry_updated
+{
   clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
+  backup("entry", box_acronym)
+}
 if launch_rules_updated
+{
   clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
+  backup("launch_rules", box_acronym)
+}
 if position_sizing_updated
+{
   clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
+  backup("position_sizing", box_acronym)
+}
 if stop_updated
+{
   clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
+  backup("stop", box_acronym)
+}
 if target_updated
+{
   clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
+  backup("target", box_acronym)
+}
 if general_settings_updated
+{
   clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+  backup("general_settings", box_acronym)
+}
 if time_options_updated
+{
   clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+  backup("time_options", box_acronym)
+}
 
+
+commit_message := box_acronym . " " . box_name . " " .  black_box_description
+clipboard_paste("git add -A")
+clipboard_paste("git commit -m " . """" . commit_message . """")
 
 LoadFile("pp/basket.i")
 LoadFile("pp/entry.i")
-LoadFile("pp/general_settings.i")
 LoadFile("pp/launch_rules.i")
 LoadFile("pp/position_sizing.i")
 LoadFile("pp/stop.i")
 LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
-
-
-; at this point we have the box_acronym
-LoadFileBU("../bu/" . box_acronym . "/basket_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/entry_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/general_settings_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/launch_rules_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/position_sizing_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/stop_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/target_bu.i")
-LoadFileBU("../bu/" . box_acronym . "/time_options_bu.i")
-
-
 
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or n)
@@ -122,7 +146,7 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-backup("general_settings", box_acronym)
+
 
 
 
@@ -205,7 +229,7 @@ if (entry_order_type != entry_order_type_bu
     ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("entry", box_acronym)
+
 }
 
 ; target order -----------------------------------------------------------------
@@ -278,7 +302,7 @@ if (target_order_type != target_order_type_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("target", box_acronym)
+
 }
 
 if (stop_order_side != stop_order_side_bu
@@ -340,7 +364,7 @@ or stop_price != stop_price_bu)
   ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("stop", box_acronym)
+
 }
 
 if (basket_name != basket_name_bu
@@ -385,7 +409,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
 
   }
-  backup("basket", box_acronym)
+
 }
 
 if (use_time_options != use_time_options_bu
@@ -423,7 +447,7 @@ or place_OPG_orders != place_OPG_orders_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("time_options", box_acronym)
+
 }
 
 if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
@@ -444,7 +468,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("position_sizing", box_acronym)
+
 }
 
 if (enable_black_box_risk_management != enable_black_box_risk_management_bu
@@ -465,7 +489,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("position_sizing", box_acronym)
+
 }
 
 if (enable_black_box_launch_rule != enable_black_box_launch_rule_bu
@@ -488,7 +512,7 @@ or launch_rules != launch_rules_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
-  backup("launch_rules", box_acronym)
+
 }
 
 click_validate_and_close()
