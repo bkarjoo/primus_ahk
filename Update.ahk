@@ -15,6 +15,7 @@
 #include file_status.ahk
 #include clipboard_paste.ahk
 #include box_name_builder.ahk
+#include box_finder.ahk
 
 clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 LoadFile("pp/general_settings.i")
@@ -99,6 +100,14 @@ LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
 
 ;-----------------------------------------------------------------------------------------------
+; load the box and then ask if it was loaded properly
+OpenBox(box_acronym)
+Click, Left, 1080, 710
+WinWait, PRIMU$ - Black Box Design
+; cancel out of box
+sleep, 100
+Click, Left, 75, 943
+sleep, 100
 InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or n)
 If (response = "n")
   ExitApp
