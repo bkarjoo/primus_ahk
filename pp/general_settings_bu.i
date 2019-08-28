@@ -1,0 +1,13 @@
+box_name = test_box
+black_box_description = test box 2
+black_box_side = LONG
+black_box_scheme = PlainVanilla
+enter_on_last = TRUE
+enter_on_bid = FALSE
+enter_on_ask = FALSE
+enter_on_pmi = FALSE
+enter_on_imbalance = FALSE
+enter_on_snapshot = FALSE
+enter_on_new_minute = FALSE
+enter_on_stock_event = FALSE
+use_strict_mode = TRUE
