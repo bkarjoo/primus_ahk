@@ -1,5 +1,6 @@
 ; general options --------------------------------------------------------------
 box_name_bu = Any Name
+box_acronym_bu = xyz
 black_box_description_bu = some description
 black_box_side_bu = LONG
 black_box_scheme_bu = OPG

@@ -10,17 +10,104 @@
 #include basket_edit_form_clicks.ahk
 #include backup.ahk
 #include file_reader_bu.ahk
+#include box_vars.ahk
+#include box_vars_bu.ahk
+#include file_status.ahk
+#include clipboard_paste.ahk
+#include box_name_builder.ahk
+#include box_finder.ahk
 
-main_file = %1%
+clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+LoadFile("pp/general_settings.i")
 
-backup_file := get_backup_file_name(main_file)
+; at this point we have the box_acronym
+LoadFileBU("../bu/" . box_acronym . "/basket_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/entry_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/general_settings_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/launch_rules_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/position_sizing_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/stop_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/target_bu.i")
+LoadFileBU("../bu/" . box_acronym . "/time_options_bu.i")
 
-MsgBox, loading files %main_file% and %backup_file%
-LoadFile(main_file)
-LoadFileBU(backup_file)
+basket_updated := updated("basket", box_acronym)
+entry_updated := updated("entry", box_acronym)
+target_updated := updated("target", box_acronym)
+stop_updated := updated("stop", box_acronym)
+time_options_updated := updated("time_options", box_acronym)
+general_settings_updated := updated("general_settings", box_acronym)
+position_sizing_updated := updated("position_sizing", box_acronym)
+launch_rules_updated := updated("launch_rules", box_acronym)
 
+if not (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated or launch_rules_updated)
+{
+  Msgbox, Nothng to update.
+  return
+}
+
+if basket_updated
+{
+  clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
+  backup("basket", box_acronym)
+}
+if entry_updated
+{
+  clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
+  backup("entry", box_acronym)
+}
+if launch_rules_updated
+{
+  clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
+  backup("launch_rules", box_acronym)
+}
+if position_sizing_updated
+{
+  clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
+  backup("position_sizing", box_acronym)
+}
+if stop_updated
+{
+  clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
+  backup("stop", box_acronym)
+}
+if target_updated
+{
+  clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
+  backup("target", box_acronym)
+}
+if general_settings_updated
+{
+  clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+  backup("general_settings", box_acronym)
+}
+if time_options_updated
+{
+  clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+  backup("time_options", box_acronym)
+}
+
+
+commit_message := box_acronym . " " . box_name . " " .  black_box_description
+clipboard_paste("git add -A")
+clipboard_paste("git commit -m " . """" . commit_message . """")
+
+LoadFile("pp/basket.i")
+LoadFile("pp/entry.i")
+LoadFile("pp/launch_rules.i")
+LoadFile("pp/position_sizing.i")
+LoadFile("pp/stop.i")
+LoadFile("pp/target.i")
+LoadFile("pp/time_options.i")
 
 ;-----------------------------------------------------------------------------------------------
+; load the box and then ask if it was loaded properly
+OpenBox(box_acronym)
+Click, Left, 1080, 710
+WinWait, PRIMU$ - Black Box Design
+; cancel out of box
+sleep, 100
+Click, Left, 75, 943
+sleep, 100
 InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or n)
 If (response = "n")
   ExitApp
@@ -30,11 +117,12 @@ ClickEditBox()
 ActivateBlackBoxDesign()
 
 ; box name and description -----------------------------------------------------
-if (box_name != box_name_bu)
-{
-  UpdateBoxName(box_name)
+;if (box_name != box_name_bu)
+;{
+  bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 40))
+  UpdateBoxName(bname)
   sleep 100
-}
+;}
 
 if (black_box_description != black_box_description_bu)
 {
@@ -150,6 +238,7 @@ if (entry_order_type != entry_order_type_bu
     ;-----------------------------------------------------------------------------------------------
 
   }
+
 }
 
 ; target order -----------------------------------------------------------------
@@ -222,6 +311,7 @@ if (target_order_type != target_order_type_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
+
 }
 
 if (stop_order_side != stop_order_side_bu
@@ -266,6 +356,8 @@ or stop_price != stop_price_bu)
       SetExpressionBuilderCode(trail_increment)
     }
   }
+
+
   if (stop_price != stop_price_bu) {
     click_common_order_parameters_tab()
     open_stop_price_expression_builder()
@@ -281,6 +373,7 @@ or stop_price != stop_price_bu)
   ;-----------------------------------------------------------------------------------------------
 
   }
+
 }
 
 if (basket_name != basket_name_bu
@@ -325,6 +418,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
 
   }
+
 }
 
 if (use_time_options != use_time_options_bu
@@ -362,6 +456,7 @@ or place_OPG_orders != place_OPG_orders_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
+
 }
 
 if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
@@ -382,6 +477,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
+
 }
 
 if (enable_black_box_risk_management != enable_black_box_risk_management_bu
@@ -402,6 +498,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
     break
   ;-----------------------------------------------------------------------------------------------
   }
+
 }
 
 if (enable_black_box_launch_rule != enable_black_box_launch_rule_bu
@@ -424,9 +521,7 @@ or launch_rules != launch_rules_bu)
     break
   ;-----------------------------------------------------------------------------------------------
   }
+
 }
 
 click_validate_and_close()
-
-
-backup(main_file)

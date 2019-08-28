@@ -9,14 +9,47 @@
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
 #include backup.ahk
+#include box_vars.ahk
+#include clipboard_paste.ahk
+#include box_name_builder.ahk
+
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
 If (response = "n")
   ExitApp
 ;-----------------------------------------------------------------------------------------------
 
-file_name = %1%
-LoadFile(file_name)
+Clipboard_paste("if not exist pp mkdir pp")
+clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
+clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
+clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
+clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
+clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
+clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
+clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+
+LoadFile("pp/general_settings.i")
+
+InputBox, response, Question,  Initiate git repo? (enter y or n)
+If (response = "y")
+{
+  clipboard_paste("rm -r .git")
+  clipboard_paste("git init")
+  commit_message := box_acronym . " " . box_name . " " .  black_box_description
+  clipboard_paste("git add -A")
+  clipboard_paste("git commit -m " . """" . commit_message . """")
+}
+
+
+LoadFile("pp/basket.i")
+LoadFile("pp/entry.i")
+
+LoadFile("pp/launch_rules.i")
+LoadFile("pp/position_sizing.i")
+LoadFile("pp/stop.i")
+LoadFile("pp/target.i")
+LoadFile("pp/time_options.i")
 
 
 ClickNewBox()
@@ -28,7 +61,8 @@ ActivateBlackBoxDesign()
 Loop
 {
 ; box name and description -----------------------------------------------------
-UpdateBoxName(box_name)
+bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 80))
+UpdateBoxName(bname)
 sleep 100
 UpdateBoxDescription(black_box_description)
 sleep 100
@@ -207,6 +241,7 @@ if (basket_htb != "")
   set_basket_hard_to_borrow_allowed_symbols(basket_htb)
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
+
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Ready for time options? (enter y or n or q)
 If (response = "q")
@@ -289,4 +324,12 @@ If (response = "y")
 
 }
 
-backup(file_name)
+
+backup("basket", box_acronym)
+backup("entry", box_acronym)
+backup("general_settings", box_acronym)
+backup("launch_rules", box_acronym)
+backup("position_sizing", box_acronym)
+backup("stop", box_acronym)
+backup("target", box_acronym)
+backup("time_options", box_acronym)

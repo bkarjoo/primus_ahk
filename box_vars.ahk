@@ -1,5 +1,6 @@
 ; general options --------------------------------------------------------------
 box_name = Any Name
+box_acronym = xyz
 black_box_description = some description
 black_box_side = LONG
 black_box_scheme = OPG

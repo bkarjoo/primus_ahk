@@ -19,11 +19,13 @@ create_new_basket()
   MouseClick, Right, 320, 115
   sleep, 200
   MouseClick, Left, 405, 127
-  sleep, 500
+  sleep, 1000
 }
 
 click_basket_manager_ok_button()
 {
+  WinActivate, Basket Manager
+  WinWait, Basket Manager
   MouseClick, Left, 646, 509
   sleep, 200
 }
