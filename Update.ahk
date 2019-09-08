@@ -376,6 +376,7 @@ or stop_price != stop_price_bu)
 
 }
 
+; TODO don't care about basket name changing
 if (basket_name != basket_name_bu
   or basket_description != basket_description_bu
   or activate_dynamic_basket_rules != activate_dynamic_basket_rules_bu
@@ -388,13 +389,15 @@ if (basket_name != basket_name_bu
   loop
   {
   ; basket -----------------------------------------------------------------------
+  ; TODO workflow must change here (basket manager and basket form clicks)
   click_symbols_tab()
   click_choose_basket()
-  create_new_basket()
+  create_new_basket() ; TODO need choose existing basket function
 
-  set_basket_name(basket_name)
-  set_basket_description(basket_description)
+  ; set_basket_name(basket_name) ; DONE this shouldn't have to be here
+  set_basket_description(basket_description) ; TODO only if it has changed
 
+  ; TODO check the rest is ok...
   SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
   SetCheckBox(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
 

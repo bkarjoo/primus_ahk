@@ -224,7 +224,7 @@ click_symbols_tab()
 click_choose_basket()
 create_new_basket()
 
-set_basket_name(basket_name)
+set_basket_name(box_acronym)
 set_basket_description(basket_description)
 
 SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
