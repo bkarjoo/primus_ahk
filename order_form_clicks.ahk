@@ -5,6 +5,7 @@
 
 click_order_form_save_button()
 {
+  WinWait, PRIMU$ - Add/Edit Order Form
   MouseClick, Left, 530, 480
   WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
 }
