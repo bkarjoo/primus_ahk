@@ -1,14 +1,8 @@
 
 ActivateLauncher()
 {
-  If WinExist("Primu$ 7")
-    and !WinActive("Primu$ 7")
-    and !WinExist("PRIMU$ - Black Box Design")
-    {
-      WinActivate, Primu$ 7
-    }
-  else
-    MsgBox, Cannot Activate Launcher
+  WinActivate, Primu$ 7.
+  WinWait,  Primu$ 7.
 }
 
 ClickNewBox()
