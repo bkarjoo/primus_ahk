@@ -17,8 +17,12 @@
 #include box_name_builder.ahk
 #include box_finder.ahk
 
+
+
 clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 LoadFile("pp/general_settings.i")
+
+
 
 ; at this point we have the box_acronym
 LoadFileBU("../bu/" . box_acronym . "/basket_bu.i")
@@ -38,6 +42,7 @@ time_options_updated := updated("time_options", box_acronym)
 general_settings_updated := updated("general_settings", box_acronym)
 position_sizing_updated := updated("position_sizing", box_acronym)
 launch_rules_updated := updated("launch_rules", box_acronym)
+
 
 if not (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated or launch_rules_updated)
 {
@@ -90,6 +95,22 @@ if time_options_updated
 commit_message := box_acronym . " " . box_name . " " .  black_box_description
 clipboard_paste("git add -A")
 clipboard_paste("git commit -m " . """" . commit_message . """")
+clipboard_paste("git push")
+
+
+InputBox, response, press a key when done pushing...
+
+; push the bu branch as well
+clipboard_paste("cd ..\bu")
+clipboard_paste("git add -A")
+commit_message := "-"
+clipboard_paste("git commit -m " . """" . commit_message . """")
+clipboard_paste("git push")
+
+InputBox, response, press a key when done pushing...
+
+clipboard_paste("cd ..\" . box_acronym)
+
 
 LoadFile("pp/basket.i")
 LoadFile("pp/entry.i")
@@ -105,15 +126,15 @@ OpenBox(box_acronym)
 Click, Left, 1080, 710
 WinWait, PRIMU$ - Black Box Design
 ; cancel out of box
-sleep, 100
-Click, Left, 75, 943
+; sleep, 100
+; Click, Left, 75, 943
 sleep, 100
 InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or n)
 If (response = "n")
   ExitApp
 ;-----------------------------------------------------------------------------------------------
 
-ClickEditBox()
+; ClickEditBox()
 ActivateBlackBoxDesign()
 
 ; box name and description -----------------------------------------------------
@@ -390,22 +411,22 @@ if (basket_name != basket_name_bu
   ; basket -----------------------------------------------------------------------
   click_symbols_tab()
   click_choose_basket()
-  create_new_basket()
+  open_existing_basket(box_acronym)
 
-  set_basket_name(basket_name)
-  set_basket_description(basket_description)
+  if (basket_description != basket_description_bu)
+    set_basket_description(basket_description)
 
   SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
   SetCheckBox(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
 
-  if (basket_rules != "")
+  if (basket_rules != basket_rules_bu)
     set_basket_rule(basket_rules)
 
-  if (basket_symbols != "")
+  if (basket_symbols != basket_symbols_bu)
     set_basket_symbols(basket_symbols)
-  if (basket_exclude != "")
+  if (basket_exclude != basket_exclude_bu)
     set_basket_always_exclude_symbols(basket_exclude)
-  if (basket_htb != "")
+  if (basket_htb != basket_htb_bu)
     set_basket_hard_to_borrow_allowed_symbols(basket_htb)
   click_edit_basket_save_button()
   click_basket_manager_ok_button()

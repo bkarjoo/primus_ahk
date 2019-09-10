@@ -13,11 +13,6 @@
 #include clipboard_paste.ahk
 #include box_name_builder.ahk
 
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Building a new box will override open box. You will lose unsaved changes. Do you want to proceed? (enter y or n)
-If (response = "n")
-  ExitApp
-;-----------------------------------------------------------------------------------------------
 
 Clipboard_paste("if not exist pp mkdir pp")
 clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
@@ -29,6 +24,7 @@ clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
 clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
 
+; load general settings here because variables will be used if initiating git repo
 LoadFile("pp/general_settings.i")
 
 InputBox, response, Question,  Initiate git repo? (enter y or n)
@@ -44,7 +40,6 @@ If (response = "y")
 
 LoadFile("pp/basket.i")
 LoadFile("pp/entry.i")
-
 LoadFile("pp/launch_rules.i")
 LoadFile("pp/position_sizing.i")
 LoadFile("pp/stop.i")
@@ -224,7 +219,7 @@ click_symbols_tab()
 click_choose_basket()
 create_new_basket()
 
-set_basket_name(basket_name)
+set_basket_name(box_acronym)
 set_basket_description(basket_description)
 
 SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
