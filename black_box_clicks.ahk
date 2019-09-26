@@ -264,7 +264,7 @@ set_launch_rule(rule)
   sleep, 100
   Send, ^a
   sleep, 100
-  Clipboard := rule
+  Clipboard := StrReplace(rule, ".", "#")
   sleep, 100
   Send, ^v
   sleep, 100
