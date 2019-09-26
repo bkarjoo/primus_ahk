@@ -198,6 +198,8 @@ LoadFile(file_name)
           enable_trailing := value
         else if (name = "enable_black_box_launch_rule")
           enable_black_box_launch_rule := value
+        else if (name = "launch_rule_name")
+          launch_rule_name := value
       }
 
   }

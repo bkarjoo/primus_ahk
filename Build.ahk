@@ -26,18 +26,6 @@ clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
 
 ; load general settings here because variables will be used if initiating git repo
 LoadFile("pp/general_settings.i")
-
-InputBox, response, Question,  Initiate git repo? (enter y or n)
-If (response = "y")
-{
-  clipboard_paste("rm -r .git")
-  clipboard_paste("git init")
-  commit_message := box_acronym . " " . box_name . " " .  black_box_description
-  clipboard_paste("git add -A")
-  clipboard_paste("git commit -m " . """" . commit_message . """")
-}
-
-
 LoadFile("pp/basket.i")
 LoadFile("pp/entry.i")
 LoadFile("pp/launch_rules.i")
@@ -45,6 +33,16 @@ LoadFile("pp/position_sizing.i")
 LoadFile("pp/stop.i")
 LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
+
+InputBox, response, Question,  Initiate git repo? (enter y or n)
+If (response = "y")
+{
+  clipboard_paste("rm -r .git")
+  clipboard_paste("git init")
+  commit_message := box_acronym . " " . box_name . " " . launch_rule_name . " " .  black_box_description
+  clipboard_paste("git add -A")
+  clipboard_paste("git commit -m " . """" . commit_message . """")
+}
 
 
 ClickNewBox()
@@ -56,10 +54,11 @@ ActivateBlackBoxDesign()
 Loop
 {
 ; box name and description -----------------------------------------------------
-bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 80))
+bname := build_box_name(box_name, box_acronym)
 UpdateBoxName(bname)
 sleep 100
-UpdateBoxDescription(black_box_description)
+desc := build_box_description(launch_rule_name, black_box_description)
+UpdateBoxDescription(desc)
 sleep 100
 ; design tab dropdowns ---------------------------------------------------------
 SetBlackBoxSide(black_box_side)

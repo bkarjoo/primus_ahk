@@ -17,14 +17,9 @@
 #include box_name_builder.ahk
 #include box_finder.ahk
 
-
-
-clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
 LoadFile("pp/general_settings.i")
 
-
-
-; at this point we have the box_acronym
+; at this point we have the box_acronym for loading the backup file
 LoadFileBU("../bu/" . box_acronym . "/basket_bu.i")
 LoadFileBU("../bu/" . box_acronym . "/entry_bu.i")
 LoadFileBU("../bu/" . box_acronym . "/general_settings_bu.i")
@@ -49,6 +44,7 @@ if not (basket_updated or entry_updated or target_updated or stop_updated or tim
   Msgbox, Nothng to update.
   return
 }
+
 
 if basket_updated
 {
@@ -91,27 +87,8 @@ if time_options_updated
   backup("time_options", box_acronym)
 }
 
-
-commit_message := box_acronym . " " . box_name . " " .  black_box_description
-clipboard_paste("git add -A")
-clipboard_paste("git commit -m " . """" . commit_message . """")
-clipboard_paste("git push")
-
-
-InputBox, response, press a key when done pushing...
-
-; push the bu branch as well
-clipboard_paste("cd ..\bu")
-clipboard_paste("git add -A")
-commit_message := "-"
-clipboard_paste("git commit -m " . """" . commit_message . """")
-clipboard_paste("git push")
-
-InputBox, response, press a key when done pushing...
-
-clipboard_paste("cd ..\" . box_acronym)
-
-
+; note general settings could've been changed so reload it
+LoadFile("pp/general_settings.i")
 LoadFile("pp/basket.i")
 LoadFile("pp/entry.i")
 LoadFile("pp/launch_rules.i")
@@ -119,6 +96,27 @@ LoadFile("pp/position_sizing.i")
 LoadFile("pp/stop.i")
 LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
+
+commit_message := box_acronym . " " . box_name . " " . launch_rule_name . " " .  black_box_description
+
+if (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated)
+{
+  clipboard_paste("git add -A")
+  clipboard_paste("git commit -m " . """" . commit_message . """")
+}
+; clipboard_paste("git push")
+; InputBox, response, press a key when done pushing...
+
+; push the bu branch as well
+clipboard_paste("cd ..\bu")
+clipboard_paste("git add -A")
+commit_message := "-"
+clipboard_paste("git commit -m " . """" . commit_message . """")
+
+; clipboard_paste("git push")
+; InputBox, response, press a key when done pushing...
+
+clipboard_paste("cd ..\" . box_acronym)
 
 ;-----------------------------------------------------------------------------------------------
 ; load the box and then ask if it was loaded properly
@@ -138,16 +136,17 @@ If (response = "n")
 ActivateBlackBoxDesign()
 
 ; box name and description -----------------------------------------------------
-;if (box_name != box_name_bu)
-;{
-  bname := build_box_name(box_name, box_acronym, SubStr(launch_rules, 1, 40))
+if (box_name != box_name_bu or box_acronym != box_acronym_bu)
+{
+  bname := build_box_name(box_name, box_acronym)
   UpdateBoxName(bname)
   sleep 100
-;}
+}
 
-if (black_box_description != black_box_description_bu)
+if (black_box_description != black_box_description_bu or launch_rule_name != launch_rule_name_bu)
 {
-  UpdateBoxDescription(black_box_description)
+  desc := build_box_description(launch_rule_name, black_box_description)
+  UpdateBoxDescription(desc)
   sleep 100
 }
 
@@ -412,6 +411,12 @@ if (basket_name != basket_name_bu
   click_symbols_tab()
   click_choose_basket()
   open_existing_basket(box_acronym)
+
+  InputBox, response, Question,  basket loaded? (enter y or n or q)
+  If (response = "q")
+    ExitApp
+  If (response = "n")
+    ExitApp
 
   if (basket_description != basket_description_bu)
     set_basket_description(basket_description)
