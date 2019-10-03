@@ -290,7 +290,7 @@ if (target_order_type != target_order_type_bu
   if (target_order_type = "LIMIT") {
     if (target_order_type != target_order_type_bu)
       set_order_form_TIF("TIF_DAY")
-    if (target_limit != target_limit_bu) {
+    if (target_limit != target_limit_bu or target_order_type_bu != "LIMIT") {
       open_limit_price_expression_builder()
       SetExpressionBuilderCode(target_limit)
     }
