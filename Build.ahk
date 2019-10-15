@@ -57,7 +57,7 @@ Loop
 bname := build_box_name(box_name, box_acronym)
 UpdateBoxName(bname)
 sleep 100
-desc := build_box_description(launch_rule_name, black_box_description)
+desc := build_box_description(launch_rule_name, black_box_description, basket_description)
 UpdateBoxDescription(desc)
 sleep 100
 ; design tab dropdowns ---------------------------------------------------------
