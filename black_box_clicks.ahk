@@ -193,10 +193,10 @@ use_time_options_trigger_point := [27,75]
 
 start_subscription_trigger_point := [180,106]
 start_entering_positions_trigger_point := [180,144]
-stop_entering_positions_trigger_point := [180,180]
-cancel_all_pending_orders_trigger_point := [180,216]
-close_all_open_positions_trigger_point := [180,251]
-place_OPG_orders_trigger_point := [180,288]
+stop_entering_positions_trigger_point := [180,173]
+cancel_all_pending_orders_trigger_point := [180,206]
+close_all_open_positions_trigger_point := [180,239]
+place_OPG_orders_trigger_point := [180,274]
 
 set_time_option(trigger_point, time)
 {

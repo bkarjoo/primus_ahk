@@ -29,6 +29,11 @@ LoadFileBU("../bu/" . box_acronym . "/stop_bu.i")
 LoadFileBU("../bu/" . box_acronym . "/target_bu.i")
 LoadFileBU("../bu/" . box_acronym . "/time_options_bu.i")
 
+exit_app(lrn, bbd, bd) {
+  Clipboard := build_box_description(lrn, bbd, bd)
+  ExitApp
+}
+
 basket_updated := updated("basket", box_acronym)
 entry_updated := updated("entry", box_acronym)
 target_updated := updated("target", box_acronym)
@@ -97,7 +102,7 @@ LoadFile("pp/stop.i")
 LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
 
-commit_message := box_acronym . " " . box_name . " " . launch_rule_name . " " .  black_box_description
+commit_message := box_acronym . " " . box_name . " L: " . launch_rule_name . " B: " . basket_description . " D: " .  black_box_description
 
 if (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated)
 {
@@ -127,8 +132,8 @@ WinWait, PRIMU$ - Black Box Design
 ; sleep, 100
 ; Click, Left, 75, 943
 sleep, 100
-InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or n)
-If (response = "n")
+InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or q)
+If (response = "q")
   ExitApp
 ;-----------------------------------------------------------------------------------------------
 
@@ -143,9 +148,9 @@ if (box_name != box_name_bu or box_acronym != box_acronym_bu)
   sleep 100
 }
 
-if (black_box_description != black_box_description_bu or launch_rule_name != launch_rule_name_bu)
+if (black_box_description != black_box_description_bu or launch_rule_name != launch_rule_name_bu or basket_description != basket_description_bu)
 {
-  desc := build_box_description(launch_rule_name, black_box_description)
+  desc := build_box_description(launch_rule_name, black_box_description, basket_description)
   UpdateBoxDescription(desc)
   sleep 100
 }
@@ -175,9 +180,6 @@ SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_tr
 SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-
-
-
 
 ; Entry Trigger ----------------------------------------------------------------
 if ((entry_trigger != entry_trigger_bu) or (black_box_scheme <> black_box_scheme_bu))
@@ -290,7 +292,7 @@ if (target_order_type != target_order_type_bu
   if (target_order_type = "LIMIT") {
     if (target_order_type != target_order_type_bu)
       set_order_form_TIF("TIF_DAY")
-    if (target_limit != target_limit_bu) {
+    if (target_limit != target_limit_bu or target_order_type_bu != "LIMIT") {
       open_limit_price_expression_builder()
       SetExpressionBuilderCode(target_limit)
     }
@@ -326,7 +328,7 @@ if (target_order_type != target_order_type_bu
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question,  target updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -387,7 +389,7 @@ or stop_price != stop_price_bu)
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question,  stop updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -412,11 +414,16 @@ if (basket_name != basket_name_bu
   click_choose_basket()
   open_existing_basket(box_acronym)
 
+  loop
+  {
   InputBox, response, Question,  basket loaded? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "n")
-    ExitApp
+    Msgbox, Please assist in finding correct basket.
+  if (response = "y")
+    break
+  }
 
   if (basket_description != basket_description_bu)
     set_basket_description(basket_description)
@@ -438,7 +445,7 @@ if (basket_name != basket_name_bu
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question,  basket updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -477,7 +484,7 @@ or place_OPG_orders != place_OPG_orders_bu)
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question,  time options updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -498,7 +505,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question,  position sizing updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -519,7 +526,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question,  risk management updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -542,7 +549,7 @@ or launch_rules != launch_rules_bu)
   ;-----------------------------------------------------------------------------------------------
   InputBox, response, Question, launch rule updated? (enter y or n or q)
   If (response = "q")
-    ExitApp
+    exit_app(launch_rule_name, black_box_description, basket_description)
   If (response = "y")
     break
   ;-----------------------------------------------------------------------------------------------
@@ -551,3 +558,4 @@ or launch_rules != launch_rules_bu)
 }
 
 click_validate_and_close()
+exit_app(launch_rule_name, black_box_description, basket_description)
