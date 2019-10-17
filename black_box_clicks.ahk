@@ -188,7 +188,7 @@ click_choose_basket()
 
 ; options tab section ----------------------------------------------------------
 
-use_time_options_check_box := [20,70]
+use_time_options_check_box := [17,65]
 use_time_options_trigger_point := [27,75]
 
 start_subscription_trigger_point := [180,106]

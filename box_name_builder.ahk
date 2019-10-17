@@ -3,7 +3,7 @@ build_box_name(box_name, acronym) {
   return name
 }
 
-build_box_description(launch_name, desc) {
-  name := launch_name . " " . desc
+build_box_description(launch_name, desc, basket) {
+  name := launch_name . " b: " . basket . " d: " . desc
   return name
 }
