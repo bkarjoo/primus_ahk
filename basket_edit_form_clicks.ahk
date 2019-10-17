@@ -1,6 +1,3 @@
-
-
-
 set_basket_name(name)
 {
     MouseClick, Left, 214, 37
