@@ -15,14 +15,14 @@
 
 
 Clipboard_paste("if not exist pp mkdir pp")
-clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
-clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
-clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
-clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
-clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
-clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
-clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
-clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+clipboard_paste("gcc basket.c -E -o pp/basket.i -P")
+clipboard_paste("gcc entry.c -E -o pp/entry.i -P")
+clipboard_paste("gcc launch_rules.c -E -o pp/launch_rules.i -P")
+clipboard_paste("gcc position_sizing.c -E -o pp/position_sizing.i -P")
+clipboard_paste("gcc stop.c -E -o pp/stop.i -P")
+clipboard_paste("gcc target.c -E -o pp/target.i -P")
+clipboard_paste("gcc general_settings.c -E -o pp/general_settings.i -P")
+clipboard_paste("gcc time_options.c -E -o pp/time_options.i -P ")
 
 ; load general settings here because variables will be used if initiating git repo
 LoadFile("pp/general_settings.i")
