@@ -15,7 +15,6 @@
 
 
 Clipboard_paste("if not exist pp mkdir pp")
-
 clipboard_paste("gcc basket.c -E -o pp/basket.i -P")
 clipboard_paste("gcc entry.c -E -o pp/entry.i -P")
 clipboard_paste("gcc launch_rules.c -E -o pp/launch_rules.i -P")
