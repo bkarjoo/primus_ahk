@@ -53,42 +53,42 @@ if not (basket_updated or entry_updated or target_updated or stop_updated or tim
 
 if basket_updated
 {
-  clipboard_paste("gcc rules/basket.c -E -o pp/basket.i -P")
+  clipboard_paste("gcc basket.c -E -o pp/basket.i -P")
   backup("basket", box_acronym)
 }
 if entry_updated
 {
-  clipboard_paste("gcc rules/entry.c -E -o pp/entry.i -P")
+  clipboard_paste("gcc entry.c -E -o pp/entry.i -P")
   backup("entry", box_acronym)
 }
 if launch_rules_updated
 {
-  clipboard_paste("gcc rules/launch_rules.c -E -o pp/launch_rules.i -P")
+  clipboard_paste("gcc launch_rules.c -E -o pp/launch_rules.i -P")
   backup("launch_rules", box_acronym)
 }
 if position_sizing_updated
 {
-  clipboard_paste("gcc rules/position_sizing.c -E -o pp/position_sizing.i -P")
+  clipboard_paste("gcc position_sizing.c -E -o pp/position_sizing.i -P")
   backup("position_sizing", box_acronym)
 }
 if stop_updated
 {
-  clipboard_paste("gcc rules/stop.c -E -o pp/stop.i -P")
+  clipboard_paste("gcc stop.c -E -o pp/stop.i -P")
   backup("stop", box_acronym)
 }
 if target_updated
 {
-  clipboard_paste("gcc rules/target.c -E -o pp/target.i -P")
+  clipboard_paste("gcc target.c -E -o pp/target.i -P")
   backup("target", box_acronym)
 }
 if general_settings_updated
 {
-  clipboard_paste("gcc rules/general_settings.c -E -o pp/general_settings.i -P")
+  clipboard_paste("gcc general_settings.c -E -o pp/general_settings.i -P")
   backup("general_settings", box_acronym)
 }
 if time_options_updated
 {
-  clipboard_paste("gcc rules/time_options.c -E -o pp/time_options.i -P ")
+  clipboard_paste("gcc time_options.c -E -o pp/time_options.i -P ")
   backup("time_options", box_acronym)
 }
 
