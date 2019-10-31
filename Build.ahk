@@ -15,6 +15,7 @@
 
 
 Clipboard_paste("if not exist pp mkdir pp")
+
 clipboard_paste("gcc basket.c -E -o pp/basket.i -P")
 clipboard_paste("gcc entry.c -E -o pp/entry.i -P")
 clipboard_paste("gcc launch_rules.c -E -o pp/launch_rules.i -P")
@@ -34,6 +35,8 @@ LoadFile("pp/stop.i")
 LoadFile("pp/target.i")
 LoadFile("pp/time_options.i")
 
+bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
+Clipboard_paste(bu_md_cmd)
 InputBox, response, Question,  Initiate git repo? (enter y or n)
 If (response = "y")
 {
