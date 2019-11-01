@@ -1,30 +1,22 @@
 ; this module replaces launcher clicks
-
-; Wait policy
-; if window is already expected to be loaded wait 2 seconds
-; if window is to be loaded wait 10 seconds
-; if wait times out, attempt 2 more times
-; if 2 more attempts fail throw an exception
-; encapsulate wait policy in wait_policy.ahk
+#include wait_policy.ahk
 
 launcher_activate()
 {
-  WinActivate, Primu$ 7.
-  WinWait,  Primu$ 7.
+  activate_and_wait("Primu$ 7.", 2)
 }
 
 launcher_click_new_box()
 {
-    launcher_activate()
-    Click 32,41
-    WinWait PRIMU$ - Black Box Design
+  launcher_activate()
+  Click 32,41
 }
 
 launcher_click_open_box()
 {
   launcher_activate()
   Click 83, 54
-  WinWait Open BlackBox
+  wait("Open BlackBox", 5)
 }
 
 
@@ -32,6 +24,7 @@ launcher_click_save_box()
 {
   launcher_activate()
   Click 133, 49
+
 }
 
 
