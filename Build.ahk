@@ -15,16 +15,7 @@
 #include gcc_compile.ahk
 
 gcc_initial_compile()
-
-; load general settings here because variables will be used if initiating git repo
-LoadFile("pp/general_settings.i")
-LoadFile("pp/basket.i")
-LoadFile("pp/entry.i")
-LoadFile("pp/launch_rules.i")
-LoadFile("pp/position_sizing.i")
-LoadFile("pp/stop.i")
-LoadFile("pp/target.i")
-LoadFile("pp/time_options.i")
+load_compiled_rules()
 
 bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
 Clipboard_paste(bu_md_cmd)
