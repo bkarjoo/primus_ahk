@@ -13,20 +13,20 @@
 #include clipboard_paste.ahk
 #include box_name_builder.ahk
 #include gcc_compile.ahk
+#include launcher_control.ahk
 
 gcc_initial_compile()
 load_compiled_rules()
 make_back_up_directory(box_acronym)
 
-ClickNewBox()
+; click new box
+launcher_click_new_box()
+wait("PRIMU$ - Black Box Design", 5)
 
-ActivateBlackBoxDesign()
 
-
-
+; set box name and description ------------------------------------------------
 Loop
 {
-; box name and description -----------------------------------------------------
 bname := build_box_name(box_name, box_acronym)
 UpdateBoxName(bname)
 sleep 100
