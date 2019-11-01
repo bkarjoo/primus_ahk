@@ -1,9 +1,9 @@
 ; loads everything from using file_reader.ahk
 ; every box is saved in the top folder
 ; the box definition file is supplied as a command line argument
-#include launcher_clicks.ahk
+#include launcher_clicks.ahk ; DELETE
 #include file_reader.ahk
-#include black_box_clicks.ahk
+#include black_box_clicks.ahk ; DELETE
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
@@ -14,6 +14,9 @@
 #include box_name_builder.ahk
 #include gcc_compile.ahk
 #include launcher_control.ahk
+#include general_settings.ahk
+#include wait_confirm.ahk
+
 
 gcc_initial_compile()
 load_compiled_rules()
@@ -24,42 +27,25 @@ launcher_click_new_box()
 wait("PRIMU$ - Black Box Design", 5)
 
 
-; set box name and description ------------------------------------------------
-Loop
-{
+; set general_settings ------------------------------------------------
 bname := build_box_name(box_name, box_acronym)
-UpdateBoxName(bname)
-sleep 100
+update_box_name(bname)
 desc := build_box_description(launch_rule_name, black_box_description, basket_description)
-UpdateBoxDescription(desc)
-sleep 100
-; design tab dropdowns ---------------------------------------------------------
-SetBlackBoxSide(black_box_side)
-sleep 100
-SetBlackBoxScheme(black_box_scheme)
-sleep 100
-; design tab check boxes -------------------------------------------------------
-if (IsChecked(permit_backtesting_check_box) = 0)
-  TriggerCheckBox(permit_backtesting_trigger_point)
-SetCheckBox(enter_on_last, enter_on_last_check_box, enter_on_last_trigger_point)
-SetCheckBox(enter_on_bid, enter_on_bid_check_box, enter_on_bid_trigger_point)
-SetCheckBox(enter_on_ask, enter_on_ask_check_box, enter_on_ask_trigger_point)
-SetCheckBox(enter_on_pmi, enter_on_pmi_check_box, enter_on_pmi_trigger_point)
-SetCheckBox(enter_on_imbalance, enter_on_imbalance_check_box, enter_on_imbalance_trigger_point)
-SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_trigger_point)
-SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
-SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
-SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for entry? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
-}
+update_box_description(desc)
+set_black_box_side(black_box_side)
+set_black_box_scheme(black_box_scheme)
+if (is_checked(permit_backtesting_check_box) = 0)
+  trigger_check_box(permit_backtesting_trigger_point)
+set_check_box(enter_on_last, enter_on_last_check_box, enter_on_last_trigger_point)
+set_check_box(enter_on_bid, enter_on_bid_check_box, enter_on_bid_trigger_point)
+set_check_box(enter_on_ask, enter_on_ask_check_box, enter_on_ask_trigger_point)
+set_check_box(enter_on_pmi, enter_on_pmi_check_box, enter_on_pmi_trigger_point)
+set_check_box(enter_on_imbalance, enter_on_imbalance_check_box, enter_on_imbalance_trigger_point)
+set_check_box(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_trigger_point)
+set_check_box(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
+set_check_box(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
+set_check_box(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
+wait_until_with_message(3, "Done with general_settings.")
 
 Loop
 {
@@ -87,8 +73,8 @@ if (entry_order_type = "STOP_LIMIT")
 {
   open_stop_price_expression_builder()
   SetExpressionBuilderCode(entry_order_stop)
-  SetCheckBox(entry_aggregated_TIF, aggregated_tif_check_box, aggregated_tif_trigger_point)
-  SetCheckBox(entry_calculate_limit_during_placement, calc_lmt_prc_durng_ord_plcmnt_check_box, calc_lmt_prc_durng_ord_plcmnt_trigger_point)
+  set_check_box(entry_aggregated_TIF, aggregated_tif_check_box, aggregated_tif_trigger_point)
+  set_check_box(entry_calculate_limit_during_placement, calc_lmt_prc_durng_ord_plcmnt_check_box, calc_lmt_prc_durng_ord_plcmnt_trigger_point)
   set_order_form_TIF2(entry_tif2)
   set_order_form_TIF2_seconds(entry_tif2_seconds)
 }
@@ -127,10 +113,10 @@ if (target_order_type = "LIMIT") {
   SetExpressionBuilderCode(ael_time_increment)
   open_ael_price_increment_expression_builder()
   SetExpressionBuilderCode(ael_price_increment)
-  SetCheckBox(ael_on_last, ael_on_last_check_box, ael_on_last_trigger_point)
-  SetCheckBox(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
-  SetCheckBox(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
-  SetCheckBox(ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
+  set_check_box(ael_on_last, ael_on_last_check_box, ael_on_last_trigger_point)
+  set_check_box(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
+  set_check_box(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
+  set_check_box(ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
 } else {
   Msgbox, target order type %target_order_type% not supported
   ExitApp
@@ -156,12 +142,12 @@ OpenNewStopOrder()
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
 
-SetCheckBox(enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
+set_check_box(enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
 
 if (enable_trailing = "TRUE")
 {
-  SetCheckBox(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
-  SetCheckBox(trail_once, trail_once_check_box, trail_once_trigger_point)
+  set_check_box(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
+  set_check_box(trail_once, trail_once_check_box, trail_once_trigger_point)
   open_trail_trigger_expression_builder()
   SetExpressionBuilderCode(trail_trigger)
   open_trail_how_expression_builder()
@@ -194,8 +180,8 @@ create_new_basket()
 set_basket_name(box_acronym)
 set_basket_description(basket_description)
 
-SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
-SetCheckBox(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
+set_check_box(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
+set_check_box(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
 
 if (basket_rules != "")
   set_basket_rule(basket_rules)
@@ -223,7 +209,7 @@ loop
 {
 ; time options -----------------------------------------------------------------
 click_options_tab()
-SetCheckBox(use_time_options, use_time_options_check_box, use_time_options_trigger_point)
+set_check_box(use_time_options, use_time_options_check_box, use_time_options_trigger_point)
 
 set_time_option(start_subscription_trigger_point, start_subscription)
 set_time_option(start_entering_positions_trigger_point, start_entering_positions)
@@ -245,7 +231,7 @@ If (response = "y")
 loop
 {
 ; position sizing --------------------------------------------------------------
-SetCheckBox(enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
+set_check_box(enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
 set_position_sizing_scheme(position_sizing)
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Ready for time risk management? (enter y or n or q)
@@ -261,7 +247,7 @@ loop
 {
 ; risk management --------------------------------------------------------------
 click_risk_management_tab()
-SetCheckBox(enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
+set_check_box(enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
 set_maximum_order_shares(maximum_order_shares)
 ;-----------------------------------------------------------------------------------------------
 InputBox, response, Question,  Ready for launch rules? (enter y or n or q)
@@ -277,7 +263,7 @@ loop
 {
 ; launch rule ------------------------------------------------------------------
 click_launch_rule_tab()
-SetCheckBox(enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
+set_check_box(enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
 set_launch_rule(launch_rules)
 
 click_validate_and_close()
