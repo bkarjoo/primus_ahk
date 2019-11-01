@@ -12,3 +12,9 @@ clipboard_paste("gcc target.c -E -o pp/target.i -P")
 clipboard_paste("gcc general_settings.c -E -o pp/general_settings.i -P")
 clipboard_paste("gcc time_options.c -E -o pp/time_options.i -P ")
 }
+
+make_back_up_directory(box_acronym)
+{
+bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
+Clipboard_paste(bu_md_cmd)
+}
