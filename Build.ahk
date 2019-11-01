@@ -16,19 +16,7 @@
 
 gcc_initial_compile()
 load_compiled_rules()
-
-bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
-Clipboard_paste(bu_md_cmd)
-InputBox, response, Question,  Initiate git repo? (enter y or n)
-If (response = "y")
-{
-  clipboard_paste("rm -r .git")
-  clipboard_paste("git init")
-  commit_message := box_acronym . " " . box_name . " " . launch_rule_name . " " .  black_box_description
-  clipboard_paste("git add -A")
-  clipboard_paste("git commit -m " . """" . commit_message . """")
-}
-
+make_back_up_directory(box_acronym)
 
 ClickNewBox()
 
