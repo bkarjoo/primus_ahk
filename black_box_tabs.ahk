@@ -3,11 +3,11 @@
 tab_state_image_search(tab_name)
 {
   activate_and_wait("PRIMU$ - Black Box Design", 2)
-  i1 := tab_name . ".PNG"
+  i1 := "images/" . tab_name . ".PNG"
   ImageSearch, ox, oy, 0, 0, 350, 50, %i1%
   if (ErrorLevel = 0)
     return 1
-  i2 := tab_name . "2.PNG"
+  i2 := "images/" . tab_name . "2.PNG"
   ImageSearch, ox, oy, 0, 0, 350, 50, %i2%
   if (ErrorLevel = 0)
     return 1
@@ -20,12 +20,14 @@ tab_click_and_wait_active(x, y, tab_name)
   Loop, 5
   {
     activate_and_wait("PRIMU$ - Black Box Design", 2)
+    err := tab_state_image_search(tab_name)
+    if (err = 1)
+      return
     MouseClick, Left, %x%, %y%
     Sleep, 1000
     err := tab_state_image_search(tab_name)
-    if (tab_state_image_search(tab_name) = 1)
+    if (err = 1)
       return
-    msgbox, not
     Sleep, 800
   }
 }

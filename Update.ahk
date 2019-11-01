@@ -169,17 +169,17 @@ if (black_box_scheme != black_box_scheme_bu)
 }
 
 ; design tab check boxes -------------------------------------------------------
-if (IsChecked(permit_backtesting_check_box) = 0)
-  TriggerCheckBox(permit_backtesting_trigger_point)
-SetCheckBox(enter_on_last, enter_on_last_check_box, enter_on_last_trigger_point)
-SetCheckBox(enter_on_bid, enter_on_bid_check_box, enter_on_bid_trigger_point)
-SetCheckBox(enter_on_ask, enter_on_ask_check_box, enter_on_ask_trigger_point)
-SetCheckBox(enter_on_pmi, enter_on_pmi_check_box, enter_on_pmi_trigger_point)
-SetCheckBox(enter_on_imbalance, enter_on_imbalance_check_box, enter_on_imbalance_trigger_point)
-SetCheckBox(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_trigger_point)
-SetCheckBox(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
-SetCheckBox(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
-SetCheckBox(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
+if (is_checked(permit_backtesting_check_box) = 0)
+  trigger_check_box(permit_backtesting_trigger_point)
+set_check_box(enter_on_last, enter_on_last_check_box, enter_on_last_trigger_point)
+set_check_box(enter_on_bid, enter_on_bid_check_box, enter_on_bid_trigger_point)
+set_check_box(enter_on_ask, enter_on_ask_check_box, enter_on_ask_trigger_point)
+set_check_box(enter_on_pmi, enter_on_pmi_check_box, enter_on_pmi_trigger_point)
+set_check_box(enter_on_imbalance, enter_on_imbalance_check_box, enter_on_imbalance_trigger_point)
+set_check_box(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_trigger_point)
+set_check_box(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
+set_check_box(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
+set_check_box(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
 
 ; Entry Trigger ----------------------------------------------------------------
 if ((entry_trigger != entry_trigger_bu) or (black_box_scheme <> black_box_scheme_bu))
@@ -238,8 +238,8 @@ if (entry_order_type != entry_order_type_bu
           if (entry_order_stop != entry_order_stop_bu)
             SetExpressionBuilderCode(entry_order_stop)
 
-          SetCheckBox(entry_aggregated_TIF, aggregated_tif_check_box, aggregated_tif_trigger_point)
-          SetCheckBox(entry_calculate_limit_during_placement, calc_lmt_prc_durng_ord_plcmnt_check_box, calc_lmt_prc_durng_ord_plcmnt_trigger_point)
+          set_check_box(entry_aggregated_TIF, aggregated_tif_check_box, aggregated_tif_trigger_point)
+          set_check_box(entry_calculate_limit_during_placement, calc_lmt_prc_durng_ord_plcmnt_check_box, calc_lmt_prc_durng_ord_plcmnt_trigger_point)
 
           if (entry_tif2 != entry_tif2_bu)
             set_order_form_TIF2(entry_tif2)
@@ -314,10 +314,10 @@ if (target_order_type != target_order_type_bu
       SetExpressionBuilderCode(ael_price_increment)
     }
 
-    SetCheckBox(ael_on_last, ael_on_last_check_box, ael_on_last_trigger_point)
-    SetCheckBox(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
-    SetCheckBox(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
-    SetCheckBox(ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
+    set_check_box(ael_on_last, ael_on_last_check_box, ael_on_last_trigger_point)
+    set_check_box(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
+    set_check_box(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
+    set_check_box(ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
   } else {
     Msgbox, target order type %target_order_type% not supported
     ExitApp
@@ -357,13 +357,13 @@ or stop_price != stop_price_bu)
   if (stop_order_type != stop_order_type_bu)
     set_order_form_order_type(stop_order_type)
 
-  SetCheckBox(enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
+  set_check_box(enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
 
   if (enable_trailing = "TRUE")
   {
     click_primus_stop_order_tab()
-    SetCheckBox(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
-    SetCheckBox(trail_once, trail_once_check_box, trail_once_trigger_point)
+    set_check_box(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
+    set_check_box(trail_once, trail_once_check_box, trail_once_trigger_point)
 
     if (trail_trigger != trail_trigger_bu) {
       open_trail_trigger_expression_builder()
@@ -428,8 +428,8 @@ if (basket_name != basket_name_bu
   if (basket_description != basket_description_bu)
     set_basket_description(basket_description)
 
-  SetCheckBox(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
-  SetCheckBox(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
+  set_check_box(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
+  set_check_box(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
 
   if (basket_rules != basket_rules_bu)
     set_basket_rule(basket_rules)
@@ -466,7 +466,7 @@ or place_OPG_orders != place_OPG_orders_bu)
   {
   ; time options -----------------------------------------------------------------
   click_options_tab()
-  SetCheckBox(use_time_options, use_time_options_check_box, use_time_options_trigger_point)
+  set_check_box(use_time_options, use_time_options_check_box, use_time_options_trigger_point)
 
   if (start_subscription != start_subscription_bu)
     set_time_option(start_subscription_trigger_point, start_subscription)
@@ -499,7 +499,7 @@ if (  enable_position_sizing_scheme != enable_position_sizing_scheme_bu
   {
   ; position sizing --------------------------------------------------------------
   click_options_tab()
-  SetCheckBox(enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
+  set_check_box(enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
   if (enable_position_sizing_scheme = "TRUE")
     set_position_sizing_scheme(position_sizing)
   ;-----------------------------------------------------------------------------------------------
@@ -520,7 +520,7 @@ if (enable_black_box_risk_management != enable_black_box_risk_management_bu
   {
   ; risk management --------------------------------------------------------------
   click_risk_management_tab()
-  SetCheckBox(enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
+  set_check_box(enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
   If (enable_black_box_risk_management = "TRUE")
     set_maximum_order_shares(maximum_order_shares)
   ;-----------------------------------------------------------------------------------------------
@@ -541,7 +541,7 @@ or launch_rules != launch_rules_bu)
   {
   ; launch rule ------------------------------------------------------------------
   click_launch_rule_tab()
-  SetCheckBox(enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
+  set_check_box(enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
   If(enable_black_box_launch_rule = "TRUE")
     set_launch_rule(launch_rules)
 
