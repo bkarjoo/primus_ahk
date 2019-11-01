@@ -205,3 +205,15 @@ LoadFile(file_name)
   }
   return
 }
+
+load_compiled_rules()
+{
+  LoadFile("pp/general_settings.i")
+  LoadFile("pp/basket.i")
+  LoadFile("pp/entry.i")
+  LoadFile("pp/launch_rules.i")
+  LoadFile("pp/position_sizing.i")
+  LoadFile("pp/stop.i")
+  LoadFile("pp/target.i")
+  LoadFile("pp/time_options.i")
+}
