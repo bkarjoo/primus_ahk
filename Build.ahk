@@ -21,7 +21,7 @@
 
 mb_debug(msg)
 {
-  build_debug := True
+  build_debug := False
   if (build_debug = True)
   {
     Msgbox % msg
@@ -49,12 +49,9 @@ confirm_file_exists("images/options2.PNG")
 confirm_file_exists("images/risk_management2.PNG")
 confirm_file_exists("images/symbols2.PNG")
 
-MsgBox, done with confirm file tests
-ExitApp
-
-; gcc_initial_compile()
+ gcc_initial_compile()
 load_compiled_rules()
-; make_back_up_directory(box_acronym)
+ make_back_up_directory(box_acronym)
 
 ; click new box
 mb_debug("Click new box")
