@@ -3,13 +3,20 @@
 ; if window is to be loaded wait 5 seconds
 ; if wait times out, attempt 2 more times
 ; if 2 more attempts fail throw an exception
+wait_policy_debug := True
 
-inform_of_error(window_name)
+inform(msg)
 {
-  prompt := "Cannot activate window: " . window_name . " (q to quit or enter to continue)"
+  prompt := msg . " (q to quit or enter to continue)"
   InputBox, response, question, %prompt%
   if (response = "q")
     ExitAPP
+}
+
+inform_of_error(window_name)
+{
+  prompt := "Cannot activate window: " . window_name
+  inform(prompt)
 }
 
 wait_only(window_name, seconds)
