@@ -16,6 +16,7 @@
 #include launcher_control.ahk
 #include general_settings.ahk
 #include wait_confirm.ahk
+#include entry.ahk
 
 
 gcc_initial_compile()
@@ -45,19 +46,14 @@ set_check_box(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_
 set_check_box(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 set_check_box(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 set_check_box(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-wait_until_with_message(3, "Done with general_settings.")
+wait_until_with_message(5, "Done with general_settings.")
 
-Loop
-{
-; Entry Trigger ----------------------------------------------------------------
+; set entry -------------------------------------------------------------
 if (black_box_scheme = "PlainVanilla")
-  UpdateEntryTrigger(entry_trigger)
-
-
-
-; Entry Order ------------------------------------------------------------------
-
-OpenNewEntryOrder()
+  update_entry_trigger(entry_trigger)
+err := entry_open_new_order()
+if (err != 0) ; second attempt
+  entry_open_new_order()
 
 set_order_form_order_type(entry_order_type)
 set_order_form_order_side(entry_order_side)
@@ -81,15 +77,8 @@ if (entry_order_type = "STOP_LIMIT")
 
 click_order_form_save_button()
 
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for target? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
+wait_until_with_message(5, "Done with entry.")
 
-}
 
 loop
 {

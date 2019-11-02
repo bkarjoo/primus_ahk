@@ -12,19 +12,24 @@ inform_of_error(window_name)
     ExitAPP
 }
 
-wait(window_name, seconds)
+wait_only(window_name, seconds)
 {
   WinWaitActive, %window_name%, , %seconds%
-  if (ErrorLevel = 0)
+  return ErrorLevel
+}
+
+wait(window_name, seconds)
+{
+  if (wait_only(window_name, seconds) = 0)
     return
   Loop, 2
   {
     WinActivate, %window_name%
-    WinWaitActive, %window_name%, , %seconds%
-    if (ErrorLevel = 0)
+    err := wait_only(window_name, seconds)
+    if (err = 0)
       break
   }
-  if (ErrorLevel = 1)
+  if (err = 1)
     inform_of_error(window_name)
 }
 
