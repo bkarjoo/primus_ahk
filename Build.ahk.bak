@@ -3,7 +3,6 @@
 ; the box definition file is supplied as a command line argument
 #include launcher_clicks.ahk ; DELETE
 #include file_reader.ahk
-#include file_status.ahk
 #include black_box_clicks.ahk ; DELETE
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
@@ -19,39 +18,19 @@
 #include wait_confirm.ahk
 #include entry.ahk
 
+
 mb_debug(msg)
 {
-  build_debug := False
+  build_debug := True
   if (build_debug = True)
   {
     Msgbox % msg
   }
 }
 
-; make sure required files are available
-confirm_file_exists("general_settings.c")
-confirm_file_exists("entry.c")
-confirm_file_exists("target.c")
-confirm_file_exists("stop.c")
-confirm_file_exists("time_options.c")
-confirm_file_exists("position_sizing.c")
-confirm_file_exists("basket.c")
-confirm_file_exists("launch_rules.c")
-confirm_file_exists("images/checked.PNG")
-confirm_file_exists("images/design.PNG")
-confirm_file_exists("images/launch_rule.PNG")
-confirm_file_exists("images/options.PNG")
-confirm_file_exists("images/risk_management.PNG")
-confirm_file_exists("images/symbols.PNG")
-confirm_file_exists("images/design2.PNG")
-confirm_file_exists("images/launch_rule2.PNG")
-confirm_file_exists("images/options2.PNG")
-confirm_file_exists("images/risk_management2.PNG")
-confirm_file_exists("images/symbols2.PNG")
-
- gcc_initial_compile()
+; gcc_initial_compile()
 load_compiled_rules()
- make_back_up_directory(box_acronym)
+make_back_up_directory(box_acronym)
 
 ; click new box
 mb_debug("Click new box")

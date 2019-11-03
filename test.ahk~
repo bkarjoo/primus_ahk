@@ -1,7 +1,0 @@
-
-; test if it can detect last is checked
-#include black_box_clicks.ahk
-
-ActivateBlackBoxDesign()
-checked := IsChecked(enter_on_last_check_box)
-MsgBox, %checked%
