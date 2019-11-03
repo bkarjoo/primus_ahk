@@ -1,21 +1,22 @@
-; this module contains code to manipulate the order forms
-; assumes that the order form is already opened
-; opening the order form is the responsibility of black_box_clicks.ahk
 #include black_box_clicks.ahk
+#include wait_policy.ahk
+#include inform.ahk
 
 click_order_form_save_button()
 {
-  WinWait, PRIMU$ - Add/Edit Order Form
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 530, 480
-  WinWait, PRIMU$ - Black Box Design (prms-rdgw.primustrade.com)
+  err := wait_only("PRIMU$ - Black", 5)
+  if (err != 0)
+    inform("Control didn't return to Black Box Design after order save.")
 }
 
 set_order_form_order_type(type)
 {
   ; acceptable types: LIMIT, STOP_LIMIT, PRIMUS_STOP, PRIMUS_AEL
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 190, 64
-  sleep, 100
+  sleep, 200
   if (type = "LIMIT")
     MouseClick, Left, 138,83
   else if (type = "STOP_LIMIT")
@@ -25,18 +26,24 @@ set_order_form_order_type(type)
   else if (type = "PRIMUS_AEL")
     MouseClick, Left, 138,156
   else {
-    MsgBox, Error order type %type% not supported
-    ExitApp
+    msg := type . " not supported order type."
+    inform(msg)
   }
-  sleep, 100
+}
+
+confirm_order_type(type)
+{
+; TODO implement
+; confirms correct order type was selected
+; in case dev changes order, or program is interrupted during execution
 }
 
 set_order_form_order_side(side)
 {
   ; acceptable types: BUY, SELL, SHORT
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 190, 90
-  sleep, 100
+  sleep, 200
   if (side = "BUY")
     MouseClick, Left, 138,110
   else if (side = "SELL")
@@ -44,41 +51,39 @@ set_order_form_order_side(side)
   else if (side = "SHORT")
     MouseClick, Left, 138,130
   else {
-    MsgBox, Error order side %side% not supported
-    ExitApp
+    msg := "Error order side " . side . " not supported"
+    inform(msg)
   }
-  sleep, 100
 }
 
 set_order_form_destination(dest)
 {
   ; acceptable types: CSFB
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 374, 63
-  sleep, 100
+  sleep, 200
   if (dest = "CSFB")
     MouseClick, Left, 322,252
   else {
-    MsgBox, Error order dest %dest% not supported
-    ExitApp
+    msg := "Error order dest " . dest . " not supported"
+    inform(msg)
   }
-  sleep, 100
 }
 
 ; limit order properties -------------------------------------------------------
 
 open_limit_price_expression_builder()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 540, 150
-  WinWait, PRIMU$ - Expression Builder
+  WinWaitActive, PRIMU$ - Expression Builder
 }
 
 open_stop_price_expression_builder()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 540, 240
-  WinWait, PRIMU$ - Expression Builder
+  WinWaitActive, PRIMU$ - Expression Builder
 }
 
 
@@ -86,9 +91,9 @@ open_stop_price_expression_builder()
 set_order_form_TIF(tif)
 {
   ; acceptable types: SECONDS, TIF_OPENING, TIF_DAY
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 199, 307
-  sleep, 100
+  sleep, 200
   if (tif = "SECONDS")
     MouseClick, Left, 138,338
   else if (tif = "TIF_OPENING")
@@ -96,18 +101,17 @@ set_order_form_TIF(tif)
   else if (tif = "TIF_DAY")
     MouseClick, Left, 138,456
   else {
-    MsgBox, Error order tif %tif% not supported
-    ExitApp
+    msg := "Error order tif " . tif . " not supported"
+    inform(msg)
   }
-  sleep, 100
 }
 
 set_order_form_TIF2(tif)
 {
   ; acceptable types: SECONDS, TIF_IOC, TIF_DAY
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 465, 330
-  sleep, 100
+  sleep, 200
   if (tif = "SECONDS")
     MouseClick, Left, 440, 360
   else if (tif = "TIF_IOC")
@@ -115,29 +119,28 @@ set_order_form_TIF2(tif)
   else if (tif = "TIF_DAY")
     MouseClick, Left, 440, 480
   else {
-    MsgBox, Error order tif %tif% not supported
-    ExitApp
+    msg := "Error order tif " . tif . " not supported"
+    inform(msg)
   }
-  sleep, 100
 }
 
 set_order_form_TIF_seconds(seconds)
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 243, 308
-  sleep, 100
+  sleep, 200
   Send, ^a
-  sleep, 100
+  sleep, 200
   Send, %seconds%
 }
 
 set_order_form_TIF2_seconds(seconds)
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 507, 332
-  sleep, 100
+  sleep, 200
   Send, ^a
-  sleep, 100
+  sleep, 200
   Send, %seconds%
 }
 
@@ -157,23 +160,23 @@ is_proactive_trigger_point := [35,357]
 
 open_trail_trigger_expression_builder()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 540, 250
-  WinWait, PRIMU$ - Expression Builder
+  WinWaitActive, PRIMU$ - Expression Builder
 }
 
 open_trail_how_expression_builder()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 540, 330
-  WinWait, PRIMU$ - Expression Builder
+  WinWaitActive, PRIMU$ - Expression Builder
 }
 
 open_trail_increment_expression_builder()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 540, 390
-  WinWait, PRIMU$ - Expression Builder
+  WinWaitActive, PRIMU$ - Expression Builder
 }
 
 enable_trailing_check_box := [27,214]
@@ -187,47 +190,49 @@ trail_once_trigger_point := [288,221]
 
 click_common_order_parameters_tab()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 84, 121
-  sleep, 500
+  sleep, 500 ; TODO should be image search tab confirm
 }
 
 click_primus_stop_order_tab()
 {
-  sleep, 100
+  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 241, 121
-  sleep, 500
+  sleep, 500 ; TODO should be image search tab confirm
 }
+
+; TODO implement image search tab confirm for order form
 
 ; ael order properties ---------------------------------------------------------
 
 
 open_ael_trigger_expression_builder()
 {
-sleep, 100
+wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
 MouseClick, Left, 540, 160
-WinWait, PRIMU$ - Expression Builder
+WinWaitActive, PRIMU$ - Expression Builder
 }
 
 open_ael_how_expression_builder()
 {
-sleep, 100
+wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
 MouseClick, Left, 540, 200
-WinWait, PRIMU$ - Expression Builder
+WinWaitActive, PRIMU$ - Expression Builder
 }
 
 open_ael_time_increment_expression_builder()
 {
 sleep, 100
 MouseClick, Left, 540, 250
-WinWait, PRIMU$ - Expression Builder
+WinWaitActive, PRIMU$ - Expression Builder
 }
 
 open_ael_price_increment_expression_builder()
 {
 sleep, 100
 MouseClick, Left, 540, 300
-WinWait, PRIMU$ - Expression Builder
+WinWaitActive, PRIMU$ - Expression Builder
 }
 
 ael_on_last_check_box := [370,330]

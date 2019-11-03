@@ -5,7 +5,7 @@
 #include file_reader.ahk
 #include file_status.ahk
 #include black_box_clicks.ahk ; DELETE
-#include order_form_clicks.ahk
+
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
@@ -16,17 +16,10 @@
 #include gcc_compile.ahk
 #include launcher_control.ahk
 #include general_settings.ahk
-#include wait_confirm.ahk
+#include inform.ahk
 #include entry.ahk
-
-mb_debug(msg)
-{
-  build_debug := False
-  if (build_debug = True)
-  {
-    Msgbox % msg
-  }
-}
+#include order_form_clicks.ahk
+#include expression_builder_clicks.ahk
 
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
@@ -49,25 +42,19 @@ confirm_file_exists("images/options2.PNG")
 confirm_file_exists("images/risk_management2.PNG")
 confirm_file_exists("images/symbols2.PNG")
 
- gcc_initial_compile()
+gcc_initial_compile()
 load_compiled_rules()
- make_back_up_directory(box_acronym)
+make_back_up_directory(box_acronym)
 
 ; click new box
-mb_debug("Click new box")
 launcher_click_new_box()
-wait("PRIMU$ - Black Box Design", 5)
-
+wait_only("PRIMU$ - Black Box Design", 5)
 
 ; set general_settings ------------------------------------------------
-mb_debug("Set General Settings")
 bname := build_box_name(box_name, box_acronym)
-mb_debug("update box name")
 update_box_name(bname)
-mb_debug("update box description")
 desc := build_box_description(launch_rule_name, black_box_description, basket_description)
 update_box_description(desc)
-mb_debug("other setting")
 set_black_box_side(black_box_side)
 set_black_box_scheme(black_box_scheme)
 if (is_checked(permit_backtesting_check_box) = 0)
@@ -81,46 +68,35 @@ set_check_box(enter_on_snapshot, enter_on_snapshot_check_box, enter_on_snapshot_
 set_check_box(enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 set_check_box(enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 set_check_box(use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-wait_until_with_message(5, "Done with general_settings.")
+inform_timeout("Done with general_settings.", 5)
 
 ; set entry -------------------------------------------------------------
 if (black_box_scheme = "PlainVanilla")
   if (entry_update_trigger(entry_trigger, 2) = 0)
     inform("Unable to set entry trigger.")
-
 if (entry_open_new_order(2) = 0)
   inform("Unable to open new order window.")
-
-Msgbox, Done Test
-ExitApp
 set_order_form_order_type(entry_order_type)
 set_order_form_order_side(entry_order_side)
 set_order_form_destination(entry_destination)
 set_order_form_TIF(entry_tif)
 if (entry_tif = "SECONDS")
   set_order_form_TIF_seconds(entry_tif_seconds)
-
 open_limit_price_expression_builder()
-SetExpressionBuilderCode(entry_order_limit)
-
+expression_set_code(entry_order_limit)
 if (entry_order_type = "STOP_LIMIT")
 {
   open_stop_price_expression_builder()
-  SetExpressionBuilderCode(entry_order_stop)
+  expression_set_code(entry_order_stop)
   set_check_box(entry_aggregated_TIF, aggregated_tif_check_box, aggregated_tif_trigger_point)
   set_check_box(entry_calculate_limit_during_placement, calc_lmt_prc_durng_ord_plcmnt_check_box, calc_lmt_prc_durng_ord_plcmnt_trigger_point)
   set_order_form_TIF2(entry_tif2)
   set_order_form_TIF2_seconds(entry_tif2_seconds)
 }
-
 click_order_form_save_button()
+inform_timeout("Done with entry.", 5)
 
-wait_until_with_message(5, "Done with entry.")
-
-
-loop
-{
-; target order -----------------------------------------------------------------
+; set target -----------------------------------------------------------------
 OpenNewTargetOrder()
 
 set_order_form_order_type(target_order_type)
@@ -130,16 +106,16 @@ set_order_form_destination(target_destination)
 if (target_order_type = "LIMIT") {
   set_order_form_TIF("TIF_DAY")
   open_limit_price_expression_builder()
-  SetExpressionBuilderCode(target_limit)
+  expression_set_code(target_limit)
 } else if (target_order_type = "PRIMUS_AEL") {
   open_ael_trigger_expression_builder()
-  SetExpressionBuilderCode(ael_trigger)
+  expression_set_code(ael_trigger)
   open_ael_how_expression_builder()
-  SetExpressionBuilderCode(ael_price)
+  expression_set_code(ael_price)
   open_ael_time_increment_expression_builder()
-  SetExpressionBuilderCode(ael_time_increment)
+  expression_set_code(ael_time_increment)
   open_ael_price_increment_expression_builder()
-  SetExpressionBuilderCode(ael_price_increment)
+  expression_set_code(ael_price_increment)
   set_check_box(ael_on_last, ael_on_last_check_box, ael_on_last_trigger_point)
   set_check_box(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
   set_check_box(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
@@ -150,16 +126,8 @@ if (target_order_type = "LIMIT") {
 }
 
 click_order_form_save_button()
+inform_timeout("Done with target.", 5)
 
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for Stop? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
-}
 
 loop
 {
@@ -176,15 +144,15 @@ if (enable_trailing = "TRUE")
   set_check_box(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
   set_check_box(trail_once, trail_once_check_box, trail_once_trigger_point)
   open_trail_trigger_expression_builder()
-  SetExpressionBuilderCode(trail_trigger)
+  expression_set_code(trail_trigger)
   open_trail_how_expression_builder()
-  SetExpressionBuilderCode(trail_how)
+  expression_set_code(trail_how)
   open_trail_increment_expression_builder()
-  SetExpressionBuilderCode(trail_increment)
+  expression_set_code(trail_increment)
 }
 click_common_order_parameters_tab()
 open_stop_price_expression_builder()
-SetExpressionBuilderCode(stop_price)
+expression_set_code(stop_price)
 
 click_order_form_save_button()
 ;-----------------------------------------------------------------------------------------------
