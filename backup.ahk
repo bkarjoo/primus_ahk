@@ -1,6 +1,4 @@
 
-
-
 backup(file_name, acronym)
 {
   source := "pp/" . file_name . ".i"

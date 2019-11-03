@@ -16,7 +16,7 @@ ActivateBlackBoxDesign()
 
 
 ; tabs -------------------------------------------------------------------------
-
+/* ; moved to tab_confirm
 click_design_tab()
 {
 MouseClick, Left, 26, 32
@@ -46,6 +46,7 @@ click_launch_rule_tab()
 MouseClick, Left, 287, 32
 sleep, 500
 }
+*/
 
 ; main section -----------------------------------------------------------------
 UpdateBoxName(name)
