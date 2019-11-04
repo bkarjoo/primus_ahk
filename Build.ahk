@@ -20,7 +20,6 @@
 #include entry.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
-#include target.ahk
 
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
@@ -98,21 +97,17 @@ click_order_form_save_button()
 inform_timeout("Done with entry.", 5)
 
 ; set target -----------------------------------------------------------------
-if (target_open_new_order(2) = 0)
-  inform("Unable to open new target order window.")
+OpenNewTargetOrder()
 
 set_order_form_order_type(target_order_type)
 set_order_form_order_side(target_order_side)
 set_order_form_destination(target_destination)
 
-if (target_order_type = "LIMIT")
-{
+if (target_order_type = "LIMIT") {
   set_order_form_TIF("TIF_DAY")
   open_limit_price_expression_builder()
   expression_set_code(target_limit)
-}
-else if (target_order_type = "PRIMUS_AEL")
-{
+} else if (target_order_type = "PRIMUS_AEL") {
   open_ael_trigger_expression_builder()
   expression_set_code(ael_trigger)
   open_ael_how_expression_builder()
@@ -125,26 +120,18 @@ else if (target_order_type = "PRIMUS_AEL")
   set_check_box(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
   set_check_box(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
   set_check_box(ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
-}
-else
-{
-  msg := "target order type " . target_order_type . " not supported."
-  inform(msg)
+} else {
+  Msgbox, target order type %target_order_type% not supported
+  ExitApp
 }
 click_order_form_save_button()
-inform_timeout("Done with target.", 5)
 
 
-loop
-{
 ; stop order -------------------------------------------------------------------
-
 OpenNewStopOrder()
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
-
 set_check_box(enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
-
 if (enable_trailing = "TRUE")
 {
   set_check_box(trail_after_entry_complete, trail_after_entry_complete_check_box, trail_after_entry_complete_trigger_point)
@@ -159,17 +146,8 @@ if (enable_trailing = "TRUE")
 click_common_order_parameters_tab()
 open_stop_price_expression_builder()
 expression_set_code(stop_price)
+inform_timeout("Done with stop.", 5)
 
-click_order_form_save_button()
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for basket? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
-}
 
 loop
 {
