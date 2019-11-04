@@ -4,11 +4,9 @@
 
 click_order_form_save_button()
 {
-  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 530, 480
-  err := wait_only("PRIMU$ - Black", 5)
-  if (err != 0)
-    inform("Control didn't return to Black Box Design after order save.")
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Black", 530, 480, 2, 1)
+  if (res = 0)
+    inform("click_order_form_save_button failed.")
 }
 
 set_order_form_order_type(type)
@@ -74,19 +72,17 @@ set_order_form_destination(dest)
 
 open_limit_price_expression_builder()
 {
-  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 540, 150
-  WinWaitActive, PRIMU$ - Expression Builder
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 150, 2, 2)
+  if (res = 0)
+    inform("open_limit_price_expression_builder failed.")
 }
 
 open_stop_price_expression_builder()
 {
-  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 540, 240
-  WinWaitActive, PRIMU$ - Expression Builder
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 240, 2, 2)
+  if (res = 0)
+    inform("open_stop_price_expression_builder failed.")
 }
-
-
 
 set_order_form_TIF(tif)
 {
@@ -153,30 +149,27 @@ aggregated_tif_trigger_point := [330, 308]
 calc_lmt_prc_durng_ord_plcmnt_trigger_point := [330,356]
 is_proactive_trigger_point := [35,357]
 
-
-
 ; stop order properties --------------------------------------------------------
-
 
 open_trail_trigger_expression_builder()
 {
-  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 540, 250
-  WinWaitActive, PRIMU$ - Expression Builder
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 250, 2, 2)
+  if (res = 0)
+    inform("open_trail_trigger_expression_builder failed.")
 }
 
 open_trail_how_expression_builder()
 {
-  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 540, 330
-  WinWaitActive, PRIMU$ - Expression Builder
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 330, 2, 2)
+  if (res = 0)
+    inform("open_trail_how_expression_builder failed.")
 }
 
 open_trail_increment_expression_builder()
 {
-  wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 540, 390
-  WinWaitActive, PRIMU$ - Expression Builder
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 390, 2, 2)
+  if (res = 0)
+    inform("open_trail_increment_expression_builder failed.")
 }
 
 enable_trailing_check_box := [27,214]
