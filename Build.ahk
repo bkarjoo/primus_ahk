@@ -1,7 +1,6 @@
 ; loads everything from using file_reader.ahk
 ; every box is saved in the top folder
 ; the box definition file is supplied as a command line argument
-; #include launcher_clicks.ahk ; DELETE
 #include file_reader.ahk
 #include file_status.ahk
 #include black_box_clicks.ahk ; DELETE
@@ -132,7 +131,7 @@ if (target_order_type = "LIMIT") {
 click_order_form_save_button()
 
 
-; stop order -------------------------------------------------------------------
+; set stop -------------------------------------------------------------------
 stop_open_new_order(2)
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
@@ -154,9 +153,8 @@ expression_set_code(stop_price)
 click_order_form_save_button()
 inform_timeout("Done with stop.", 5)
 
-loop
-{
-; basket -----------------------------------------------------------------------
+
+; set basket -----------------------------------------------------------------------
 click_symbols_tab()
 click_choose_basket()
 create_new_basket()
@@ -179,15 +177,8 @@ if (basket_htb != "")
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
 
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for time options? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
+inform_timeout("Done with basket.", 5)
 
-}
 
 loop
 {
