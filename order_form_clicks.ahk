@@ -209,30 +209,30 @@ click_primus_stop_order_tab()
 
 open_ael_trigger_expression_builder()
 {
-wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-MouseClick, Left, 540, 160
-WinWaitActive, PRIMU$ - Expression Builder
+res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 160, 2, 2)
+if (res = 0)
+  inform("open_ael_trigger_expression_builder failed.")
 }
 
 open_ael_how_expression_builder()
 {
-wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-MouseClick, Left, 540, 200
-WinWaitActive, PRIMU$ - Expression Builder
+res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 200, 2, 2)
+if (res = 0)
+  inform("open_ael_how_expression_builder failed.")
 }
 
 open_ael_time_increment_expression_builder()
 {
-sleep, 100
-MouseClick, Left, 540, 250
-WinWaitActive, PRIMU$ - Expression Builder
+res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 250, 2, 2)
+if (res = 0)
+  inform("open_ael_time_increment_expression_builder failed.")
 }
 
 open_ael_price_increment_expression_builder()
 {
-sleep, 100
-MouseClick, Left, 540, 300
-WinWaitActive, PRIMU$ - Expression Builder
+res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 300, 2, 2)
+if (res = 0)
+  inform("open_ael_price_increment_expression_builder failed.")
 }
 
 ael_on_last_check_box := [370,330]
