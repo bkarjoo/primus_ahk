@@ -4,7 +4,7 @@
 
 launcher_activate()
 {
-  activate_and_wait("Primu$ 7.", 2)
+  activate_and_wait("Primu$ 7.", 2, 2)
 }
 
 launcher_click_new_box()

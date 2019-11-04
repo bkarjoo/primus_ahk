@@ -1,24 +1,22 @@
 ; Wait policy
-; if window is already expected to be loaded wait 2 seconds
-; if window is to be loaded wait 5 seconds
-; if wait times out, attempt 2 more times
-; if 2 more attempts fail throw an exception
+; manages the opening and closing of windows
 
 
-wait_only(window_name, seconds)
+wait_only(window_name, wait_seconds)
 {
-  WinWaitActive, %window_name%, , %seconds%
+  WinWaitActive, %window_name%, , %wait_seconds%
   return ErrorLevel
 }
 
-wait_activate_if_error(window_name, seconds, attempts)
+wait_activate_if_error(window_name, wait_seconds, attempts)
 {
-  if (wait_only(window_name, seconds) = 0)
+  if (wait_only(window_name, wait_seconds) = 0)
     return 1
+
   Loop, %attempts%
   {
     WinActivate, %window_name%
-    err := wait_only(window_name, seconds)
+    err := wait_only(window_name, wait_seconds)
     if (err = 0)
       return 1
   }
@@ -26,8 +24,30 @@ wait_activate_if_error(window_name, seconds, attempts)
     return 0
 }
 
-activate_and_wait(window_name, seconds)
+activate_and_wait(window_name, wait_seconds, attempts)
 {
-  WinActivate, %window_name%
-  wait_activate_if_error(window_name, seconds, 2)
+  Loop, %attempts%
+  {
+    WinActivate, %window_name%
+    err := wait_only(window_name, wait_seconds)
+    if (err = 0)
+      return 1
+  }
+  return 0
+}
+
+click_activate_and_wait(calling_window, expected_window, click_x, click_y, wait_seconds, attempts)
+{
+
+  Loop, %attempts%
+  {
+    res := activate_and_wait(calling_window, 1, 2)
+    if (res = 0)
+      inform("Cannot activate " . calling_window)
+    MouseClick, Left, %click_x%, %click_y%
+    res := wait_activate_if_error(expected_window, 1, 2)
+    if (res = 1)
+      return 1
+  }
+  return 0
 }
