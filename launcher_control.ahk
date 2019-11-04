@@ -4,7 +4,9 @@
 
 launcher_activate()
 {
-  activate_and_wait("Primu$ 7.", 2, 2)
+  res := activate_and_wait("Primu$ 7.", 2, 2)
+  if (res = 0)
+    inform("launcher_control launcher_activate failed.")
 }
 
 launcher_click_new_box()
