@@ -20,6 +20,7 @@
 #include entry.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
+#include target.ahk
 
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
@@ -97,17 +98,21 @@ click_order_form_save_button()
 inform_timeout("Done with entry.", 5)
 
 ; set target -----------------------------------------------------------------
-OpenNewTargetOrder()
+if (target_open_new_order(2) = 0)
+  inform("Unable to open new target order window.")
 
 set_order_form_order_type(target_order_type)
 set_order_form_order_side(target_order_side)
 set_order_form_destination(target_destination)
 
-if (target_order_type = "LIMIT") {
+if (target_order_type = "LIMIT")
+{
   set_order_form_TIF("TIF_DAY")
   open_limit_price_expression_builder()
   expression_set_code(target_limit)
-} else if (target_order_type = "PRIMUS_AEL") {
+}
+else if (target_order_type = "PRIMUS_AEL")
+{
   open_ael_trigger_expression_builder()
   expression_set_code(ael_trigger)
   open_ael_how_expression_builder()
@@ -120,11 +125,12 @@ if (target_order_type = "LIMIT") {
   set_check_box(ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
   set_check_box(ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
   set_check_box(ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
-} else {
-  Msgbox, target order type %target_order_type% not supported
-  ExitApp
 }
-
+else
+{
+  msg := "target order type " . target_order_type . " not supported."
+  inform(msg)
+}
 click_order_form_save_button()
 inform_timeout("Done with target.", 5)
 

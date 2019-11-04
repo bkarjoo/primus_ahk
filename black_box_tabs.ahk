@@ -1,8 +1,9 @@
 #include wait_policy.ahk
+#include inform.ahk
 
 tab_state_image_search(tab_name)
 {
-  activate_and_wait("PRIMU$ - Black Box Design", 2)
+  activate_and_wait("PRIMU$ - Black Box Design", 2, 2)
   i1 := "images/" . tab_name . ".PNG"
   ImageSearch, ox, oy, 0, 0, 350, 50, %i1%
   if (ErrorLevel = 0)
@@ -14,47 +15,54 @@ tab_state_image_search(tab_name)
   return 0
 }
 
-tab_click_and_wait_active(x, y, tab_name)
+tab_click_and_wait_active(x, y, tab_name, attempts)
 {
   ; try 5 times with 2 second in between each try
-  Loop, 5
+  Loop, %attempts%
   {
-    activate_and_wait("PRIMU$ - Black Box Design", 2)
-    err := tab_state_image_search(tab_name)
-    if (err = 1)
+    res := activate_and_wait("PRIMU$ - Black Box Design", 1, 2)
+    if (res = 0)
+      inform("Cannot activate black box design")
+
+    ; check if tab is already clicked
+    res := tab_state_image_search(tab_name)
+    if (res = 1)
       return
+
+    ; tab click
     MouseClick, Left, %x%, %y%
-    Sleep, 1000
-    err := tab_state_image_search(tab_name)
-    if (err = 1)
+    Sleep, 200
+
+    res := tab_state_image_search(tab_name)
+    if (res = 1)
       return
-    Sleep, 800
   }
+  inform("Cannot select tab " . tab_name)
 }
 
 click_design_tab()
 {
-tab_click_and_wait_active(26, 32, "design")
+tab_click_and_wait_active(26, 32, "design", 2)
 }
 
 click_symbols_tab()
 {
-tab_click_and_wait_active(77, 32, "symbols")
+tab_click_and_wait_active(77, 32, "symbols", 2)
 }
 
 click_options_tab()
 {
-tab_click_and_wait_active(123, 32, "options")
+tab_click_and_wait_active(123, 32, "options", 2)
 }
 
 click_risk_management_tab()
 {
-tab_click_and_wait_active(187, 32, "risk_management")
+tab_click_and_wait_active(187, 32, "risk_management", 2)
 }
 
 click_launch_rule_tab()
 {
-tab_click_and_wait_active(287, 32, "launch_rule")
+tab_click_and_wait_active(287, 32, "launch_rule", 2)
 }
 
 design_tab_selected()
