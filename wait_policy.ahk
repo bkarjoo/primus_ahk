@@ -24,6 +24,15 @@ wait_activate_if_error(window_name, wait_seconds, attempts)
     return 0
 }
 
+activate_and_wait_only(window_name, wait_seconds)
+{
+  WinActivate, %window_name%
+  err := wait_only(window_name, wait_seconds)
+  if (err = 0)
+    return 1
+  return 0
+}
+
 activate_and_wait(window_name, wait_seconds, attempts)
 {
   Loop, %attempts%

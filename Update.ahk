@@ -1,6 +1,7 @@
 ; take the filename to update as command line argument
 ; expects there to be a back up for that file
 ; back up is created by Build.ahk and this module
+
 #include launcher_clicks.ahk
 #include file_reader.ahk
 #include black_box_clicks.ahk
@@ -8,14 +9,34 @@
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
-#include backup.ahk
-#include file_reader_bu.ahk
+
 #include box_vars.ahk
-#include box_vars_bu.ahk
-#include file_status.ahk
+
+#include files.ahk
 #include clipboard_paste.ahk
 #include box_name_builder.ahk
 #include box_finder.ahk
+
+#include file_reader.ahk
+#include files.ahk
+#include black_box_clicks.ahk ; DELETE
+
+#include expression_builder_clicks.ahk
+#include check_boxes.ahk
+#include basket_edit_form_clicks.ahk
+#include box_vars.ahk
+#include clipboard_paste.ahk
+#include box_name_builder.ahk
+#include gcc_compile.ahk
+#include launcher_control.ahk
+#include inform.ahk 
+#include order_form_clicks.ahk
+#include expression_builder_clicks.ahk
+
+#include box_vars_bu.ahk
+#include file_reader_bu.ahk
+
+ExitApp
 
 LoadFile("pp/general_settings.i")
 
@@ -223,7 +244,7 @@ if (entry_order_type != entry_order_type_bu
 
     if (entry_order_limit != entry_order_limit_bu) {
       open_limit_price_expression_builder()
-      SetExpressionBuilderCode(entry_order_limit)
+      expression_set_code(entry_order_limit)
     }
 
     if (entry_order_type = "STOP_LIMIT")
@@ -236,7 +257,7 @@ if (entry_order_type != entry_order_type_bu
         {
           open_stop_price_expression_builder()
           if (entry_order_stop != entry_order_stop_bu)
-            SetExpressionBuilderCode(entry_order_stop)
+            expression_set_code(entry_order_stop)
 
           set_check_box(entry_aggregated_TIF, aggregated_tif_check_box, aggregated_tif_trigger_point)
           set_check_box(entry_calculate_limit_during_placement, calc_lmt_prc_durng_ord_plcmnt_check_box, calc_lmt_prc_durng_ord_plcmnt_trigger_point)
@@ -294,24 +315,24 @@ if (target_order_type != target_order_type_bu
       set_order_form_TIF("TIF_DAY")
     if (target_limit != target_limit_bu or target_order_type_bu != "LIMIT") {
       open_limit_price_expression_builder()
-      SetExpressionBuilderCode(target_limit)
+      expression_set_code(target_limit)
     }
   } else if (target_order_type = "PRIMUS_AEL") {
     if (ael_trigger != ael_trigger_bu or target_order_type_bu != "PRIMUS_AEL") {
       open_ael_trigger_expression_builder()
-      SetExpressionBuilderCode(ael_trigger)
+      expression_set_code(ael_trigger)
     }
     if (ael_price != ael_price_bu or target_order_type_bu != "PRIMUS_AEL") {
       open_ael_how_expression_builder()
-      SetExpressionBuilderCode(ael_price)
+      expression_set_code(ael_price)
     }
     if (ael_time_increment != ael_time_increment_bu or target_order_type_bu != "PRIMUS_AEL") {
       open_ael_time_increment_expression_builder()
-      SetExpressionBuilderCode(ael_time_increment)
+      expression_set_code(ael_time_increment)
     }
     if (ael_price_increment != ael_price_increment_bu or target_order_type_bu != "PRIMUS_AEL") {
       open_ael_price_increment_expression_builder()
-      SetExpressionBuilderCode(ael_price_increment)
+      expression_set_code(ael_price_increment)
     }
 
     set_check_box(ael_on_last, ael_on_last_check_box, ael_on_last_trigger_point)
@@ -367,15 +388,15 @@ or stop_price != stop_price_bu)
 
     if (trail_trigger != trail_trigger_bu) {
       open_trail_trigger_expression_builder()
-      SetExpressionBuilderCode(trail_trigger)
+      expression_set_code(trail_trigger)
     }
     if (trail_how != trail_how_bu) {
       open_trail_how_expression_builder()
-      SetExpressionBuilderCode(trail_how)
+      expression_set_code(trail_how)
     }
     if (trail_increment != trail_increment_bu) {
       open_trail_increment_expression_builder()
-      SetExpressionBuilderCode(trail_increment)
+      expression_set_code(trail_increment)
     }
   }
 
@@ -383,7 +404,7 @@ or stop_price != stop_price_bu)
   if (stop_price != stop_price_bu) {
     click_common_order_parameters_tab()
     open_stop_price_expression_builder()
-    SetExpressionBuilderCode(stop_price)
+    expression_set_code(stop_price)
   }
   click_order_form_save_button()
   ;-----------------------------------------------------------------------------------------------

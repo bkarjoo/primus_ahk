@@ -1,27 +1,26 @@
 ; loads everything from using file_reader.ahk
 ; every box is saved in the top folder
 ; the box definition file is supplied as a command line argument
-; #include launcher_clicks.ahk ; DELETE
 #include file_reader.ahk
-#include file_status.ahk
+#include files.ahk
 #include black_box_clicks.ahk ; DELETE
 
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
-#include backup.ahk
 #include box_vars.ahk
 #include clipboard_paste.ahk
 #include box_name_builder.ahk
 #include gcc_compile.ahk
 #include launcher_control.ahk
-#include general_settings.ahk
 #include inform.ahk
-#include entry.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
-#include target.ahk
-#include stop.ahk
+#include design_tab.ahk
+#include symbols_tab.ahk
+#include options_tab.ahk
+#include risk_management_tab.ahk
+#include launch_rule_tab.ahk
 
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
@@ -38,11 +37,6 @@ confirm_file_exists("images/launch_rule.PNG")
 confirm_file_exists("images/options.PNG")
 confirm_file_exists("images/risk_management.PNG")
 confirm_file_exists("images/symbols.PNG")
-confirm_file_exists("images/design2.PNG")
-confirm_file_exists("images/launch_rule2.PNG")
-confirm_file_exists("images/options2.PNG")
-confirm_file_exists("images/risk_management2.PNG")
-confirm_file_exists("images/symbols2.PNG")
 
 gcc_initial_compile()
 load_compiled_rules()
@@ -132,7 +126,7 @@ if (target_order_type = "LIMIT") {
 click_order_form_save_button()
 
 
-; stop order -------------------------------------------------------------------
+; set stop -------------------------------------------------------------------
 stop_open_new_order(2)
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
@@ -154,12 +148,12 @@ expression_set_code(stop_price)
 click_order_form_save_button()
 inform_timeout("Done with stop.", 5)
 
-loop
-{
-; basket -----------------------------------------------------------------------
+
+; set basket -----------------------------------------------------------------------
 click_symbols_tab()
 click_choose_basket()
-create_new_basket()
+click_basket_manager_private_tab()
+basket_manager_new_basket()
 
 set_basket_name(box_acronym)
 set_basket_description(basket_description)
@@ -179,15 +173,8 @@ if (basket_htb != "")
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
 
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for time options? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
+inform_timeout("Done with basket.", 5)
 
-}
 
 loop
 {
