@@ -1,53 +1,62 @@
 ; tab selection, and bottom buttons if needed
+#include tabs.ahk
 
-
+bb_tab_x1 := 0
+bb_tab_y1 := 0
+bb_tab_x2 := 350
+bb_tab_y2 := 50
 
 click_design_tab()
 {
-tab_click_and_wait_active(26, 32, "design", 2)
+return tab_click_and_wait_active("PRIMU$ - Black", 1, 2, 26, 32, 2, "design", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 click_symbols_tab()
 {
-tab_click_and_wait_active(77, 32, "symbols", 2)
+return tab_click_and_wait_active("PRIMU$ - Black", 1, 2, 77, 32, 2, "symbols", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
+
+
+
+msgbox % click_design_tab()
+msgbox done
 
 click_options_tab()
 {
-tab_click_and_wait_active(123, 32, "options", 2)
+tab_click_and_wait_active("PRIMU$ - Black", 1, 2, 123, 32, 2, "options", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 click_risk_management_tab()
 {
-tab_click_and_wait_active(187, 32, "risk_management", 2)
+tab_click_and_wait_active("PRIMU$ - Black", 1, 2, 187, 32, 2, "risk_management", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 click_launch_rule_tab()
 {
-tab_click_and_wait_active(287, 32, "launch_rule", 2)
+tab_click_and_wait_active("PRIMU$ - Black", 1, 2, 287, 32, 2, "launch_rule", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 design_tab_selected()
 {
-  return tab_state_image_search("design")
+  return tab_state_image_search("PRIMU$ - Black", 1, 2,"design", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 symbols_tab_selected()
 {
-  return tab_state_image_search("symbols")
+  return tab_state_image_search("PRIMU$ - Black", 1, 2,"symbols", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 options_tab_selected()
 {
-  return tab_state_image_search("options")
+  return tab_state_image_search("PRIMU$ - Black", 1, 2,"options", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 risk_management_tab_selected()
 {
-  return tab_state_image_search("risk_management")
+  return tab_state_image_search("PRIMU$ - Black", 1, 2,"risk_management", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
 
 launch_rule_tab_selected()
 {
-  return tab_state_image_search("launch_rule")
+  return tab_state_image_search("PRIMU$ - Black", 1, 2,"launch_rule", bb_tab_x1, bb_tab_y1, bb_tab_x2, bb_tab_y2)
 }
