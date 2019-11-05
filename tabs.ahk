@@ -1,6 +1,6 @@
 #include wait_policy.ahk
 #include inform.ahk
-#include file_status.ahk
+#include files.ahk
 
 tab_state_image_search(caller_window, caller_wait_delay, caller_activation_attempts, tab_name, x1, y1, x2, y2)
 {
@@ -11,11 +11,13 @@ tab_state_image_search(caller_window, caller_wait_delay, caller_activation_attem
   i2 := "images/" . tab_name . "2.PNG"
   confirm_file_exists(i1)
   confirm_file_exists(i2)
+  MouseClick, Left, 500, 500
   ImageSearch, ox, oy, %x1%, %y1%, %x2%, %y2%, %i1%
-  Msgbox % ErrorLevel
+  msgbox % ErrorLevel
   if (ErrorLevel = 0)
     return 1
   ImageSearch, ox, oy, %x1%, %y1%, %x2%, %y2%, %i2%
+  msgbox % ErrorLevel
   if (ErrorLevel = 0)
     return 1
   return 0
@@ -45,5 +47,3 @@ tab_click_and_wait_active(caller_window, caller_wait_delay, caller_activation_at
   }
   return 0
 }
-
-msgbox % tab_click_and_wait_active("PRIMU$ - Black", 1, 2, 77, 32, 2, "symbols", 0, 0, 350, 50)
