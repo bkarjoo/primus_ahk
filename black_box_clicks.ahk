@@ -4,7 +4,7 @@
 #include launcher_clicks.ahk
 #include file_reader.ahk
 #include check_boxes.ahk
-#include basket_manager_clicks.ahk
+#include basket_manager.ahk
 
 
 ActivateBlackBoxDesign()
@@ -181,11 +181,7 @@ OpenExistingStopOrder()
 }
 
 ; symbols tab section ----------------------------------------------------------
-click_choose_basket()
-{
-  MouseClick, Left, 918, 64
-  WinWait, Basket Manager (prms-rdgw.primustrade.com)
-}
+
 
 ; options tab section ----------------------------------------------------------
 
