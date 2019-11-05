@@ -4,7 +4,6 @@
 #include file_reader.ahk
 #include files.ahk
 #include black_box_clicks.ahk ; DELETE
-
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
@@ -22,6 +21,17 @@
 #include risk_management_tab.ahk
 #include launch_rule_tab.ahk
 
+compile := False
+general_settings := False
+entry := False
+target := False
+stop := False
+basket := True
+options := False
+risk_management := False
+launch_rules := False
+backup := False
+
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
 confirm_file_exists("entry.c")
@@ -38,25 +48,26 @@ confirm_file_exists("images/options.PNG")
 confirm_file_exists("images/risk_management.PNG")
 confirm_file_exists("images/symbols.PNG")
 
+if (compile)
+{
 gcc_initial_compile()
 load_compiled_rules()
 make_back_up_directory(box_acronym)
+}
 
 ; click new box
 launcher_click_new_box()
 wait_only("PRIMU$ - Black", 5)
 
 ; set general_settings ------------------------------------------------
+if (general_settings)
+{
 bname := build_box_name(box_name, box_acronym)
 update_box_name(bname)
 desc := build_box_description(launch_rule_name, black_box_description, basket_description)
 update_box_description(desc)
 set_black_box_side(black_box_side)
 set_black_box_scheme(black_box_scheme)
-/*
-if (is_checked(permit_backtesting_check_box) = 0)
-  trigger_check_box(permit_backtesting_trigger_point)
-  */
 set_check_box_confirm("PRIMU$ - Black", 1,"TRUE", permit_backtesting_check_box, permit_backtesting_trigger_point)
 set_check_box_confirm("PRIMU$ - Black", 1,enter_on_last, enter_on_last_check_box, enter_on_last_trigger_point)
 set_check_box_confirm("PRIMU$ - Black", 1,enter_on_bid, enter_on_bid_check_box, enter_on_bid_trigger_point)
@@ -68,8 +79,11 @@ set_check_box_confirm("PRIMU$ - Black", 1,enter_on_new_minute, enter_on_new_minu
 set_check_box_confirm("PRIMU$ - Black", 1,enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 set_check_box_confirm("PRIMU$ - Black", 1,use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
 inform_timeout("Done with general_settings.", 5)
+}
 
 ; set entry -------------------------------------------------------------
+if (entry)
+{
 if (black_box_scheme = "PlainVanilla")
   if (entry_update_trigger(entry_trigger, 2) = 0)
     inform("Unable to set entry trigger.")
@@ -94,14 +108,15 @@ if (entry_order_type = "STOP_LIMIT")
 }
 click_order_form_save_button()
 inform_timeout("Done with entry.", 5)
+}
 
 ; set target -----------------------------------------------------------------
+if (target)
+{
 target_open_new_order(2)
-
 set_order_form_order_type(target_order_type)
 set_order_form_order_side(target_order_side)
 set_order_form_destination(target_destination)
-
 if (target_order_type = "LIMIT") {
   set_order_form_TIF("TIF_DAY")
   open_limit_price_expression_builder()
@@ -124,9 +139,11 @@ if (target_order_type = "LIMIT") {
   ExitApp
 }
 click_order_form_save_button()
-
+}
 
 ; set stop -------------------------------------------------------------------
+if (stop)
+{
 stop_open_new_order(2)
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
@@ -147,23 +164,21 @@ open_stop_price_expression_builder()
 expression_set_code(stop_price)
 click_order_form_save_button()
 inform_timeout("Done with stop.", 5)
-
+}
 
 ; set basket -----------------------------------------------------------------------
+if (basket)
+{
 click_symbols_tab()
 click_choose_basket()
 click_basket_manager_private_tab()
 basket_manager_new_basket()
-
 set_basket_name(box_acronym)
 set_basket_description(basket_description)
-
 set_check_box(activate_dynamic_basket_rules, activate_dynamic_basket_rules_check_box, activate_dynamic_basket_rules_trigger_point)
 set_check_box(apply_dynamic_basket_rules_to_all_available_symbols, apply_dynamic_basket_rules_to_all_available_symbols_check_box, apply_dynamic_basket_rules_to_all_available_symbols_trigger_point)
-
 if (basket_rules != "")
   set_basket_rule(basket_rules)
-
 if (basket_symbols != "")
   set_basket_symbols(basket_symbols)
 if (basket_exclude != "")
@@ -172,83 +187,46 @@ if (basket_htb != "")
   set_basket_hard_to_borrow_allowed_symbols(basket_htb)
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
-
 inform_timeout("Done with basket.", 5)
+}
 
-
-loop
+; set options -----------------------------------------------------------------
+if (options)
 {
-; time options -----------------------------------------------------------------
 click_options_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,use_time_options, use_time_options_check_box, use_time_options_trigger_point)
-
 set_time_option(start_subscription_trigger_point, start_subscription)
 set_time_option(start_entering_positions_trigger_point, start_entering_positions)
 set_time_option(stop_entering_positions_trigger_point, stop_entering_positions)
 set_time_option(cancel_all_pending_orders_trigger_point, cancel_all_pending_orders)
 set_time_option(close_all_open_positions_trigger_point, close_all_open_positions)
 set_time_option(place_OPG_orders_trigger_point, place_OPG_orders)
-
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for time position sizing? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
-}
-
-loop
-{
-; position sizing --------------------------------------------------------------
 set_check_box_confirm("PRIMU$ - Black", 1,enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
 set_position_sizing_scheme(position_sizing)
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for time risk management? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
+inform_timeout("Done with options.", 5)
 }
 
-loop
-{
 ; risk management --------------------------------------------------------------
+if (risk_management)
+{
 click_risk_management_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
 set_maximum_order_shares(maximum_order_shares)
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question,  Ready for launch rules? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
+inform_timeout("Done with risk management", 5)
 }
 
-loop
-{
 ; launch rule ------------------------------------------------------------------
+if (launch_rules)
+{
 click_launch_rule_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
 set_launch_rule(launch_rules)
-
 click_validate_and_close()
-;-----------------------------------------------------------------------------------------------
-InputBox, response, Question, Done? (enter y or n or q)
-If (response = "q")
-  ExitApp
-If (response = "y")
-  break
-;-----------------------------------------------------------------------------------------------
-
+inform_timeout("Done with launch rules", 5)
 }
 
-
+if (backup)
+{
 backup("basket", box_acronym)
 backup("entry", box_acronym)
 backup("general_settings", box_acronym)
@@ -257,3 +235,6 @@ backup("position_sizing", box_acronym)
 backup("stop", box_acronym)
 backup("target", box_acronym)
 backup("time_options", box_acronym)
+}
+
+; TODO press save as
