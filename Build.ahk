@@ -21,16 +21,17 @@
 #include risk_management_tab.ahk
 #include launch_rule_tab.ahk
 
-compile := False
-general_settings := False
-entry := False
-target := False
-stop := False
-basket := True
-options := False
-risk_management := False
-launch_rules := False
-backup := False
+do_compile := True
+do_general_settings := True
+do_entry := True
+do_target := True
+do_stop := True
+do_basket := True
+do_options := True
+do_risk_management := True
+do_launch_rules := True
+do_backup := True
+do_validate_and_close := True
 
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
@@ -48,19 +49,21 @@ confirm_file_exists("images/options.PNG")
 confirm_file_exists("images/risk_management.PNG")
 confirm_file_exists("images/symbols.PNG")
 
-if (compile)
-{
-gcc_initial_compile()
+if (do_compile)
+  gcc_initial_compile()
+
 load_compiled_rules()
-make_back_up_directory(box_acronym)
-}
+
+if (do_compile)
+  make_back_up_directory(box_acronym)
+
 
 ; click new box
 launcher_click_new_box()
 wait_only("PRIMU$ - Black", 5)
 
 ; set general_settings ------------------------------------------------
-if (general_settings)
+if (do_general_settings)
 {
 bname := build_box_name(box_name, box_acronym)
 update_box_name(bname)
@@ -82,7 +85,7 @@ inform_timeout("Done with general_settings.", 5)
 }
 
 ; set entry -------------------------------------------------------------
-if (entry)
+if (do_entry)
 {
 if (black_box_scheme = "PlainVanilla")
   if (entry_update_trigger(entry_trigger, 2) = 0)
@@ -111,7 +114,7 @@ inform_timeout("Done with entry.", 5)
 }
 
 ; set target -----------------------------------------------------------------
-if (target)
+if (do_target)
 {
 target_open_new_order(2)
 set_order_form_order_type(target_order_type)
@@ -142,7 +145,7 @@ click_order_form_save_button()
 }
 
 ; set stop -------------------------------------------------------------------
-if (stop)
+if (do_stop)
 {
 stop_open_new_order(2)
 set_order_form_order_side(stop_order_side)
@@ -167,7 +170,7 @@ inform_timeout("Done with stop.", 5)
 }
 
 ; set basket -----------------------------------------------------------------------
-if (basket)
+if (do_basket)
 {
 click_symbols_tab()
 click_choose_basket()
@@ -191,7 +194,7 @@ inform_timeout("Done with basket.", 5)
 }
 
 ; set options -----------------------------------------------------------------
-if (options)
+if (do_options)
 {
 click_options_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,use_time_options, use_time_options_check_box, use_time_options_trigger_point)
@@ -207,7 +210,7 @@ inform_timeout("Done with options.", 5)
 }
 
 ; risk management --------------------------------------------------------------
-if (risk_management)
+if (do_risk_management)
 {
 click_risk_management_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
@@ -216,16 +219,16 @@ inform_timeout("Done with risk management", 5)
 }
 
 ; launch rule ------------------------------------------------------------------
-if (launch_rules)
+if (do_launch_rules)
 {
 click_launch_rule_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
 set_launch_rule(launch_rules)
-click_validate_and_close()
 inform_timeout("Done with launch rules", 5)
 }
 
-if (backup)
+
+if (do_backup)
 {
 backup("basket", box_acronym)
 backup("entry", box_acronym)
@@ -238,3 +241,5 @@ backup("time_options", box_acronym)
 }
 
 ; TODO press save as
+if (do_validate_and_close)
+  click_validate_and_close()

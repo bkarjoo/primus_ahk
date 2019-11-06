@@ -74,7 +74,7 @@ basket_manager_new_basket()
   if (ErrorLevel != 0)
     inform("basket_manager_new_basket couldn't activate context menu")
   MouseClick, Left, 405, 127
-
+  Sleep, 1000
 }
 
 
