@@ -2,80 +2,6 @@
 #include inform.ahk
 #include files.ahk
 
-selected_bbdesign_tab()
-{
-  res := activate_and_wait_only("PRIMU$ - B", 5)
-  if (res = 0)
-    inform("selected_bbdesign_tab can't activate blackbox design")
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/design.PNG
-  if (ErrorLevel = 0)
-    return 1
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/symbols.PNG
-  if (ErrorLevel = 0)
-    return 2
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/options.PNG
-  if (ErrorLevel = 0)
-    return 3
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/risk_management.PNG
-  if (ErrorLevel = 0)
-    return 4
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/launch_rule.PNG
-  if (ErrorLevel = 0)
-    return 5
-}
-
-click_and_confirm_bbd_tab(x, y, index)
-{
-res := activate_and_wait_only("PRIMU$ - B", 5)
-if (res != 1)
-  inform("Cannot activate black box design.")
-MouseClick, Left, %x%, %y%
-Loop, 10
-{
-  sleep, 100
-  if (selected_bbdesign_tab() = index)
-    return A_Index
-  send, {Tab}
-}
-return 0
-}
-
-click_design_tab()
-{
-res := click_and_confirm_bbd_tab(26, 32, 1)
-if (res = 0)
-  inform("Failed to select design tab.")
-}
-
-click_symbols_tab()
-{
-res := click_and_confirm_bbd_tab(77, 32, 2)
-if (res = 0)
-  inform("Failed to select symbols tab.")
-}
-
-click_options_tab()
-{
-res := click_and_confirm_bbd_tab(123, 32, 3)
-if (res = 0)
-  inform("Failed to select options tab.")
-}
-
-click_risk_management_tab()
-{
-res := click_and_confirm_bbd_tab(187, 32, 4)
-if (res = 0)
-  inform("Failed to select risk management tab.")
-}
-
-click_launch_rule_tab()
-{
-res := click_and_confirm_bbd_tab(287, 32, 5)
-if (res = 0)
-  inform("Failed to select launch rule tab.")
-}
-
-
 update_box_name(box_name)
 {
   click_design_tab()
@@ -134,74 +60,109 @@ entry_confirm_trigger(rule)
   return Clipboard = rule
 }
 
-entry_update_trigger(rule, attempts)
+entry_update_trigger(rule)
 {
-  loop, %attempts%
-  {
-    click_design_tab()
-    MouseClick, Left, 450, 300
-    Send, ^a
-    Clipboard := rule
-    sleep, 200
-    Send, ^v
-    sleep, 200
-    if (entry_confirm_trigger(rule))
-      return 1
-  }
-  return 0
+  click_design_tab()
+  MouseClick, Left, 450, 300
+  Send, ^a
+  Clipboard := rule
+  sleep, 200
+  Send, ^v
+  sleep, 200
+  if (entry_confirm_trigger(rule))
+    return 1
+  else
+    return 0
 }
 
-entry_open_new_order(attempts)
+entry_open_new_order()
 {
-  loop, %attempts%
-  {
-    click_design_tab()
-    MouseClick, Left, 900, 375
-    err := wait_only("PRIMU$ - Add/Edit Order Form <ENTRY_ORDER>", 5)
-    if (err = 0)
-      return 1
-  }
-  return 0
+  click_design_tab()
+  MouseClick, Left, 900, 375
+  err := wait_only("PRIMU$ - Add/Edit Order Form <ENTRY_ORDER>", 5)
+  if (err = 0)
+    return 1
+  else
+    return 0
 }
 
-entry_open_existing_order(attempts)
+entry_open_existing_order()
 {
-  loop, %attempts%
-  {
-    ; assumes there's only one order, therefore click top line
-    click_design_tab()
-    MouseClick, Left, 400, 394
-    sleep, 200
-    MouseClick, Left, 900, 400
-    err := wait_only("PRIMU$ - Add/Edit Order Form <ENTRY_ORDER>", 5)
-    if (err = 0)
-      return 1
-  }
-  return 0
+  ; assumes there's only one order, therefore click top line
+  click_design_tab()
+  MouseClick, Left, 400, 394
+  sleep, 200
+  MouseClick, Left, 900, 400
+  err := wait_only("PRIMU$ - Add/Edit Order Form <ENTRY_ORDER>", 5)
+  if (err = 0)
+    return 1
+  else
+    return 0
 }
 
-target_open_new_order(attempts)
+target_open_new_order()
 {
-  loop, %attempts%
-  {
-    click_design_tab()
-    MouseClick, Left, 900, 556
-    err := wait_only("PRIMU$ - Add/Edit Order Form", 5)
-    if (err = 0)
-      return 1
-  }
-  return 0
+  click_design_tab()
+  MouseClick, Left, 900, 556
+  err := wait_only("PRIMU$ - Add/Edit Order Form", 5)
+  if (err = 0)
+    return 1
+  else
+    return 0
 }
 
-stop_open_new_order(attempts)
+target_open_existing_order()
 {
-  loop, %attempts%
-  {
-    click_design_tab()
-    MouseClick, Left, 900, 705
-    err := wait_only("PRIMU$ - Add/Edit Order Form", 5)
-    if (err = 0)
-      return 1
-  }
-  return 0
+  ; assumes there's only one order, therefore click top line
+  MouseClick, Left, 400, 577
+  sleep, 100
+  MouseClick, Left, 900, 585
+  WinWait, PRIMU$ - Add/Edit Order Form <EXIT_LIMIT_ORDER>
 }
+
+stop_open_new_order()
+{
+  click_design_tab()
+  MouseClick, Left, 900, 705
+  err := wait_only("PRIMU$ - Add/Edit Order Form", 5)
+  if (err = 0)
+    return 1
+  else
+    return 0
+}
+
+stop_open_existing_order()
+{
+  ; assumes there's only one order, therefore click top line
+  MouseClick, Left, 400, 725
+  sleep, 100
+  MouseClick, Left, 900, 735
+  WinWait, PRIMU$ - Add/Edit Order Form <EXIT_STOP_ORDER>
+}
+
+; checkbox locations -----------------------------------------------------------
+permit_backtesting_check_box := [616, 120]
+enter_on_last_check_box := [760, 69]
+enter_on_bid_check_box := [760, 94]
+enter_on_ask_check_box := [760, 119]
+enter_on_pmi_check_box := [760, 144]
+enter_on_imbalance_check_box := [760, 193]
+enter_on_snapshot_check_box := [867, 192]
+enter_on_new_minute_check_box := [867, 170]
+enter_on_stock_event_check_box := [760, 170]
+use_strict_mode_check_box := [618, 197]
+enable_stop_trailing_on_new_second_check_box := [12,825]
+verify_code_during_validate_procedure_check_box := [523,909]
+
+permit_backtesting_trigger_point := [628,130]
+enter_on_last_trigger_point := [770, 79]
+enter_on_bid_trigger_point := [770, 104]
+enter_on_ask_trigger_point := [770, 129]
+enter_on_pmi_trigger_point := [770, 154]
+enter_on_imbalance_trigger_point := [770, 203]
+enter_on_snapshot_trigger_point := [877, 202]
+enter_on_new_minute_trigger_point := [877, 180]
+enter_on_stock_event_trigger_point := [770, 180]
+use_strict_mode_trigger_point := [628,207]
+enable_stop_trailing_on_new_second_trigger_point := [22,835]
+verify_code_during_validate_procedure_trigger_point := [533,919]

@@ -1,4 +1,3 @@
-#include black_box_clicks.ahk
 #include wait_policy.ahk
 #include inform.ahk
 
