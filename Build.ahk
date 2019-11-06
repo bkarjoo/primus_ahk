@@ -3,7 +3,6 @@
 ; the box definition file is supplied as a command line argument
 #include file_reader.ahk
 #include files.ahk
-#include black_box_clicks.ahk ; DELETE
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
 #include basket_edit_form_clicks.ahk
@@ -15,11 +14,13 @@
 #include inform.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
+#include black_box_design.ahk
 #include design_tab.ahk
 #include symbols_tab.ahk
 #include options_tab.ahk
 #include risk_management_tab.ahk
 #include launch_rule_tab.ahk
+#include basket_manager.ahk
 
 do_compile := True
 do_general_settings := True
@@ -32,6 +33,8 @@ do_risk_management := True
 do_launch_rules := True
 do_backup := True
 do_validate_and_close := True
+
+wait_between_phases := 1
 
 ; make sure required files are available
 confirm_file_exists("general_settings.c")
@@ -81,16 +84,16 @@ set_check_box_confirm("PRIMU$ - Black", 1,enter_on_snapshot, enter_on_snapshot_c
 set_check_box_confirm("PRIMU$ - Black", 1,enter_on_new_minute, enter_on_new_minute_check_box, enter_on_new_minute_trigger_point)
 set_check_box_confirm("PRIMU$ - Black", 1,enter_on_stock_event, enter_on_stock_event_check_box, enter_on_stock_event_trigger_point)
 set_check_box_confirm("PRIMU$ - Black", 1,use_strict_mode, use_strict_mode_check_box, use_strict_mode_trigger_point)
-inform_timeout("Done with general_settings.", 5)
+inform_timeout("Done with general_settings.", wait_between_phases)
 }
 
 ; set entry -------------------------------------------------------------
 if (do_entry)
 {
 if (black_box_scheme = "PlainVanilla")
-  if (entry_update_trigger(entry_trigger, 2) = 0)
+  if (entry_update_trigger(entry_trigger) = 0)
     inform("Unable to set entry trigger.")
-if (entry_open_new_order(2) = 0)
+if (entry_open_new_order() = 0)
   inform("Unable to open new order window.")
 set_order_form_order_type(entry_order_type)
 set_order_form_order_side(entry_order_side)
@@ -110,13 +113,13 @@ if (entry_order_type = "STOP_LIMIT")
   set_order_form_TIF2_seconds(entry_tif2_seconds)
 }
 click_order_form_save_button()
-inform_timeout("Done with entry.", 5)
+inform_timeout("Done with entry.", wait_between_phases)
 }
 
 ; set target -----------------------------------------------------------------
 if (do_target)
 {
-target_open_new_order(2)
+target_open_new_order()
 set_order_form_order_type(target_order_type)
 set_order_form_order_side(target_order_side)
 set_order_form_destination(target_destination)
@@ -147,7 +150,7 @@ click_order_form_save_button()
 ; set stop -------------------------------------------------------------------
 if (do_stop)
 {
-stop_open_new_order(2)
+stop_open_new_order()
 set_order_form_order_side(stop_order_side)
 set_order_form_order_type(stop_order_type)
 set_check_box_confirm("PRIMU$ - Add/Edit Order Form", 1,enable_trailing, enable_trailing_check_box, enable_trailing_trigger_point)
@@ -166,7 +169,7 @@ click_common_order_parameters_tab()
 open_stop_price_expression_builder()
 expression_set_code(stop_price)
 click_order_form_save_button()
-inform_timeout("Done with stop.", 5)
+inform_timeout("Done with stop.", wait_between_phases)
 }
 
 ; set basket -----------------------------------------------------------------------
@@ -190,7 +193,7 @@ if (basket_htb != "")
   set_basket_hard_to_borrow_allowed_symbols(basket_htb)
 click_edit_basket_save_button()
 click_basket_manager_ok_button()
-inform_timeout("Done with basket.", 5)
+inform_timeout("Done with basket.", wait_between_phases)
 }
 
 ; set options -----------------------------------------------------------------
@@ -206,7 +209,7 @@ set_time_option(close_all_open_positions_trigger_point, close_all_open_positions
 set_time_option(place_OPG_orders_trigger_point, place_OPG_orders)
 set_check_box_confirm("PRIMU$ - Black", 1,enable_position_sizing_scheme, enable_position_sizing_scheme_check_box, enable_position_sizing_scheme_trigger_point)
 set_position_sizing_scheme(position_sizing)
-inform_timeout("Done with options.", 5)
+inform_timeout("Done with options.", wait_between_phases)
 }
 
 ; risk management --------------------------------------------------------------
@@ -215,7 +218,7 @@ if (do_risk_management)
 click_risk_management_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,enable_black_box_risk_management, enable_black_box_risk_management_check_box, enable_black_box_risk_management_trigger_point)
 set_maximum_order_shares(maximum_order_shares)
-inform_timeout("Done with risk management", 5)
+inform_timeout("Done with risk management", wait_between_phases)
 }
 
 ; launch rule ------------------------------------------------------------------
@@ -224,7 +227,7 @@ if (do_launch_rules)
 click_launch_rule_tab()
 set_check_box_confirm("PRIMU$ - Black", 1,enable_black_box_launch_rule, enable_black_box_launch_rule_check_box, enable_black_box_launch_rule_trigger_point)
 set_launch_rule(launch_rules)
-inform_timeout("Done with launch rules", 5)
+inform_timeout("Done with launch rules", wait_between_phases)
 }
 
 

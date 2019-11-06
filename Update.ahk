@@ -4,7 +4,6 @@
 
 #include launcher_clicks.ahk
 #include file_reader.ahk
-#include black_box_clicks.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
@@ -19,7 +18,6 @@
 
 #include file_reader.ahk
 #include files.ahk
-#include black_box_clicks.ahk ; DELETE
 
 #include expression_builder_clicks.ahk
 #include check_boxes.ahk
@@ -29,7 +27,7 @@
 #include box_name_builder.ahk
 #include gcc_compile.ahk
 #include launcher_control.ahk
-#include inform.ahk 
+#include inform.ahk
 #include order_form_clicks.ahk
 #include expression_builder_clicks.ahk
 
