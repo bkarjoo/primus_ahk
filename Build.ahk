@@ -22,6 +22,14 @@
 #include launch_rule_tab.ahk
 #include basket_manager.ahk
 
+basket_vars := {}
+entry_vars := {}
+general_settings_vars := {}
+launch_rules_vars := {}
+position_sizing_vars := {}
+stop_vars := {}
+target_vars := {}
+
 do_compile := True
 do_general_settings := True
 do_entry := True
@@ -36,25 +44,13 @@ do_validate_and_close := True
 
 wait_between_phases := 1
 
-; make sure required files are available
-confirm_file_exists("general_settings.c")
-confirm_file_exists("entry.c")
-confirm_file_exists("target.c")
-confirm_file_exists("stop.c")
-confirm_file_exists("time_options.c")
-confirm_file_exists("position_sizing.c")
-confirm_file_exists("basket.c")
-confirm_file_exists("launch_rules.c")
-confirm_file_exists("images/checked.PNG")
-confirm_file_exists("images/design.PNG")
-confirm_file_exists("images/launch_rule.PNG")
-confirm_file_exists("images/options.PNG")
-confirm_file_exists("images/risk_management.PNG")
-confirm_file_exists("images/symbols.PNG")
+confirm_image_search_files_exist()
+confirm_code_files_exist()
 
 if (do_compile)
   gcc_initial_compile()
 
+confirm_compiled_files_exist()
 load_compiled_rules()
 
 if (do_compile)
@@ -242,6 +238,7 @@ backup("stop", box_acronym)
 backup("target", box_acronym)
 backup("time_options", box_acronym)
 }
+; TODO confirm backup files
 
 ; TODO press save as
 if (do_validate_and_close)
