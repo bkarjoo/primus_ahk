@@ -1,6 +1,4 @@
-; Wait policy
-; manages the opening and closing of windows
-
+#include inform.ahk
 
 wait_only(window_name, wait_seconds)
 {
