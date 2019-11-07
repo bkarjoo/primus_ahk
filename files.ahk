@@ -1,10 +1,14 @@
 #include wait_policy.ahk
 
 updated(what, acronym) {
-  i_file := "rules/" . what . ".c"
+  i_file := what . ".c"
+  msgbox % i_file
   bu_file := "../bu/" . acronym . "/" . what . "_bu.i"
+  msgbox % bu_file
   FileGetTime, i_time, %i_file%
+  msgbox % i_time
   FileGetTime, bu_time, %bu_file%
+  msgbox % bu_time
   return i_time > bu_time
 }
 

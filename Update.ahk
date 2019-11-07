@@ -34,7 +34,6 @@
 #include box_vars_bu.ahk
 #include file_reader_bu.ahk
 
-ExitApp
 
 LoadFile("pp/general_settings.i")
 
