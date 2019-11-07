@@ -87,3 +87,10 @@ Click 634, 49
 ; diagnostic window isn't detected
 wait_only("PRIMU$ -- Diagnostics Window", 5)
 }
+
+open_new_bb_design()
+{
+  ; click new box
+  launcher_click_new_box()
+  wait_only("PRIMU$ - Black", 5)
+}

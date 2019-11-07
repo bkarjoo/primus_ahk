@@ -92,3 +92,8 @@ click_validate_and_close()
   if (err != 0)
     inform("click_validate_and_close doesn't yield to launcher")
 }
+
+finalize_build()
+{
+  click_validate_and_close()
+}
