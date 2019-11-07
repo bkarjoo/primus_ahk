@@ -119,11 +119,14 @@ target_open_new_order()
 set_order_form_order_type(target_order_type)
 set_order_form_order_side(target_order_side)
 set_order_form_destination(target_destination)
-if (target_order_type = "LIMIT") {
+if (target_order_type = "LIMIT")
+{
   set_order_form_TIF("TIF_DAY")
   open_limit_price_expression_builder()
   expression_set_code(target_limit)
-} else if (target_order_type = "PRIMUS_AEL") {
+}
+else if (target_order_type = "PRIMUS_AEL")
+{
   open_ael_trigger_expression_builder()
   expression_set_code(ael_trigger)
   open_ael_how_expression_builder()
@@ -136,9 +139,10 @@ if (target_order_type = "LIMIT") {
   set_check_box_confirm("PRIMU$ - Add/Edit Order Form", 1,ael_on_second, ael_on_second_check_box, ael_on_second_trigger_point)
   set_check_box_confirm("PRIMU$ - Add/Edit Order Form", 1,ael_on_bid_ask, ael_on_bid_check_box, ael_on_bid_trigger_point)
   set_check_box_confirm("PRIMU$ - Add/Edit Order Form", 1,ael_convert_to_stop, ael_convert_to_stop_check_box, ael_convert_to_stop_trigger_point)
-} else {
-  Msgbox, target order type %target_order_type% not supported
-  ExitApp
+}
+else
+{
+  inform("target order type not supported: " . target_order_type)
 }
 click_order_form_save_button()
 }

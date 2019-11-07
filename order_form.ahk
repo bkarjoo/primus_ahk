@@ -215,7 +215,7 @@ if (res = 0)
   inform("open_ael_price_increment_expression_builder failed.")
 }
 
-get_order_form_check_boxes(check_boxes)
+get_order_form_check_boxes(checkboxes)
 {
   checkboxes["aggregated_tif_check_box"] := [310, 290]
   checkboxes["calc_lmt_prc_durng_ord_plcmnt_check_box"] := [318, 343]

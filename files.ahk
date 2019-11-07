@@ -88,9 +88,8 @@ generic_code_parser(file_name, array)
       in_bracket_block := false
       ; assign bracket_block_content to a variable
 
-      a[name] := bracket_block_content
+      array[name] := bracket_block_content
       bracket_block_content := ""
-      msgbox % array[name]
     }
     if (line = "{") {
       in_bracket_block := true
