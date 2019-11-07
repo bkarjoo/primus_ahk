@@ -42,6 +42,7 @@ confirm_code_files_exist()
   confirm_file_exists("position_sizing.c")
   confirm_file_exists("basket.c")
   confirm_file_exists("launch_rules.c")
+  confirm_file_exists("risk_management.c")
 }
 
 confirm_compiled_files_exist()
@@ -54,6 +55,7 @@ confirm_compiled_files_exist()
   confirm_file_exists("pp/position_sizing.i")
   confirm_file_exists("pp/basket.i")
   confirm_file_exists("pp/launch_rules.i")
+  confirm_file_exists("pp/risk_management.i")
 }
 
 confirm_requisite_file_for_update(box_acronym)
@@ -68,6 +70,12 @@ confirm_requisite_file_for_update(box_acronym)
   confirm_file_exists(prefix . "/position_sizing_bu.i")
   confirm_file_exists(prefix . "/basket_bu.i")
   confirm_file_exists(prefix . "/launch_rules_bu.i")
+}
+
+confirm_requisite_files()
+{
+  confirm_image_search_files_exist()
+  confirm_code_files_exist()
 }
 
 generic_code_parser(file_name, array)
@@ -111,4 +119,27 @@ generic_code_parser(file_name, array)
       }
     }
   }
+}
+
+create_backup_folder()
+{
+  general_settings := {}
+  generic_code_parser("pp/general_settings.i", general_settings)
+  make_back_up_directory(general_settings["box_acronym"])
+}
+
+backup_compiled_files()
+{
+  gs := {}
+  generic_code_parser("pp/general_settings.i", gs)
+
+  backup("basket", gs["box_acronym"])
+  backup("entry", gs["box_acronym"])
+  backup("general_settings", gs["box_acronym"])
+  backup("launch_rules", gs["box_acronym"])
+  backup("position_sizing", gs["box_acronym"])
+  backup("stop", gs["box_acronym"])
+  backup("target", gs["box_acronym"])
+  backup("time_options", gs["box_acronym"])
+  backup("risk_management", gs["box_acronym"])
 }
