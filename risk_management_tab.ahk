@@ -1,6 +1,10 @@
 ; risk management --------------------------------------------------------------
-enable_black_box_risk_management_check_box := [15,50]
-enable_black_box_risk_management_trigger_point := [21,58]
+get_risk_management_tab_vars(vars)
+{
+  vars["enable_black_box_risk_management_check_box"] := [15,50]
+  vars["enable_black_box_risk_management_trigger_point"] := [21,58]
+}
+
 
 set_maximum_order_shares(shares)
 {
