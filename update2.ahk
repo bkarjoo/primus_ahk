@@ -134,6 +134,8 @@ backup_compiled_files_if_changed(ustate)
     backup("risk_management", box_acronym)
 }
 
+
+
 ; get acronym
 gs := {}
 generic_code_parser("general_settings.c", gs)
@@ -142,19 +144,22 @@ acronym := gs["box_acronym"]
 ; get update status
 ustate := {}
 get_code_files_update_status(acronym, ustate)
-
 updated_file_count := number_of_updated_files(ustate)
-msgbox % updated_file_count
+
 if (updated_file_count = 0)
   inform("There's no files to update.")
 compile_code_files_if_changed(ustate)
-backup_compiled_files_if_changed(ustate)
+
 find_box(box_acronym)
 
 ; update_general_settings(box_acronym)
-/*
+
 if (ustate["general_settings_updated"])
-  update_general_setting()
+  update_general_setting(box_acronym)
+
+msgbox done
+ExitApp
+/*
 if (ustate["entry_updated"])
   update_entry()
 if (ustate["target_updated"])
@@ -570,3 +575,4 @@ or launch_rules != launch_rules_bu)
 }
 
 click_validate_and_close()
+backup_compiled_files_if_changed(ustate)
