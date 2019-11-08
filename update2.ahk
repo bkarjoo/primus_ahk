@@ -55,15 +55,15 @@
 
 get_code_files_update_status(box_acronym, array)
 {
-  array["basket_updated"] := updated("basket", box_acronym)
-  array["entry_updated"] := updated("entry", box_acronym)
-  array["target_updated"] := updated("target", box_acronym)
-  array["stop_updated"] := updated("stop", box_acronym)
-  array["time_options_updated"] := updated("time_options", box_acronym)
-  array["general_settings_updated"] := updated("general_settings", box_acronym)
-  array["position_sizing_updated"] := updated("position_sizing", box_acronym)
-  array["risk_management_updated"] := updated("risk_management", box_acronym)
-  array["launch_rules_updated"] := updated("launch_rules", box_acronym)
+  array["basket_updated"] := file_updated(build_c_path("basket"), build_i_path("basket"))
+  array["entry_updated"] := file_updated(build_c_path("entry"), build_i_path("entry"))
+  array["target_updated"] := file_updated(build_c_path("target"), build_i_path("target"))
+  array["stop_updated"] := file_updated(build_c_path("stop"), build_i_path("stop"))
+  array["time_options_updated"] := file_updated(build_c_path("time_options"), build_i_path("time_options"))
+  array["general_settings_updated"] := file_updated(build_c_path("general_settings"), build_i_path("general_settings"))
+  array["position_sizing_updated"] := file_updated(build_c_path("position_sizing"), build_i_path("position_sizing"))
+  array["risk_management_updated"] := file_updated(build_c_path("risk_management"), build_i_path("risk_management"))
+  array["launch_rules_updated"] := file_updated(build_c_path("launch_rules"), build_i_path("launch_rules"))
 }
 
 number_of_updated_files(array)
@@ -134,74 +134,49 @@ backup_compiled_files_if_changed(ustate)
     backup("risk_management", box_acronym)
 }
 
+; get acronym
 gs := {}
 generic_code_parser("general_settings.c", gs)
 acronym := gs["box_acronym"]
-msgbox % acronym
+
+; get update status
 ustate := {}
 get_code_files_update_status(acronym, ustate)
+
 updated_file_count := number_of_updated_files(ustate)
 msgbox % updated_file_count
 if (updated_file_count = 0)
   inform("There's no files to update.")
 compile_code_files_if_changed(ustate)
 backup_compiled_files_if_changed(ustate)
+find_box(box_acronym)
+
+; update_general_settings(box_acronym)
+/*
+if (ustate["general_settings_updated"])
+  update_general_setting()
+if (ustate["entry_updated"])
+  update_entry()
+if (ustate["target_updated"])
+  update_target()
+if (ustate["stop_updated"])
+  update_stop()
+if (ustate["basket_updated"])
+  update_basket()
+if (ustate["time_options_updated"])
+  update_options()
+if (ustate["position_sizing_updated"])
+  update_position_sizing()
+if (ustate["risk_management_updated"])
+  update_risk_management()
+if (ustate["launch_rules_updated"])
+  update_launch_rules()
+*/
+finalize_build()
+
+
 ;-------------------------------------------------------------------------------------------
 ExitApp
-
-
-
-
-
-
-
-; note general settings could've been changed so reload it
-LoadFile("pp/general_settings.i")
-LoadFile("pp/basket.i")
-LoadFile("pp/entry.i")
-LoadFile("pp/launch_rules.i")
-LoadFile("pp/position_sizing.i")
-LoadFile("pp/stop.i")
-LoadFile("pp/target.i")
-LoadFile("pp/time_options.i")
-
-commit_message := box_acronym . " " . box_name . " L: " . launch_rule_name . " B: " . basket_description . " D: " .  black_box_description
-
-if (basket_updated or entry_updated or target_updated or stop_updated or time_options_updated or general_settings_updated or position_sizing_updated)
-{
-  clipboard_paste("git add -A")
-  clipboard_paste("git commit -m " . """" . commit_message . """")
-}
-; clipboard_paste("git push")
-; InputBox, response, press a key when done pushing...
-
-; push the bu branch as well
-clipboard_paste("cd ..\bu")
-clipboard_paste("git add -A")
-commit_message := "-"
-clipboard_paste("git commit -m " . """" . commit_message . """")
-
-; clipboard_paste("git push")
-; InputBox, response, press a key when done pushing...
-
-clipboard_paste("cd ..\" . box_acronym)
-
-;-----------------------------------------------------------------------------------------------
-; load the box and then ask if it was loaded properly
-OpenBox(box_acronym)
-Click, Left, 1080, 710
-WinWait, PRIMU$ - Black Box Design
-; cancel out of box
-; sleep, 100
-; Click, Left, 75, 943
-sleep, 100
-InputBox, response, Question,  Make sure the box to update is loaded ready? (enter y or q)
-If (response = "q")
-  ExitApp
-;-----------------------------------------------------------------------------------------------
-
-; ClickEditBox()
-activate_and_wait_only("PRIMU$ - Black", 5)
 
 ; box name and description -----------------------------------------------------
 if (box_name != box_name_bu or box_acronym != box_acronym_bu)

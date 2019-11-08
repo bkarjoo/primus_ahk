@@ -1,6 +1,28 @@
 #include wait_policy.ahk
 
-updated(what, acronym) {
+file_updated(c_path, i_path)
+{
+FileGetTime, p1time, %c_path%
+FilegetTime, p2time, %i_path%
+return p1time > p2time
+}
+
+; code_component = entry, target, stop, etc...
+build_c_path(code_component)
+{
+return code_component . ".c"
+}
+build_i_path(code_component)
+{
+return "pp/" code_component . ".i"
+}
+build_bu_path(code_component, acronym)
+{
+return "../bu/" . acronym . "/" . code_component . "_bu.i"
+}
+
+updated(code_component, acronym) {
+
   i_file := what . ".c"
   msgbox % i_file
   bu_file := "../bu/" . acronym . "/" . what . "_bu.i"
