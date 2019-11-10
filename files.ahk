@@ -1,4 +1,5 @@
 #include wait_policy.ahk
+#include clipboard_paste.ahk
 
 file_updated(c_path, i_path)
 {
@@ -24,13 +25,9 @@ return "../bu/" . acronym . "/" . code_component . "_bu.i"
 updated(code_component, acronym) {
 
   i_file := what . ".c"
-  msgbox % i_file
   bu_file := "../bu/" . acronym . "/" . what . "_bu.i"
-  msgbox % bu_file
   FileGetTime, i_time, %i_file%
-  msgbox % i_time
   FileGetTime, bu_time, %bu_file%
-  msgbox % bu_time
   return i_time > bu_time
 }
 
@@ -147,6 +144,13 @@ generic_code_parser(file_name, array)
   }
 }
 
+
+make_back_up_directory(box_acronym)
+{
+  bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
+  clipboard_paste(bu_md_cmd)
+}
+
 create_backup_folder()
 {
   general_settings := {}
@@ -168,4 +172,63 @@ backup_compiled_files()
   backup("target", gs["box_acronym"])
   backup("time_options", gs["box_acronym"])
   backup("risk_management", gs["box_acronym"])
+}
+
+backup_compiled_files_if_changed(ustate, box_acronym)
+{
+  if (ustate["basket_updated"])
+    backup("basket", box_acronym)
+  if (ustate["entry_updated"])
+    backup("entry", box_acronym)
+  if (ustate["launch_rules_updated"])
+    backup("launch_rules", box_acronym)
+  if (ustate["position_sizing_updated"])
+    backup("position_sizing", box_acronym)
+  if (ustate["stop_updated"])
+    backup("stop", box_acronym)
+  if (ustate["target_updated"])
+    backup("target", box_acronym)
+  if (ustate["general_settings_updated"])
+    backup("general_settings", box_acronym)
+  if (ustate["time_options_updated"])
+    backup("time_options", box_acronym)
+  if (ustate["risk_management_updated"])
+    backup("risk_management", box_acronym)
+}
+
+number_of_updated_files(array)
+{
+  i := 0
+  if (array["basket_updated"])
+    i := i + 1
+  if (array["entry_updated"])
+    i := i + 1
+  if (array["target_updated"])
+    i := i + 1
+  if (array["stop_updated"])
+    i := i + 1
+  if (array["time_options_updated"])
+    i := i + 1
+  if (array["general_settings_updated"])
+    i := i + 1
+  if (array["position_sizing_updated"])
+    i := i + 1
+  if (array["risk_management_updated"])
+    i := i + 1
+  if (array["launch_rules_updated"])
+    i := i + 1
+  return i
+}
+
+get_code_files_update_status(box_acronym, array)
+{
+  array["basket_updated"] := file_updated(build_c_path("basket"), build_i_path("basket"))
+  array["entry_updated"] := file_updated(build_c_path("entry"), build_i_path("entry"))
+  array["target_updated"] := file_updated(build_c_path("target"), build_i_path("target"))
+  array["stop_updated"] := file_updated(build_c_path("stop"), build_i_path("stop"))
+  array["time_options_updated"] := file_updated(build_c_path("time_options"), build_i_path("time_options"))
+  array["general_settings_updated"] := file_updated(build_c_path("general_settings"), build_i_path("general_settings"))
+  array["position_sizing_updated"] := file_updated(build_c_path("position_sizing"), build_i_path("position_sizing"))
+  array["risk_management_updated"] := file_updated(build_c_path("risk_management"), build_i_path("risk_management"))
+  array["launch_rules_updated"] := file_updated(build_c_path("launch_rules"), build_i_path("launch_rules"))
 }

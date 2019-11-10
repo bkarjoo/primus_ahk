@@ -4,7 +4,7 @@
 is_checked(checkbox_point)
 {
   sleep, 100
-  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, checked.PNG
+  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, images/checked.PNG
   return (ErrorLevel = 0)
 }
 

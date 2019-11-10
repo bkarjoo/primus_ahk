@@ -30,14 +30,20 @@ set_launch_rules()
   set_launch_rule(lr["launch_rules"])
 }
 
-update_launch_rules()
+update_launch_rules(acronym)
 {
-  lr := {}
-  generic_code_parser("pp/launch_rules.i", lr)
-  vars := {}
-  get_launch_rule_tab_vars(vars)
+  i_path := build_i_path("launch_rules")
+  bu_path := build_bu_path("launch_rules", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+  lr_vars := {}
+  get_launch_rule_tab_vars(lr_vars)
 
   click_launch_rule_tab()
-  set_check_box_confirm("PRIMU$ - Black", 1,lr["enable_black_box_launch_rule"], vars["enable_black_box_launch_rule_check_box"], vars["enable_black_box_launch_rule_trigger_point"])
-  set_launch_rule(lr["launch_rules"])
+  set_check_box_confirm("PRIMU$ - Black", 1,i_vars["enable_black_box_launch_rule"], lr_vars["enable_black_box_launch_rule_check_box"], lr_vars["enable_black_box_launch_rule_trigger_point"])
+  if(i_vars["launch_rules"] != bu_vars["launch_rules"])
+    set_launch_rule(i_vars["launch_rules"])
 }
