@@ -15,11 +15,6 @@ gcc_initial_compile()
   clipboard_paste("gcc risk_management.c -E -o pp/risk_management.i -P ")
 }
 
-remove_git_dir()
-{
-  clipboard_paste("del /f /s /q .git 1>nul")
-  clipboard_paste("rmdir /s /q .git")
-}
 
 
 compile_code_files()
@@ -49,3 +44,33 @@ compile_code_files_if_changed(ustate)
   if (ustate["risk_management_updated"])
     clipboard_paste("gcc risk_management.c -E -o pp/risk_management.i -P ")
 }
+
+git_clone(box_name, branch_name)
+{
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  repo_path := creds["github"] . box_name . ".git"
+  cmd := "git.exe clone --single-branch --branch " . branch_name . " " . repo_path
+  RunWait, %cmd%,,hide
+}
+
+
+remove_git_dir(box_name)
+{
+
+  del_cmd_2 := "del /f /s /q " . box_name . "\.git 1>nul"
+  rm_cmd := "rmdir /s /q " . box_name . "\.git"
+  del_cmd := "del " . box_name . "/S /Q"
+  rm_cmd_2 := "rmdir " . box_name
+
+
+  RunWait, cmd.exe /c %del_cmd_2%,,hide
+  RunWait, cmd.exe /c %rm_cmd%,,hide
+  RunWait, cmd.exe /c %del_cmd%,,hide
+  RunWait, cmd.exe /c %rm_cmd_2%,,hide
+}
+
+git_clone("emos", "master")
+msgbox, emos downloaded
+remove_git_dir("emos")
+msgbox, emos deleted

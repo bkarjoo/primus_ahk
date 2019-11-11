@@ -22,7 +22,7 @@ update(box_name, instruction)
 Loop
 {
   ; atempt to fetch file from jobs folder
-  file_name := get_top_file()
+  file_name := get_top_file("jobs")
   if (file_name = "")
   {
     wait_until_with_message(60, "Found no files in jobs folder. Will check again in a minute")
