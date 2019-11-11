@@ -37,7 +37,9 @@ if (do_compile_code_files)
   compile_code_files()
 if (do_create_backup_folder)
   create_backup_folder()
+
 open_new_bb_design()
+
 if (do_general_settings)
   set_general_setting()
 if (do_entry)

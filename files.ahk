@@ -232,3 +232,56 @@ get_code_files_update_status(box_acronym, array)
   array["risk_management_updated"] := file_updated(build_c_path("risk_management"), build_i_path("risk_management"))
   array["launch_rules_updated"] := file_updated(build_c_path("launch_rules"), build_i_path("launch_rules"))
 }
+
+read_lines(file_name)
+{
+  FileRead, LoadedText, %file_name%
+  oText := StrSplit(LoadedText, "`n")
+  ;Loop, % oText.MaxIndex()
+  ;  MsgBox, % oText[A_Index]
+  return oText
+}
+
+list_files(path)
+{
+    files =
+    Loop % path . "\\*.*"
+    {
+      files = %files%`n%A_LoopFileName%
+    }
+    return files
+}
+
+get_top_file(path)
+{
+  Loop % path . "\\*.*"
+  {
+    return A_LoopFileName
+  }
+  return
+}
+
+load_csv_dictionary(file_path, output_array)
+{
+  Loop, Read, %file_path%
+  {
+    Loop, Parse, A_LoopReadLine, CSV
+    {
+      Field%A_Index% := A_LoopField
+      output_array[Field1] := Field2
+    }
+  }
+}
+
+; read the csv into a key value associative array
+load_jobs(file_path, output_array)
+{
+  Loop, Read, %file_path%
+  {
+    Loop, Parse, A_LoopReadLine, CSV
+    {
+      Field%A_Index% := A_LoopField
+      output_array[Field1] := Field2
+    }
+  }
+}
