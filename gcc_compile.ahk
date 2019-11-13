@@ -16,8 +16,6 @@ gcc_initial_compile()
   clipboard_paste("gcc risk_management.c -E -o pp/risk_management.i -P ")
 }
 
-
-
 compile_code_files()
 {
   gcc_initial_compile()
@@ -74,4 +72,5 @@ compile_code_folder(code_folder)
   run_cmd("gcc " . code_folder . "\stop.c -E -o " . code_folder . "\stop.i -P")
   run_cmd("gcc " . code_folder . "\target.c -E -o " . code_folder . "\target.i -P")
   run_cmd("gcc " . code_folder . "\time_options.c -E -o " . code_folder . "\time_options.i -P")
+  run_cmd("gcc " . code_folder . "\risk_management.c -E -o " . code_folder . "\risk_management.i -P")
 }

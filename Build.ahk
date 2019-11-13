@@ -59,4 +59,4 @@ if (do_launch_rules)
 if (do_backup)
   backup_compiled_files()
 
-finalize_build()
+click_validate_and_close()

@@ -172,7 +172,7 @@ get_design_tab_checkboxes(checkbox_array)
   checkbox_array["verify_code_during_validate_procedure_trigger_point"] := [533,919]
 }
 
-set_general_settings_helper(general_settings)
+set_general_settings_helper(i_vars)
 {
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
@@ -354,7 +354,7 @@ update_entry(acronym)
 }
 
 set_target_helper(target)
-{
+{ 
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
