@@ -24,12 +24,11 @@
 #include code_parser.ahk
 #include box_builder.ahk
 
-
 update_box(box_name, box_version)
 {
-  update_general_setting(box_name)
-  inform(A_LineNumber)
-  update_entry(box_name)
+  ; assumption box is downloaded and compiled
+  ; update_general_setting_helper(get_local_compiled(box_name, "general_settings"),get_backup_compiled(box_name, "general_settings"))
+  update_entry_helper(get_local_compiled(box_name, "entry"),get_backup_compiled(box_name, "entry"))
   inform(A_LineNumber)
   update_target(box_name)
   inform(A_LineNumber)
@@ -46,6 +45,9 @@ update_box(box_name, box_version)
   click_validate_and_close()
   inform(A_LineNumber)
 }
+
+
+
 
 break_down_launch_rule(box_name)
 {
@@ -102,6 +104,9 @@ process_code(box_name, box_version)
   inform(A_LineNumber)
 }
 
+; process_code("emos", "master")
+; msgbox done
+
 process_instruction(box, version)
 {
     ; pull the code for the box
@@ -116,6 +121,7 @@ process_instruction(box, version)
     inform(A_LineNumber)
 }
 
+remove_git_dir("emos")
 ExitApp
 
 ; loop load files

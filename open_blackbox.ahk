@@ -40,7 +40,7 @@ open_blackbox_click_first_row()
 open_blackbox_click_open()
 {
   Click, Left, 1080, 710
-  err := wait_only("PRIMU$ - B", 5)
+  err := wait_only("PRIMU$ - B", 60)
   if (err != 0)
     inform("open_blackbox_click_open failed")
 }
