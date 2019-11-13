@@ -9,10 +9,8 @@ click_choose_basket()
     inform("Basket didn't open.")
 }
 
-set_basket()
+set_basket_helper(basket)
 {
-  basket := {}
-  generic_code_parser("pp/basket.i", basket)
   checkboxes := {}
   get_edit_basket_checkboxes(checkboxes)
 
@@ -36,15 +34,15 @@ set_basket()
   click_basket_manager_ok_button()
 }
 
-update_basket(acronym)
+set_basket()
 {
-  i_path := build_i_path("basket")
-  bu_path := build_bu_path("basket", acronym)
+  basket := {}
+  generic_code_parser("pp/basket.i", basket)
+  set_basket_helper(basket)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+update_basket_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_edit_basket_checkboxes(checkboxes)
 
@@ -52,7 +50,7 @@ update_basket(acronym)
   click_choose_basket()
   click_basket_manager_private_tab()
 
-  ; TODO find confirm the basket loaded matches, what if no baskets return 
+  ; TODO find confirm the basket loaded matches, what if no baskets return
   open_existing_basket(acronym)
 
   if(i_vars["basket_name"] != bu_vars["basket_name"])
@@ -75,4 +73,17 @@ update_basket(acronym)
 
   click_edit_basket_save_button()
   click_basket_manager_ok_button()
+}
+
+update_basket(acronym)
+{
+  i_path := build_i_path("basket")
+  bu_path := build_bu_path("basket", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+  
+  update_basket_helper(i_vars, bu_vars)
 }

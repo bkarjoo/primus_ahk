@@ -55,12 +55,8 @@ set_position_sizing_scheme(code)
   sleep, 100
 }
 
-set_options()
+set_options_helper(timeo, pos)
 {
-  timeo := {}
-  generic_code_parser("pp/time_options.i", timeo)
-  pos := {}
-  generic_code_parser("pp/position_sizing.i", pos)
   vars := {}
   get_options_variables(vars)
 
@@ -76,23 +72,17 @@ set_options()
   set_position_sizing_scheme(pos["position_sizing"])
 }
 
-update_options(acronym)
+set_options()
 {
-  ti_path := build_i_path("time_options")
-  tbu_path := build_bu_path("time_options", acronym)
-  pi_path := build_i_path("position_sizing")
-  pbu_path := build_bu_path("position_sizing", acronym)
+  timeo := {}
+  generic_code_parser("pp/time_options.i", timeo)
+  pos := {}
+  generic_code_parser("pp/position_sizing.i", pos)
+  set_options_helper(timeo, pos)
+}
 
-  ti_vars := {}
-  tbu_vars := {}
-  pi_vars := {}
-  pbu_vars := {}
-
-  generic_code_parser(ti_path, ti_vars)
-  generic_code_parser(tbu_path, tbu_vars)
-  generic_code_parser(pi_path, pi_vars)
-  generic_code_parser(pbu_path, pbu_vars)
-
+update_options_helper(ti_vars, pi_vars)
+{
   ot_vars := {} ; option tab vars (location of text boxes and check boxes)
   get_options_variables(ot_vars)
 
@@ -115,4 +105,24 @@ update_options(acronym)
   set_check_box_confirm("PRIMU$ - Black", 1,pi_vars["enable_position_sizing_scheme"], ot_vars["enable_position_sizing_scheme_check_box"], ot_vars["enable_position_sizing_scheme_trigger_point"])
   if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])
     set_position_sizing_scheme(pi_vars["position_sizing"])
+}
+
+update_options(acronym)
+{
+  ti_path := build_i_path("time_options")
+  tbu_path := build_bu_path("time_options", acronym)
+  pi_path := build_i_path("position_sizing")
+  pbu_path := build_bu_path("position_sizing", acronym)
+
+  ti_vars := {}
+  tbu_vars := {}
+  pi_vars := {}
+  pbu_vars := {}
+
+  generic_code_parser(ti_path, ti_vars)
+  generic_code_parser(tbu_path, tbu_vars)
+  generic_code_parser(pi_path, pi_vars)
+  generic_code_parser(pbu_path, pbu_vars)
+
+  update_options_helper(ti_vars, pi_vars)
 }

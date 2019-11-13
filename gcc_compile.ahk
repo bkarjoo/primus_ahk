@@ -1,5 +1,6 @@
 #include clipboard_paste.ahk
 #include files.ahk
+#include cmd.ahk
 
 gcc_initial_compile()
 {
@@ -45,32 +46,32 @@ compile_code_files_if_changed(ustate)
     clipboard_paste("gcc risk_management.c -E -o pp/risk_management.i -P ")
 }
 
+
+
 git_clone(box_name, branch_name)
 {
   creds := {}
   load_csv_dictionary("secret.csv", creds)
   repo_path := creds["github"] . box_name . ".git"
-  cmd := "git.exe clone --single-branch --branch " . branch_name . " " . repo_path
-  RunWait, %cmd%,,hide
+  run_cmd("git.exe clone --single-branch --branch " . branch_name . " " . repo_path)
 }
-
 
 remove_git_dir(box_name)
 {
-
-  del_cmd_2 := "del /f /s /q " . box_name . "\.git 1>nul"
-  rm_cmd := "rmdir /s /q " . box_name . "\.git"
-  del_cmd := "del " . box_name . "/S /Q"
-  rm_cmd_2 := "rmdir " . box_name
-
-
-  RunWait, cmd.exe /c %del_cmd_2%,,hide
-  RunWait, cmd.exe /c %rm_cmd%,,hide
-  RunWait, cmd.exe /c %del_cmd%,,hide
-  RunWait, cmd.exe /c %rm_cmd_2%,,hide
+  run_cmd("del /f /s /q " . box_name . "\.git 1>nul")
+  run_cmd("rmdir /s /q " . box_name . "\.git")
+  run_cmd("del " . box_name . "/S /Q")
+  run_cmd("rmdir " . box_name)
 }
 
-git_clone("emos", "master")
-msgbox, emos downloaded
-remove_git_dir("emos")
-msgbox, emos deleted
+compile_code_folder(code_folder)
+{
+  run_cmd("gcc " . code_folder . "\basket.c -E -o " . code_folder . "\basket.i -P")
+  run_cmd("gcc " . code_folder . "\entry.c -E -o " . code_folder . "\entry.i -P")
+  run_cmd("gcc " . code_folder . "\general_settings.c -E -o " . code_folder . "\general_settings.i -P")
+  run_cmd("gcc " . code_folder . "\launch_rules.c -E -o " . code_folder . "\launch_rules.i -P")
+  run_cmd("gcc " . code_folder . "\position_sizing.c -E -o " . code_folder . "\position_sizing.i -P")
+  run_cmd("gcc " . code_folder . "\stop.c -E -o " . code_folder . "\stop.i -P")
+  run_cmd("gcc " . code_folder . "\target.c -E -o " . code_folder . "\target.i -P")
+  run_cmd("gcc " . code_folder . "\time_options.c -E -o " . code_folder . "\time_options.i -P")
+}
