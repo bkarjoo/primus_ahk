@@ -39,10 +39,16 @@ confirm_file_exists(path)
     inform(msg)
 }
 
-backup(file_name, acronym)
+backup(file_name, acronym, i_folder)
 {
-  source := "pp/" . file_name . ".i"
+
+  source := ""
+  if (i_folder = "")
+    source := acronym . "/" . file_name . ".i"
+  else
+    source := i_folder . "/" . file_name . ".i"
   target := "../bu/" . acronym . "/" . file_name . "_bu.i"
+
   FileCopy, %source%, %target%, 1
 }
 
@@ -159,46 +165,46 @@ create_backup_folder()
   create_backup_folder_helper(general_settings["box_acronym"])
 }
 
-backup_compiled_files_helper(box_acronym)
+backup_compiled_files_helper(box_acronym, i_folder)
 {
-  backup("basket", "box_acronym")
-  backup("entry", "box_acronym")
-  backup("general_settings", "box_acronym")
-  backup("launch_rules", "box_acronym")
-  backup("position_sizing", "box_acronym")
-  backup("stop", "box_acronym")
-  backup("target", "box_acronym")
-  backup("time_options", "box_acronym")
-  backup("risk_management", "box_acronym")
+  backup("basket", box_acronym, i_folder)
+  backup("entry", box_acronym, i_folder)
+  backup("general_settings", box_acronym, i_folder)
+  backup("launch_rules", box_acronym, i_folder)
+  backup("position_sizing", box_acronym, i_folder)
+  backup("stop", box_acronym, i_folder)
+  backup("target", box_acronym, i_folder)
+  backup("time_options", box_acronym, i_folder)
+  backup("risk_management", box_acronym, i_folder)
 }
 
 backup_compiled_files()
 {
   gs := {}
   generic_code_parser("pp/general_settings.i", gs)
-  backup_compiled_files_helper(gs["box_acronym"])
+  backup_compiled_files_helper(gs["box_acronym"], "pp")
 }
 
 backup_compiled_files_if_changed(ustate, box_acronym)
 {
   if (ustate["basket_updated"])
-    backup("basket", box_acronym)
+    backup("basket", box_acronym, "pp")
   if (ustate["entry_updated"])
-    backup("entry", box_acronym)
+    backup("entry", box_acronym, "pp")
   if (ustate["launch_rules_updated"])
-    backup("launch_rules", box_acronym)
+    backup("launch_rules", box_acronym, "pp")
   if (ustate["position_sizing_updated"])
-    backup("position_sizing", box_acronym)
+    backup("position_sizing", box_acronym, "pp")
   if (ustate["stop_updated"])
-    backup("stop", box_acronym)
+    backup("stop", box_acronym, "pp")
   if (ustate["target_updated"])
-    backup("target", box_acronym)
+    backup("target", box_acronym, "pp")
   if (ustate["general_settings_updated"])
-    backup("general_settings", box_acronym)
+    backup("general_settings", box_acronym, "pp")
   if (ustate["time_options_updated"])
-    backup("time_options", box_acronym)
+    backup("time_options", box_acronym, "pp")
   if (ustate["risk_management_updated"])
-    backup("risk_management", box_acronym)
+    backup("risk_management", box_acronym, "pp")
 }
 
 number_of_updated_files(array)

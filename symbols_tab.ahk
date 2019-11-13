@@ -4,7 +4,7 @@
 click_choose_basket()
 {
   MouseClick, Left, 918, 64
-  err := wait_only("Basket Manager", 10)
+  err := wait_only("Basket Manager", 60)
   if (err != 0)
     inform("Basket didn't open.")
 }
@@ -84,6 +84,6 @@ update_basket(acronym)
   generic_code_parser(i_path, i_vars)
   bu_vars := {}
   generic_code_parser(bu_path, bu_vars)
-  
+
   update_basket_helper(i_vars, bu_vars)
 }

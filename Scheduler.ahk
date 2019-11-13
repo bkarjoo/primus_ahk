@@ -5,6 +5,8 @@
 #include expression_builder.ahk
 #include basket_manager.ahk
 #include edit_basket.ahk
+#include save_blackbox.ahk
+#include information.ahk
 ; tabs
 #include design_tab.ahk
 #include symbols_tab.ahk
@@ -20,34 +22,8 @@
 #include wait_policy.ahk
 #include inform.ahk
 #include code_parser.ahk
+#include box_builder.ahk
 
-build_box(box_name)
-{
-  create_backup_folder_helper(box_name)
-  inform(A_LineNumber)
-  open_new_bb_design()
-  inform(A_LineNumber)
-  set_general_settings_helper(box_name)
-  inform(A_LineNumber)
-  set_entry()
-  inform(A_LineNumber)
-  set_target()
-  inform(A_LineNumber)
-  set_stop()
-  inform(A_LineNumber)
-  set_basket()
-  inform(A_LineNumber)
-  set_options()
-  inform(A_LineNumber)
-  set_risk_management()
-  inform(A_LineNumber)
-  set_launch_rules()
-  inform(A_LineNumber)
-  backup_compiled_files()
-  inform(A_LineNumber)
-  finalize_build()
-  inform(A_LineNumber)
-}
 
 update_box(box_name, box_version)
 {
@@ -119,7 +95,7 @@ process_code(box_name, box_version)
   if (found)
     update_box(box_name, box_version)
   else
-    build_box(box_name)
+    build_local_box(box_name)
   inform(A_LineNumber)
   launch_rules := break_down_launch_rule(box_name)
   run_launch_rules(launch_rules)
@@ -139,6 +115,8 @@ process_instruction(box, version)
     remove_git_dir(box)
     inform(A_LineNumber)
 }
+
+ExitApp
 
 ; loop load files
 Loop
