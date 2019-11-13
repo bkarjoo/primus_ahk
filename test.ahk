@@ -1,2 +1,14 @@
 
-msgbox, % SubStr("Behrooz", 1, 1)
+myfunc()
+{
+msgbox hello anonymous
+}
+
+myfunc(name)
+{
+msgbox hello %name%
+}
+
+
+myfunc()
+myfunc("behrooz")

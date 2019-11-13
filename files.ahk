@@ -1,5 +1,6 @@
 #include wait_policy.ahk
 #include clipboard_paste.ahk
+#include cmd.ahk
 
 file_updated(c_path, i_path)
 {
@@ -145,33 +146,37 @@ generic_code_parser(file_name, array)
 }
 
 
-make_back_up_directory(box_acronym)
+create_backup_folder_helper(box_acronym)
 {
   bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
-  clipboard_paste(bu_md_cmd)
+  run_cmd(bu_md_cmd)
 }
 
 create_backup_folder()
 {
   general_settings := {}
   generic_code_parser("pp/general_settings.i", general_settings)
-  make_back_up_directory(general_settings["box_acronym"])
+  create_backup_folder_helper(general_settings["box_acronym"])
+}
+
+backup_compiled_files_helper(box_acronym)
+{
+  backup("basket", "box_acronym")
+  backup("entry", "box_acronym")
+  backup("general_settings", "box_acronym")
+  backup("launch_rules", "box_acronym")
+  backup("position_sizing", "box_acronym")
+  backup("stop", "box_acronym")
+  backup("target", "box_acronym")
+  backup("time_options", "box_acronym")
+  backup("risk_management", "box_acronym")
 }
 
 backup_compiled_files()
 {
   gs := {}
   generic_code_parser("pp/general_settings.i", gs)
-
-  backup("basket", gs["box_acronym"])
-  backup("entry", gs["box_acronym"])
-  backup("general_settings", gs["box_acronym"])
-  backup("launch_rules", gs["box_acronym"])
-  backup("position_sizing", gs["box_acronym"])
-  backup("stop", gs["box_acronym"])
-  backup("target", gs["box_acronym"])
-  backup("time_options", gs["box_acronym"])
-  backup("risk_management", gs["box_acronym"])
+  backup_compiled_files_helper(gs["box_acronym"])
 }
 
 backup_compiled_files_if_changed(ustate, box_acronym)
@@ -284,4 +289,11 @@ load_jobs(file_path, output_array)
       output_array[Field1] := Field2
     }
   }
+}
+
+move_completed_job_file(file_name)
+{
+  source_path := "jobs\" . file_name
+  dest_path := "done\" . file_name
+  FileMove, %source_path%, %dest_path%, 1
 }

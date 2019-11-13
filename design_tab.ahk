@@ -145,7 +145,6 @@ stop_open_existing_order()
 
 get_design_tab_checkboxes(checkbox_array)
 {
-  ; checkbox locations -----------------------------------------------------------
   checkbox_array["permit_backtesting_check_box"] := [616, 120]
   checkbox_array["enter_on_last_check_box"] := [760, 69]
   checkbox_array["enter_on_bid_check_box"] := [760, 94]
@@ -173,12 +172,8 @@ get_design_tab_checkboxes(checkbox_array)
   checkbox_array["verify_code_during_validate_procedure_trigger_point"] := [533,919]
 }
 
-
-
-set_general_setting()
+set_general_settings_helper(general_settings)
 {
-  general_settings := {}
-  generic_code_parser("pp/general_settings.i", general_settings)
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
   bname := build_box_name(i_vars["box_name"], i_vars["box_acronym"])
@@ -199,16 +194,15 @@ set_general_setting()
   set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
 }
 
-update_general_setting(acronym)
+set_general_setting()
 {
-  i_path := build_i_path("general_settings")
-  bu_path := build_bu_path("general_settings", acronym)
+  general_settings := {}
+  generic_code_parser("pp/general_settings.i", general_settings)
+  set_general_settings_helper(general_settings)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
-
+update_general_setting_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
 
@@ -244,10 +238,21 @@ update_general_setting(acronym)
   set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
 }
 
-set_entry()
+update_general_setting(acronym)
 {
-  entry := {}
-  generic_code_parser("pp/entry.i", entry)
+  i_path := build_i_path("general_settings")
+  bu_path := build_bu_path("general_settings", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+
+  update_general_setting_helper(i_vars, bu_vars)
+}
+
+set_entry_helper(entry)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -276,15 +281,16 @@ set_entry()
   click_order_form_save_button()
 }
 
-update_entry(acronym)
+set_entry()
 {
-  i_path := build_i_path("entry")
-  bu_path := build_bu_path("entry", acronym)
+  entry := {}
+  generic_code_parser("pp/entry.i", entry)
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+  set_entry_helper(entry)
+}
+
+update_entry_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -334,10 +340,21 @@ update_entry(acronym)
   }
 }
 
-set_target()
+update_entry(acronym)
 {
-  target := {}
-  generic_code_parser("pp/target.i", target)
+  i_path := build_i_path("entry")
+  bu_path := build_bu_path("entry", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+
+  update_entry_helper(i_vars, bu_vars)
+}
+
+set_target_helper(target)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -373,15 +390,15 @@ set_target()
   click_order_form_save_button()
 }
 
-update_target(acronym)
+set_target()
 {
-  i_path := build_i_path("target")
-  bu_path := build_bu_path("target", acronym)
+  target := {}
+  generic_code_parser("pp/target.i", target)
+  set_target_helper(target)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+update_target_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -441,10 +458,21 @@ update_target(acronym)
   click_order_form_save_button()
 }
 
-set_stop()
+update_target(acronym)
 {
-  stop := {}
-  generic_code_parser("pp/stop.i", stop)
+  i_path := build_i_path("target")
+  bu_path := build_bu_path("target", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+
+  update_target_helper(i_vars, bu_vars)
+}
+
+set_stop_helper(stop)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
   stop_open_new_order()
@@ -468,15 +496,15 @@ set_stop()
   click_order_form_save_button()
 }
 
-update_stop(acronym )
+set_stop()
 {
-  i_path := build_i_path("stop")
-  bu_path := build_bu_path("stop", acronym)
+  stop := {}
+  generic_code_parser("pp/stop.i", stop)
+  set_stop_helper(stop)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+update_stop_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -519,4 +547,16 @@ update_stop(acronym )
     expression_set_code(i_vars["stop_price"])
   }
   click_order_form_save_button()
+}
+
+update_stop(acronym)
+{
+  i_path := build_i_path("stop")
+  bu_path := build_bu_path("stop", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+  update_stop_helper(i_vars, bu_vars)
 }

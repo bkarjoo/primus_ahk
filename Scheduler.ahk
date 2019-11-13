@@ -1,24 +1,146 @@
+; windows
+#include launcher_control.ahk
+#include black_box_design.ahk
+#include order_form.ahk
+#include expression_builder.ahk
+#include basket_manager.ahk
+#include edit_basket.ahk
+; tabs
+#include design_tab.ahk
+#include symbols_tab.ahk
+#include options_tab.ahk
+#include risk_management_tab.ahk
+#include launch_rule_tab.ahk
+; utilities
+#include box_name_builder.ahk
 #include files.ahk
+#include gcc_compile.ahk
+#include check_boxes.ahk
 #include box_finder.ahk
 #include wait_policy.ahk
 #include inform.ahk
+#include code_parser.ahk
 
-build(box_name)
+build_box(box_name)
 {
-  msgbox % "Hello wanna build" . box_name
+  create_backup_folder_helper(box_name)
+  inform(A_LineNumber)
+  open_new_bb_design()
+  inform(A_LineNumber)
+  set_general_settings_helper(box_name)
+  inform(A_LineNumber)
+  set_entry()
+  inform(A_LineNumber)
+  set_target()
+  inform(A_LineNumber)
+  set_stop()
+  inform(A_LineNumber)
+  set_basket()
+  inform(A_LineNumber)
+  set_options()
+  inform(A_LineNumber)
+  set_risk_management()
+  inform(A_LineNumber)
+  set_launch_rules()
+  inform(A_LineNumber)
+  backup_compiled_files()
+  inform(A_LineNumber)
+  finalize_build()
+  inform(A_LineNumber)
 }
 
-update(box_name, instruction)
+update_box(box_name, box_version)
 {
-  msgbox % "Hello wanna update" . box_name
+  update_general_setting(box_name)
+  inform(A_LineNumber)
+  update_entry(box_name)
+  inform(A_LineNumber)
+  update_target(box_name)
+  inform(A_LineNumber)
+  update_stop(box_name)
+  inform(A_LineNumber)
+  update_basket(box_name)
+  inform(A_LineNumber)
+  update_options(box_name)
+  inform(A_LineNumber)
+  update_risk_management(box_name)
+  inform(A_LineNumber)
+  update_launch_rules(box_name)
+  inform(A_LineNumber)
+  click_validate_and_close()
+  inform(A_LineNumber)
 }
 
-; program will keep going until stopped by user
-; states
-;      waiting for jobs to be added
-;      processing jobs
-;      waiting between jobs
-;      TODO : waiting while jobs are in queue folder
+break_down_launch_rule(box_name)
+{
+  ; get launch_rule.i and process it line by line
+  inform(A_LineNumber)
+}
+
+run_launch_rules(launch_rules)
+{
+  inform(A_LineNumber)
+  ; press play, waits 5 minutes
+  Loop
+  {
+    ; task 3 : press play
+    WinActivate, Primu$ 7.
+    WinWaitActive, Primu$ 7.
+    MouseClick, Left, 302, 51
+    inform(A_LineNumber)
+
+    WinWaitActive, BTQ Action
+    inform(A_LineNumber)
+    ; task 4 : check the status of the play
+    ImageSearch, imgLocA, imgLocB, 0, 0, 315, 107, Success.PNG
+    Sleep, 200
+    inform(A_LineNumber)
+    ; close the BTQ Action window
+    MouseClick, Left, 271, 122
+    inform(A_LineNumber)
+    if (ErrorLevel = 0)
+      break
+    else
+    {
+      wait_until_with_message(300, "Queue is full.")
+    }
+  }
+}
+
+process_code(box_name, box_version)
+{
+  compile_code_folder(box_name)
+  ; TODO confirm i files were created
+  ; find the box
+  found := find_box(box_name)
+
+  ; if not found build it
+  ; if found update it
+  if (found)
+    update_box(box_name, box_version)
+  else
+    build_box(box_name)
+  inform(A_LineNumber)
+  launch_rules := break_down_launch_rule(box_name)
+  run_launch_rules(launch_rules)
+  inform(A_LineNumber)
+}
+
+process_instruction(box, version)
+{
+    ; pull the code for the box
+    git_clone(box, version)
+    ; TODO confirm new box folder created
+    ; TODO confirm folder has all the requisite files
+
+    process_code(box, version)
+    inform(A_LineNumber)
+    ; delete the code for the box
+    remove_git_dir(box)
+    inform(A_LineNumber)
+}
+
+; loop load files
 Loop
 {
   ; atempt to fetch file from jobs folder
@@ -28,9 +150,10 @@ Loop
     wait_until_with_message(60, "Found no files in jobs folder. Will check again in a minute")
     continue
   }
+
   top_file := "jobs\" . file_name
   jobs := read_lines(top_file)
-
+  ; loop over jobs
   Loop, % jobs.MaxIndex()
   {
     ; processing a job state
@@ -38,95 +161,21 @@ Loop
 
     tokens := StrSplit(line, ",")
     box := tokens[1]
-    instruction := Trim(tokens[2],"`r")
-    ; last line is usually blank
+
+    ; check if there's no more boxes
     if (box = "")
       break
+    version := Trim(tokens[2],"`r")
 
-    if (SubStr(instruction,1,1) = "v")
-    {
-      if (instruction = "v0.0")
-        build(box)
-      else
-        update(box, instruction)
-      continue
-    }
-
-    launch_rule := instruction
-
-    ; find the box
-    find_result := find_box(box)
-
-    if (find_result = 0)
-    {
-      Msgbox, not found
-      ; TODO: should log an error in some file
-      ; TODO: and archive the file into a joberror folder
-      return
-    }
-
-    ; task 1.1 open the found box
-    if (find_result = 1)
-    {
-      Click, Left, 1080, 710
-      WinWait, PRIMU$ - Black Box Design
-      sleep, 200
-    }
-
-
-    ; set desc to launch rule
-    UpdateBoxDescription(launch_rule)
-
-    ; task 2 : set the launch
-    ; task 2.1 : launch translator, m1901 gets tranlated to proper launch rule
-    ;   do this with a key-value pair file of all the launch rules
-    ; task 2.2 : click the launch rule tab
-    click_launch_rule_tab()
-    Sleep, 200
-
-    launch_script := launch_rule_dictionary[launch_rule]
-    set_launch_rule(launch_script)
-    Sleep, 200
-
-    click_validate_and_close()
-    WinWait, OK
-    Sleep, 200
-    Send, {Space}
-    Sleep, 200
-
-    ; attempting to press play for the box
-    Loop
-    {
-      ; task 3 : press play
-      WinActivate, Primu$ 7.
-      WinWait, Primu$ 7.
-      MouseClick, Left, 302, 51
-
-      WinWait, BTQ Action
-
-      ; task 4 : check the status of the play
-      ImageSearch, imgLocA, imgLocB, 0, 0, 315, 107, Success.PNG
-      Sleep, 200
-
-      ; close the BTQ Action window
-      MouseClick, Left, 271, 122
-
-      if (ErrorLevel = 0)
-        break
-      else
-      {
-        wait_until_with_message(300, "Queue is full.")
-      }
-    }
-
-    ; waiting between job state
-    sleep, 200
-    wait_until_with_message(5, "Submited 1 run.")
+    process_instruction(box, version)
+    inform(A_LineNumber)
+    ; wait before going to the next job
+    inform_timeout_pause_option("Done with job file " . box . " " . version, 60)
   }
 
-  ; task 5 move the file to the done folder
-  source_path := "jobs\" . file_name
-  dest_path := "done\" . file_name
-  FileMove, %source_path%, %dest_path%, 1
+  move_completed_job_file(file_name)
+  inform(A_LineNumber)
+  ; wait before checking for another file
   wait_until_with_message(15, "Completed 1 file.")
+  inform(A_LineNumber)
 }
