@@ -22,6 +22,6 @@ get_local_compiled(box_name, component)
 get_backup_compiled(box_name, component)
 {
   a := {}
-  generic_code_parser(local_compiled_path(box_name, component), a)
+  generic_code_parser(backup_compiled_path(box_name, component), a)
   return a
 }
