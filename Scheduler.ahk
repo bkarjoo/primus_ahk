@@ -23,29 +23,7 @@
 #include inform.ahk
 #include code_parser.ahk
 #include box_builder.ahk
-
-update_box(box_name, box_version)
-{
-  ; assumption box is downloaded and compiled
-  ; update_general_setting_helper(get_local_compiled(box_name, "general_settings"),get_backup_compiled(box_name, "general_settings"))
-  update_entry_helper(get_local_compiled(box_name, "entry"),get_backup_compiled(box_name, "entry"))
-  inform(A_LineNumber)
-  update_target(box_name)
-  inform(A_LineNumber)
-  update_stop(box_name)
-  inform(A_LineNumber)
-  update_basket(box_name)
-  inform(A_LineNumber)
-  update_options(box_name)
-  inform(A_LineNumber)
-  update_risk_management(box_name)
-  inform(A_LineNumber)
-  update_launch_rules(box_name)
-  inform(A_LineNumber)
-  click_validate_and_close()
-  inform(A_LineNumber)
-}
-
+#include box_updater.ahk
 
 
 
@@ -98,14 +76,16 @@ process_code(box_name, box_version)
     update_box(box_name, box_version)
   else
     build_local_box(box_name)
+  backup_compiled_files_helper(box_name, "")
   inform(A_LineNumber)
   launch_rules := break_down_launch_rule(box_name)
   run_launch_rules(launch_rules)
   inform(A_LineNumber)
 }
 
-; process_code("emos", "master")
-; msgbox done
+
+;process_code("emos", "master")
+;msgbox done
 
 process_instruction(box, version)
 {

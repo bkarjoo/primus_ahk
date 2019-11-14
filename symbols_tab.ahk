@@ -51,7 +51,7 @@ update_basket_helper(i_vars, bu_vars)
   click_basket_manager_private_tab()
 
   ; TODO find confirm the basket loaded matches, what if no baskets return
-  open_existing_basket(acronym)
+  open_existing_basket(i_vars["basket_name"])
 
   if(i_vars["basket_name"] != bu_vars["basket_name"])
     set_basket_name(i_vars["basket_name"])
