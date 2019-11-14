@@ -81,7 +81,7 @@ set_options()
   set_options_helper(timeo, pos)
 }
 
-update_options_helper(ti_vars, pi_vars)
+update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 {
   ot_vars := {} ; option tab vars (location of text boxes and check boxes)
   get_options_variables(ot_vars)
@@ -124,5 +124,5 @@ update_options(acronym)
   generic_code_parser(pi_path, pi_vars)
   generic_code_parser(pbu_path, pbu_vars)
 
-  update_options_helper(ti_vars, pi_vars)
+  update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 }
