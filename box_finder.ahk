@@ -1,5 +1,5 @@
-#include launcher_control.ahk
-#include open_blackbox.ahk
+#include window_launcher.ahk
+#include window_open_blackbox.ahk
 #include clipboard_paste.ahk
 
 find_box(box_name)
