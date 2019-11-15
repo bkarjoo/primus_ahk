@@ -41,8 +41,31 @@ set_basket()
   set_basket_helper(basket)
 }
 
+basket_vars_changed(i_vars, bu_vars)
+{
+  if (i_vars["basket_name"] != bu_vars["basket_name"])
+    return 1
+  if (i_vars["basket_description"] != bu_vars["basket_description"])
+    return 1
+  if (i_vars["activate_dynamic_basket_rules"] != bu_vars["activate_dynamic_basket_rules"])
+    return 1
+  if (i_vars["apply_dynamic_basket_rules_to_all_available_symbols"] != bu_vars["apply_dynamic_basket_rules_to_all_available_symbols"])
+    return 1
+  if (i_vars["basket_rules"] != bu_vars["basket_rules"])
+    return 1
+  if (i_vars["basket_symbols"] != bu_vars["basket_symbols"])
+    return 1
+  if (i_vars["basket_exclude "] != bu_vars["basket_exclude"])
+    return 1
+  if (i_vars["basket_htb"] != bu_vars["basket_htb"])
+    return 1
+  return 0
+}
+
 update_basket_helper(i_vars, bu_vars)
 {
+  if (!basket_vars_changed)
+    return
   checkboxes := {}
   get_edit_basket_checkboxes(checkboxes)
 
@@ -62,13 +85,13 @@ update_basket_helper(i_vars, bu_vars)
   set_check_box(i_vars["apply_dynamic_basket_rules_to_all_available_symbols"], checkboxes["apply_dynamic_basket_rules_to_all_available_symbols_check_box"], checkboxes["apply_dynamic_basket_rules_to_all_available_symbols_trigger_point"])
 
   ; TODO checkboxes determine rules, if apply is checked symbols shouldn't be there
-  if (i_vars["basket_rules"] != "" or i_vars["basket_rules"] != bu_vars["basket_rules"])
+  if (i_vars["basket_rules"] != bu_vars["basket_rules"])
     set_basket_rule(i_vars["basket_rules"])
-  if (i_vars["basket_symbols"] != "" or i_vars["basket_symbols"] != bu_vars["basket_symbols"])
+  if (i_vars["basket_symbols"] != bu_vars["basket_symbols"])
     set_basket_symbols(i_vars["basket_symbols"])
-  if (i_vars["basket_exclude"] != "" or i_vars["basket_exclude"] != bu_vars["basket_exclude"])
+  if (i_vars["basket_exclude"] != bu_vars["basket_exclude"])
     set_basket_always_exclude_symbols(i_vars["basket_exclude"])
-  if (i_vars["basket_htb"] != "" or i_vars["basket_htb"] != bu_vars["basket_htb"])
+  if (i_vars["basket_htb"] != bu_vars["basket_htb"])
     set_basket_hard_to_borrow_allowed_symbols(i_vars["basket_htb"])
 
   click_edit_basket_save_button()

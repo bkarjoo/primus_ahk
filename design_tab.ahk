@@ -289,6 +289,11 @@ set_entry()
   set_entry_helper(entry)
 }
 
+entry_vars_changed(i_vars, bu_vars)
+{
+  return i_vars["entry_order_type"] != bu_vars["entry_order_type"] or i_vars["entry_order_side"] != bu_vars["entry_order_side"] or i_vars["entry_destination"] != bu_vars["entry_destination"] or i_vars["entry_tif"] != bu_vars["entry_tif"] or i_vars["entry_tif_seconds"] != bu_vars["entry_tif_seconds"] or i_vars["entry_order_limit"] != bu_vars["entry_order_limit"]
+}
+
 update_entry_helper(i_vars, bu_vars)
 {
   checkboxes := {}
@@ -299,7 +304,7 @@ update_entry_helper(i_vars, bu_vars)
       if (entry_update_trigger(i_vars["entry_trigger"]) = 0)
         inform("Unable to set entry trigger.")
 
-  if(i_vars["entry_order_type"] != bu_vars["entry_order_type"] or i_vars["entry_order_side"] != bu_vars["entry_order_side"] or i_vars["entry_destination"] != bu_vars["entry_destination"] or i_vars["entry_tif"] != bu_vars["entry_tif"] or i_vars["entry_tif_seconds"] != bu_vars["entry_tif_seconds"] or i_vars["entry_order_limit"] != bu_vars["entry_order_limit"]) ; does order form need to be opened
+  if(entry_vars_changed(i_vars, bu_vars)) ; does order form need to be opened
   {
     if (entry_open_existing_order() = 0)
       inform("Unable to open new order window.")
@@ -354,7 +359,7 @@ update_entry(acronym)
 }
 
 set_target_helper(target)
-{ 
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -397,8 +402,43 @@ set_target()
   set_target_helper(target)
 }
 
+target_vars_changed(i_vars, bu_vars)
+{
+if (i_vars["target_order_type"] != bu_vars["target_order_type"])
+  return 1
+if (i_vars["target_order_side"] != bu_vars["target_order_side"])
+  return 1
+if (i_vars["target_destination"] != bu_vars["target_destination"])
+  return 1
+if (i_vars["target_size"] != bu_vars["target_size"])
+  return 1
+if (i_vars["target_limit"] != bu_vars["target_limit"])
+  return 1
+if (i_vars["ael_on_last"] != bu_vars["ael_on_last"])
+  return 1
+if (i_vars["ael_on_second"] != bu_vars["ael_on_second"])
+  return 1
+if (i_vars["ael_on_bid_ask"] != bu_vars["ael_on_bid_ask"])
+  return 1
+if (i_vars["ael_convert_to_stop"] != bu_vars["ael_convert_to_stop"])
+  return 1
+if (i_vars["ael_trigger"] != bu_vars["ael_trigger"])
+  return 1
+if (i_vars["ael_price"] != bu_vars["ael_price"])
+  return 1
+if (i_vars["ael_time_increment"] != bu_vars["ael_time_increment"])
+  return 1
+if (i_vars["ael_price_increment"] != bu_vars["ael_price_increment"])
+  return 1
+return 0
+}
+
+
 update_target_helper(i_vars, bu_vars)
 {
+  if (!target_vars_changed(i_vars, bu_vars))
+    return
+
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -503,8 +543,36 @@ set_stop()
   set_stop_helper(stop)
 }
 
+stop_vars_changed(i_vars, bu_vars)
+{
+if (i_vars["stop_order_type"] != bu_vars["stop_order_type"])
+  return 1
+if (i_vars["stop_order_side"] != bu_vars["stop_order_side"])
+  return 1
+if (i_vars["stop_size"] != bu_vars["stop_size"])
+  return 1
+if (i_vars["stop_price"] != bu_vars["stop_price"])
+  return 1
+if (i_vars["enable_trailing"] != bu_vars["enable_trailing"])
+  return 1
+if (i_vars["trail_after_entry_complete"] != bu_vars["trail_after_entry_complete"])
+  return 1
+if (i_vars["trail_once"] != bu_vars["trail_once"])
+  return 1
+if (i_vars["trail_trigger"] != bu_vars["trail_trigger"])
+  return 1
+if (i_vars["trail_how"] != bu_vars["trail_how"])
+  return 1
+if (i_vars["trail_increment"] != bu_vars["trail_increment"])
+  return 1
+return 0
+}
+
 update_stop_helper(i_vars, bu_vars)
 {
+  if (!stop_vars_changed(i_vars, bu_vars))
+    return
+
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 

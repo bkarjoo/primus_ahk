@@ -25,6 +25,7 @@
 
 build_local_box(box_name)
 {
+  quick_inform("build_local_box")
   create_backup_folder_helper(box_name)
   open_new_bb_design()
   set_general_settings_helper(get_local_compiled(box_name, "general_settings"))
