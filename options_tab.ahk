@@ -81,8 +81,34 @@ set_options()
   set_options_helper(timeo, pos)
 }
 
+options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars)
+{
+  if (ti_vars["use_time_options"] != tbu_vars["use_time_options"])
+    return 1
+  if (ti_vars["start_subscription"] != tbu_vars["start_subscription"])
+    return 1
+  if (ti_vars["start_entering_positions"] != tbu_vars["start_entering_positions"])
+    return 1
+  if (ti_vars["stop_entering_positions"] != tbu_vars["stop_entering_positions"])
+    return 1
+  if (ti_vars["cancel_all_pending_orders"] != tbu_vars["cancel_all_pending_orders"])
+    return 1
+  if (ti_vars["close_all_open_positions"] != tbu_vars["close_all_open_positions"])
+    return 1
+  if (ti_vars["place_OPG_orders"] != tbu_vars["place_OPG_orders"])
+    return 1
+  if (pi_vars["enable_position_sizing_scheme"] != pbu_vars["enable_position_sizing_scheme"])
+    return 1
+  if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])
+    return 1
+  return 0
+}
+
 update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 {
+  if (!options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars))
+    return
+
   ot_vars := {} ; option tab vars (location of text boxes and check boxes)
   get_options_variables(ot_vars)
 

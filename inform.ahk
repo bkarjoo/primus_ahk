@@ -18,6 +18,11 @@ inform_timeout(msg, seconds)
     ExitApp
 }
 
+quick_inform(msg)
+{
+  inform_timeout(msg, 2)
+}
+
 
 ; pauses with option to quit or continue
 inform(msg)
