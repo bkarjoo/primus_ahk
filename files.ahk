@@ -1,5 +1,6 @@
 #include wait_policy.ahk
 #include clipboard_paste.ahk
+#include cmd.ahk
 
 file_updated(c_path, i_path)
 {
@@ -38,10 +39,16 @@ confirm_file_exists(path)
     inform(msg)
 }
 
-backup(file_name, acronym)
+backup(file_name, acronym, i_folder)
 {
-  source := "pp/" . file_name . ".i"
+
+  source := ""
+  if (i_folder = "")
+    source := acronym . "/" . file_name . ".i"
+  else
+    source := i_folder . "/" . file_name . ".i"
   target := "../bu/" . acronym . "/" . file_name . "_bu.i"
+
   FileCopy, %source%, %target%, 1
 }
 
@@ -145,55 +152,59 @@ generic_code_parser(file_name, array)
 }
 
 
-make_back_up_directory(box_acronym)
+create_backup_folder_helper(box_acronym)
 {
   bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
-  clipboard_paste(bu_md_cmd)
+  run_cmd(bu_md_cmd)
 }
 
 create_backup_folder()
 {
   general_settings := {}
   generic_code_parser("pp/general_settings.i", general_settings)
-  make_back_up_directory(general_settings["box_acronym"])
+  create_backup_folder_helper(general_settings["box_acronym"])
+}
+
+backup_compiled_files_helper(box_acronym, i_folder)
+{
+  backup("basket", box_acronym, i_folder)
+  backup("entry", box_acronym, i_folder)
+  backup("general_settings", box_acronym, i_folder)
+  backup("launch_rules", box_acronym, i_folder)
+  backup("position_sizing", box_acronym, i_folder)
+  backup("stop", box_acronym, i_folder)
+  backup("target", box_acronym, i_folder)
+  backup("time_options", box_acronym, i_folder)
+  backup("risk_management", box_acronym, i_folder)
 }
 
 backup_compiled_files()
 {
   gs := {}
   generic_code_parser("pp/general_settings.i", gs)
-
-  backup("basket", gs["box_acronym"])
-  backup("entry", gs["box_acronym"])
-  backup("general_settings", gs["box_acronym"])
-  backup("launch_rules", gs["box_acronym"])
-  backup("position_sizing", gs["box_acronym"])
-  backup("stop", gs["box_acronym"])
-  backup("target", gs["box_acronym"])
-  backup("time_options", gs["box_acronym"])
-  backup("risk_management", gs["box_acronym"])
+  backup_compiled_files_helper(gs["box_acronym"], "pp")
 }
 
 backup_compiled_files_if_changed(ustate, box_acronym)
 {
   if (ustate["basket_updated"])
-    backup("basket", box_acronym)
+    backup("basket", box_acronym, "pp")
   if (ustate["entry_updated"])
-    backup("entry", box_acronym)
+    backup("entry", box_acronym, "pp")
   if (ustate["launch_rules_updated"])
-    backup("launch_rules", box_acronym)
+    backup("launch_rules", box_acronym, "pp")
   if (ustate["position_sizing_updated"])
-    backup("position_sizing", box_acronym)
+    backup("position_sizing", box_acronym, "pp")
   if (ustate["stop_updated"])
-    backup("stop", box_acronym)
+    backup("stop", box_acronym, "pp")
   if (ustate["target_updated"])
-    backup("target", box_acronym)
+    backup("target", box_acronym, "pp")
   if (ustate["general_settings_updated"])
-    backup("general_settings", box_acronym)
+    backup("general_settings", box_acronym, "pp")
   if (ustate["time_options_updated"])
-    backup("time_options", box_acronym)
+    backup("time_options", box_acronym, "pp")
   if (ustate["risk_management_updated"])
-    backup("risk_management", box_acronym)
+    backup("risk_management", box_acronym, "pp")
 }
 
 number_of_updated_files(array)
@@ -231,4 +242,64 @@ get_code_files_update_status(box_acronym, array)
   array["position_sizing_updated"] := file_updated(build_c_path("position_sizing"), build_i_path("position_sizing"))
   array["risk_management_updated"] := file_updated(build_c_path("risk_management"), build_i_path("risk_management"))
   array["launch_rules_updated"] := file_updated(build_c_path("launch_rules"), build_i_path("launch_rules"))
+}
+
+read_lines(file_name)
+{
+  FileRead, LoadedText, %file_name%
+  oText := StrSplit(LoadedText, "`n")
+  ;Loop, % oText.MaxIndex()
+  ;  MsgBox, % oText[A_Index]
+  return oText
+}
+
+list_files(path)
+{
+    files =
+    Loop % path . "\\*.*"
+    {
+      files = %files%`n%A_LoopFileName%
+    }
+    return files
+}
+
+get_top_file(path)
+{
+  Loop % path . "\\*.*"
+  {
+    return A_LoopFileName
+  }
+  return
+}
+
+load_csv_dictionary(file_path, output_array)
+{
+  Loop, Read, %file_path%
+  {
+    Loop, Parse, A_LoopReadLine, CSV
+    {
+      Field%A_Index% := A_LoopField
+      output_array[Field1] := Field2
+    }
+  }
+}
+
+; read the csv into a key value associative array
+load_jobs(file_path, output_array)
+{
+  Loop, Read, %file_path%
+  {
+    Loop, Parse, A_LoopReadLine, CSV
+    {
+      Field%A_Index% := A_LoopField
+      output_array[Field1] := Field2
+    }
+  }
+}
+
+move_completed_job_file(file_name)
+{
+  source_path := "jobs\" . file_name
+  dest_path := "done\" . file_name
+  FileMove, %source_path%, %dest_path%, 1
 }

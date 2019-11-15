@@ -145,7 +145,6 @@ stop_open_existing_order()
 
 get_design_tab_checkboxes(checkbox_array)
 {
-  ; checkbox locations -----------------------------------------------------------
   checkbox_array["permit_backtesting_check_box"] := [616, 120]
   checkbox_array["enter_on_last_check_box"] := [760, 69]
   checkbox_array["enter_on_bid_check_box"] := [760, 94]
@@ -173,12 +172,8 @@ get_design_tab_checkboxes(checkbox_array)
   checkbox_array["verify_code_during_validate_procedure_trigger_point"] := [533,919]
 }
 
-
-
-set_general_setting()
+set_general_settings_helper(i_vars)
 {
-  general_settings := {}
-  generic_code_parser("pp/general_settings.i", general_settings)
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
   bname := build_box_name(i_vars["box_name"], i_vars["box_acronym"])
@@ -199,16 +194,15 @@ set_general_setting()
   set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
 }
 
-update_general_setting(acronym)
+set_general_setting()
 {
-  i_path := build_i_path("general_settings")
-  bu_path := build_bu_path("general_settings", acronym)
+  general_settings := {}
+  generic_code_parser("pp/general_settings.i", general_settings)
+  set_general_settings_helper(general_settings)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
-
+update_general_setting_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
 
@@ -244,10 +238,21 @@ update_general_setting(acronym)
   set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
 }
 
-set_entry()
+update_general_setting(acronym)
 {
-  entry := {}
-  generic_code_parser("pp/entry.i", entry)
+  i_path := build_i_path("general_settings")
+  bu_path := build_bu_path("general_settings", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+
+  update_general_setting_helper(i_vars, bu_vars)
+}
+
+set_entry_helper(entry)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -276,15 +281,21 @@ set_entry()
   click_order_form_save_button()
 }
 
-update_entry(acronym)
+set_entry()
 {
-  i_path := build_i_path("entry")
-  bu_path := build_bu_path("entry", acronym)
+  entry := {}
+  generic_code_parser("pp/entry.i", entry)
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+  set_entry_helper(entry)
+}
+
+entry_vars_changed(i_vars, bu_vars)
+{
+  return i_vars["entry_order_type"] != bu_vars["entry_order_type"] or i_vars["entry_order_side"] != bu_vars["entry_order_side"] or i_vars["entry_destination"] != bu_vars["entry_destination"] or i_vars["entry_tif"] != bu_vars["entry_tif"] or i_vars["entry_tif_seconds"] != bu_vars["entry_tif_seconds"] or i_vars["entry_order_limit"] != bu_vars["entry_order_limit"]
+}
+
+update_entry_helper(i_vars, bu_vars)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -293,7 +304,7 @@ update_entry(acronym)
       if (entry_update_trigger(i_vars["entry_trigger"]) = 0)
         inform("Unable to set entry trigger.")
 
-  if(i_vars["entry_order_type"] != bu_vars["entry_order_type"] or i_vars["entry_order_side"] != bu_vars["entry_order_side"] or i_vars["entry_destination"] != bu_vars["entry_destination"] or i_vars["entry_tif"] != bu_vars["entry_tif"] or i_vars["entry_tif_seconds"] != bu_vars["entry_tif_seconds"] or i_vars["entry_order_limit"] != bu_vars["entry_order_limit"]) ; does order form need to be opened
+  if(entry_vars_changed(i_vars, bu_vars)) ; does order form need to be opened
   {
     if (entry_open_existing_order() = 0)
       inform("Unable to open new order window.")
@@ -334,10 +345,21 @@ update_entry(acronym)
   }
 }
 
-set_target()
+update_entry(acronym)
 {
-  target := {}
-  generic_code_parser("pp/target.i", target)
+  i_path := build_i_path("entry")
+  bu_path := build_bu_path("entry", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+
+  update_entry_helper(i_vars, bu_vars)
+}
+
+set_target_helper(target)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -373,15 +395,50 @@ set_target()
   click_order_form_save_button()
 }
 
-update_target(acronym)
+set_target()
 {
-  i_path := build_i_path("target")
-  bu_path := build_bu_path("target", acronym)
+  target := {}
+  generic_code_parser("pp/target.i", target)
+  set_target_helper(target)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+target_vars_changed(i_vars, bu_vars)
+{
+if (i_vars["target_order_type"] != bu_vars["target_order_type"])
+  return 1
+if (i_vars["target_order_side"] != bu_vars["target_order_side"])
+  return 1
+if (i_vars["target_destination"] != bu_vars["target_destination"])
+  return 1
+if (i_vars["target_size"] != bu_vars["target_size"])
+  return 1
+if (i_vars["target_limit"] != bu_vars["target_limit"])
+  return 1
+if (i_vars["ael_on_last"] != bu_vars["ael_on_last"])
+  return 1
+if (i_vars["ael_on_second"] != bu_vars["ael_on_second"])
+  return 1
+if (i_vars["ael_on_bid_ask"] != bu_vars["ael_on_bid_ask"])
+  return 1
+if (i_vars["ael_convert_to_stop"] != bu_vars["ael_convert_to_stop"])
+  return 1
+if (i_vars["ael_trigger"] != bu_vars["ael_trigger"])
+  return 1
+if (i_vars["ael_price"] != bu_vars["ael_price"])
+  return 1
+if (i_vars["ael_time_increment"] != bu_vars["ael_time_increment"])
+  return 1
+if (i_vars["ael_price_increment"] != bu_vars["ael_price_increment"])
+  return 1
+return 0
+}
+
+
+update_target_helper(i_vars, bu_vars)
+{
+  if (!target_vars_changed(i_vars, bu_vars))
+    return
+
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -441,10 +498,21 @@ update_target(acronym)
   click_order_form_save_button()
 }
 
-set_stop()
+update_target(acronym)
 {
-  stop := {}
-  generic_code_parser("pp/stop.i", stop)
+  i_path := build_i_path("target")
+  bu_path := build_bu_path("target", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+
+  update_target_helper(i_vars, bu_vars)
+}
+
+set_stop_helper(stop)
+{
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
   stop_open_new_order()
@@ -468,15 +536,43 @@ set_stop()
   click_order_form_save_button()
 }
 
-update_stop(acronym )
+set_stop()
 {
-  i_path := build_i_path("stop")
-  bu_path := build_bu_path("stop", acronym)
+  stop := {}
+  generic_code_parser("pp/stop.i", stop)
+  set_stop_helper(stop)
+}
 
-  i_vars := {}
-  generic_code_parser(i_path, i_vars)
-  bu_vars := {}
-  generic_code_parser(bu_path, bu_vars)
+stop_vars_changed(i_vars, bu_vars)
+{
+if (i_vars["stop_order_type"] != bu_vars["stop_order_type"])
+  return 1
+if (i_vars["stop_order_side"] != bu_vars["stop_order_side"])
+  return 1
+if (i_vars["stop_size"] != bu_vars["stop_size"])
+  return 1
+if (i_vars["stop_price"] != bu_vars["stop_price"])
+  return 1
+if (i_vars["enable_trailing"] != bu_vars["enable_trailing"])
+  return 1
+if (i_vars["trail_after_entry_complete"] != bu_vars["trail_after_entry_complete"])
+  return 1
+if (i_vars["trail_once"] != bu_vars["trail_once"])
+  return 1
+if (i_vars["trail_trigger"] != bu_vars["trail_trigger"])
+  return 1
+if (i_vars["trail_how"] != bu_vars["trail_how"])
+  return 1
+if (i_vars["trail_increment"] != bu_vars["trail_increment"])
+  return 1
+return 0
+}
+
+update_stop_helper(i_vars, bu_vars)
+{
+  if (!stop_vars_changed(i_vars, bu_vars))
+    return
+
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -519,4 +615,16 @@ update_stop(acronym )
     expression_set_code(i_vars["stop_price"])
   }
   click_order_form_save_button()
+}
+
+update_stop(acronym)
+{
+  i_path := build_i_path("stop")
+  bu_path := build_bu_path("stop", acronym)
+
+  i_vars := {}
+  generic_code_parser(i_path, i_vars)
+  bu_vars := {}
+  generic_code_parser(bu_path, bu_vars)
+  update_stop_helper(i_vars, bu_vars)
 }
