@@ -45,7 +45,7 @@ launcher_click_edit_box()
 {
   launcher_activate()
   Click 243, 49
-  wait_only("WinWait PRIMU$ - Black Box Design", 5)
+  wait_only("PRIMU$ - Black Box Design", 5)
 }
 
 
@@ -53,7 +53,7 @@ launcher_click_play()
 {
   launcher_activate()
   Click 303, 49
-  wait_only("WinWait BTQ Action", 5)
+  wait_only("BTQ Action", 60)
 }
 
 

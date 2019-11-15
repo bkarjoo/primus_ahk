@@ -1,2 +1,5 @@
 install.bat
 *.exe
+secret.csv
+jobs/
+done/

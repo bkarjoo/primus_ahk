@@ -1,2 +1,0 @@
-ahk2exe /in Build.ahk /out cbuild.exe
-ahk2exe /in Update.ahk /out cupdate.exe

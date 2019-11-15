@@ -37,7 +37,9 @@ if (do_compile_code_files)
   compile_code_files()
 if (do_create_backup_folder)
   create_backup_folder()
+
 open_new_bb_design()
+
 if (do_general_settings)
   set_general_setting()
 if (do_entry)
@@ -57,4 +59,4 @@ if (do_launch_rules)
 if (do_backup)
   backup_compiled_files()
 
-finalize_build()
+click_validate_and_close()
