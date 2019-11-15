@@ -1,7 +1,7 @@
-#include task_queue_manager.ahk
+#include window_task_queue_manager.ahk
 #include inform.ahk
-#include launcher_control.ahk
-#include black_box_design.ahk
+#include window_launcher.ahk
+#include window_black_box_design.ahk
 
 create_15_day_launch_rule(year, month, half)
 {
