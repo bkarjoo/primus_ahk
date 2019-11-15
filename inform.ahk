@@ -38,3 +38,21 @@ inform_activation_error(window_name)
   prompt := "Cannot activate window: " . window_name
   inform(prompt)
 }
+
+trace_pause(msg, file, line)
+{
+  is_enabled := True
+  if (!is_enabled)
+    return
+  msg := file . " line: " . line . ". " . msg
+  inform(msg)
+}
+
+trace_time_out(msg, file, line, wait_time)
+{
+  is_enabled := True
+  if (!is_enabled)
+    return
+  msg := file . " line: " . line . ". " . msg
+  inform_timeout(msg, wait_time)
+}

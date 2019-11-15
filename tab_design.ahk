@@ -1,10 +1,10 @@
 #include wait_policy.ahk
 #include inform.ahk
 #include files.ahk
-#include black_box_design.ahk
+#include window_black_box_design.ahk
 #include box_name_builder.ahk
-#include order_form.ahk
-#include expression_builder.ahk
+#include window_order_form.ahk
+#include window_expression_builder.ahk
 
 update_box_name(box_name)
 {
