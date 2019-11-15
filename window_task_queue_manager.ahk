@@ -8,7 +8,7 @@ word_count(str, word)
 task_queue_manager_select_and_copy_all()
 {
   activate_and_wait_only("Task Queue Manager", 60)
-  MouseClick, Left, 90, 80
+  ; MouseClick, Left, 90, 80 ; one row is always selected, clicking first row not necessary
   sleep, 200
   Send, ^a
   sleep, 200
