@@ -26,6 +26,7 @@
 #include box_builder.ahk
 #include box_updater.ahk
 #include launch_rule_cycle.ahk
+#include receiver.ahk
 
 process_code(box_name, box_version)
 {
@@ -72,6 +73,7 @@ process_instruction(box, version)
 Loop
 {
   ; atempt to fetch file from jobs folder
+  get_jobs()
   file_name := get_top_file("jobs")
   quick_inform("processing " . file_name . " file.")
   if (file_name = "")
