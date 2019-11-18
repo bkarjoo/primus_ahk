@@ -6,3 +6,5 @@ activate_blotter()
    WinWaitActive, D:\Users\
 }
 
+activate_blotter()
+msgbox, done
