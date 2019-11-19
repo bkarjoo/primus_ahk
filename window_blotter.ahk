@@ -2,6 +2,8 @@
 #include image_search.ahk
 #include window_create_custom_blotter.ahk
 #include window_operation_completed.ahk
+#include email.ahk
+#include window_pnl_analysis_charting.ahk
 
 activate_blotter()
 {
@@ -65,7 +67,7 @@ turn_all_records_on()
   if (is_off_all_records())
   {
     click_all_records()
-    sleep, 1000
+    hour_glass_sleep(1000)
   }
 }
 
@@ -74,7 +76,7 @@ turn_backtesting_on()
   if (is_off_backtesting())
   {
     click_backtesting()
-    sleep, 1000
+    hour_glass_sleep(1000)
   }
 }
 
@@ -83,7 +85,7 @@ turn_live_on()
   if (is_off_live())
   {
     click_live()
-    sleep, 1000
+    hour_glass_sleep(1000)
   }
 }
 
@@ -91,7 +93,7 @@ click_name_box()
 {
   activate_blotter()
   MouseClick, Left, 130, 180
-  sleep, 200
+  hour_glass_sleep(200)
 }
 
 
@@ -99,7 +101,7 @@ click_select_all()
 {
   activate_blotter()
   MouseClick, Left, 50, 150
-  sleep, 2000
+  hour_glass_sleep(2000)
 }
 
 select_all_checked()
@@ -120,18 +122,18 @@ enter_box_name_filter(box_name)
 {
   if (select_all_checked())
     click_select_all()
-  sleep, 200
+  hour_glass_sleep(200)
   click_name_box()
-  sleep, 200
+  hour_glass_sleep(200)
   send, ^a
-  sleep, 200
+  hour_glass_sleep(200)
   send, {Del}
-  sleep, 200
+  hour_glass_sleep(200)
   Clipboard := box_name
   send, ^v
-  sleep, 200
+  hour_glass_sleep(200)
   send, {Enter}
-  sleep, 2000
+  hour_glass_sleep(2000)
 }
 
 custom_blotter_open()
@@ -143,9 +145,9 @@ open_create_custom_blotter()
 {
   activate_blotter()
   MouseClick, Right, 198, 202
-  sleep, 200
+  hour_glass_sleep(200)
   MouseClick, Left, 330, 275
-  sleep, 1000
+  hour_glass_sleep(1000)
 }
 
 create_custom_blotter(box_name)
@@ -164,14 +166,14 @@ click_custom_blotter_name_filter_box()
 {
   activate_blotter()
   MouseClick, Left, 166, 191
-  sleep, 200
+  hour_glass_sleep(200)
 }
 
 click_custom_blotter_name_first_row()
 {
   activate_blotter()
   MouseClick, Left, 22, 212
-  sleep, 200
+  hour_glass_sleep(2000)
 }
 
 select_custom_blotter(blotter_name)
@@ -180,14 +182,22 @@ select_custom_blotter(blotter_name)
   click_custom_blotter_tab()
   click_custom_blotter_name_filter_box()
   Send, ^a
-  sleep, 200
+  hour_glass_sleep(200)
   Clipboard := blotter_name
-  Send, ^v
-  sleep, 200
+  hour_glass_sleep(200)
+  Send, %blotter_name%
+  hour_glass_sleep(200)
   Send, {Enter}
-  sleep, 200
+  hour_glass_sleep(200)
   click_custom_blotter_name_first_row()
 }
 
-select_custom_blotter("emos 0.0")
-msgbox, done
+process_test_results(box_name)
+{
+  create_custom_blotter(box_name)
+  select_custom_blotter(box_name)
+  capture_equity_curve()
+  email_attachment(box_name, box_name, "image.png")
+}
+
+process_test_results("emos 0.0")
