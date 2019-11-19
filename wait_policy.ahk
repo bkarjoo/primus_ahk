@@ -85,3 +85,14 @@ wait_until_with_message(seconds, msg_txt)
   else if (response = "q")
     ExitApp
 }
+
+hour_glass_sleep(millis)
+{
+  sleep, millis
+  loop,
+  {
+    if (A_Cursor != "Wait")
+      break
+    sleep, 200
+  }
+}
