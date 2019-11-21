@@ -1,32 +1,26 @@
 #include wait_policy.ahk
+#include files.ahk
+#include paint.ahk
 
 capture_equity_curve()
 {
-  WinActivate, PnL Analysis Charting
-  WinWaitActive, PnL Analysis Charting
   WinActivate, Multi-Day Analysis Report
   WinWaitActive, Multi-Day Analysis Report
   WinActivate, Statistic Report
   WinWaitActive, Statistic Report
+  WinActivate, PnL Analysis Charting
+  WinWaitActive, PnL Analysis Charting
   hour_glass_sleep(200)
   send, {PrintScreen}
   hour_glass_sleep(200)
-  run, mspaint.exe
-  WinWaitActive, Untitled - Paint
+  open_paint_app()
   hour_glass_sleep(1000)
-  send, ^v
-  hour_glass_sleep(200)
-  send, ^s
-  WinWaitActive, Save As
-  send, image.png
-  hour_glass_sleep(200)
-  send, {Enter}
-  hour_glass_sleep(200)
-  if (WinExist("Confirm Save As"))
-  {
-    Send, y
-    hour_glass_sleep(200)
-    WinWaitActive, image.png
-  }
-  WinClose, image.png
+  paint_app_paste_clipboard()
+  
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  path := creds["capture_path"]
+
+  paint_app_save_as(path)
+  paint_app_close()
 }
