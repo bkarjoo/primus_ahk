@@ -1,5 +1,6 @@
 ; windows
 #include window_launcher.ahk
+#include window_blotter.ahk
 #include window_black_box_design.ahk
 #include window_order_form.ahk
 #include window_expression_builder.ahk
@@ -30,7 +31,8 @@
 
 process_code(box_name, box_version)
 {
-  quick_inform("compile " . box_name)
+  trace("compile " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+
   compile_code_folder(box_name)
   ; TODO confirm i files were created
 
@@ -43,7 +45,7 @@ process_code(box_name, box_version)
   else
     build_local_box(box_name)
 
-    quick_inform("backup " . box_name)
+    trace("backup " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   backup_compiled_files_helper(box_name, "")
 
   launch_rules := get_local_compiled(box_name, "launch_rules")
@@ -57,7 +59,7 @@ process_code(box_name, box_version)
 process_instruction(box, version)
 {
     ; pull the code for the box
-    quick_inform("git_clone " . box . " " . version)
+    trace("git_clone " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
     git_clone(box, version)
     ; TODO confirm new box folder created
     ; TODO confirm folder has all the requisite files
@@ -65,9 +67,34 @@ process_instruction(box, version)
     process_code(box, version)
 
     ; delete the code for the box
-    quick_inform("git remove " . box . " " . version)
+    trace("git remove " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
     remove_git_dir(box)
 }
+
+process_completed_run(box_name)
+{
+  trace("process_completed_run", A_ThisFunc, A_ScriptName, A_LineNumber)
+  process_test_results(box_name)
+}
+
+process_completed_runs(queue_array)
+{
+  trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber)
+  ; loop through boxes_in_queue array
+  N :=  boxes_in_queue.MaxIndex()
+  Loop, % N
+  {
+    reverse_i := N - A_Index + 1
+    if (number_of_active_runs_for_box(queue_array[reverse_i]) = 0)
+    {
+      process_completed_run(queue_array[reverse_i])
+      queue_array.RemoveAt(reverse_i)
+    }
+  }
+}
+
+; this array keeps track of boxes that are queued up
+boxes_in_queue := []
 
 ; loop load files
 Loop
@@ -75,7 +102,7 @@ Loop
   ; atempt to fetch file from jobs folder
   get_jobs()
   file_name := get_top_file("jobs")
-  quick_inform("processing " . file_name . " file.")
+  trace("scheduler processing " . file_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   if (file_name = "")
   {
     wait_until_with_message(60, "Found no files in jobs folder. Will check again in a minute")
@@ -89,7 +116,7 @@ Loop
   {
     ; processing a job state
     line := jobs[A_Index]
-    quick_inform("Processing " . line . " job.")
+    trace("Processing " . line . " job.", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
     tokens := StrSplit(line, ",")
     box := tokens[1]
 
@@ -98,8 +125,10 @@ Loop
       break
     version := Trim(tokens[2],"`r")
 
-
+    boxes_in_queue.Push(build_box_name(box, version))
     process_instruction(box, version)
+
+    process_completed_runs(boxes_in_queue)
 
     ; wait before going to the next job
     inform_timeout_pause_option("Done with job file " . box . " " . version, 2)
