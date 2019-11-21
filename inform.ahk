@@ -39,20 +39,14 @@ inform_activation_error(window_name)
   inform(prompt)
 }
 
-trace_pause(msg, file, line)
+trace(msg, file, function, line, wait_time := 0)
 {
   is_enabled := True
   if (!is_enabled)
     return
-  msg := file . " line: " . line . ". " . msg
-  inform(msg)
-}
-
-trace_time_out(msg, file, line, wait_time)
-{
-  is_enabled := True
-  if (!is_enabled)
-    return
-  msg := file . " line: " . line . ". " . msg
-  inform_timeout(msg, wait_time)
+  msg := file . " " . function . " line: " . line . ". " . msg
+  if (wait_time = 0)
+    inform(msg)
+  else
+    inform_timeout(msg, wait_time)
 }

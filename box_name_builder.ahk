@@ -1,5 +1,5 @@
-build_box_name(box_name, acronym) {
-  name := acronym . " " . box_name
+build_box_name(box_name, box_version) {
+  name := box_name . " " . box_version
   return name
 }
 

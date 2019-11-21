@@ -15,12 +15,14 @@ click_custom_blotter_tab()
 {
    activate_blotter()
    MouseClick, Left, 114, 85
+   hour_glass_sleep(2000)
 }
 
 click_primus_blotter_tab()
 {
    activate_blotter()
    MouseClick, Left, 190, 85
+   hour_glass_sleep(2000)
 }
 
 click_all_records()
@@ -201,4 +203,4 @@ process_test_results(box_name)
   email_attachment(box_name, box_name, "image.png")
 }
 
-process_test_results("emos 0.0")
+; TODO must check if AllRecords is checked, if not check it
