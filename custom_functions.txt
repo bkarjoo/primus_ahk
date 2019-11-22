@@ -1,0 +1,862 @@
+! NOT 
+!= <>
+&& AND
+_AvgR_30m ((MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P1) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P1)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P2) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P2)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P3) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P3)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P4) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P4)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P5) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P5)))/5
+_PositionHold TickTimeSeconds - PositionEntryTime 
+_Premkt_Range IF(         (DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES)) >         IF(                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT) >                 IF(                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0 AND (MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')) > AvgDailyRange(ALL_VENUES, 20, NO)                     ,                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                     ,                         AvgDailyRange(ALL_VENUES, 20, NO)                     )         ,                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)         ,                 IF(                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0                 ,                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                 ,                     AvgDailyRange(ALL_VENUES, 20, NO)                 )         ) ,         (DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES)) ,         IF(                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT) >                 IF(                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0  AND (MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')) > AvgDailyRange(ALL_VENUES, 20, NO)                     ,                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                     ,                         AvgDailyRange(ALL_VENUES, 20, NO)                     )         ,                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)         ,                 IF(                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0                 ,                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                 ,                     AvgDailyRange(ALL_VENUES, 20, NO)                 )         ) )
+_Stock_News_Syndicates_Only AND NOT  StockNews(News_Current, ACBO, AnySentiment, Hot_Stocks) AND NOT  StockNews(News_Current, ACBO, AnySentiment, General_News) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Earnings) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Conference_Events) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Recommendations) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Upgrade) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Downgrade) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Initiation) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Periodicals) 
+_TrailingLong5m IF(DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel) - 0.1 >= DayLow(ALL_VENUES, 1, CURRENT, NO) - 0.1, DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel) - 0.1, DayLow(ALL_VENUES, 1, CURRENT, NO) - 0.1)
+_TrailingShort5m IF(DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_UpperChannel) + 0.1 <= DayHigh(ALL_VENUES, 1, CURRENT, NO) + 0.1, DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_UpperChannel) + 0.1, DayHigh(ALL_VENUES, 1, CURRENT, NO) + 0.1)
+||  OR 
+== =
+A_L_Copy  Ask(INSIDE, CURRENT, YES)  -  Last(ALL_VENUES, CURRENT, YES) 
+AB_Copy Ask(INSIDE, CURRENT, NO) - Bid(INSIDE, CURRENT, NO)
+adjusted_close_price  AdjustedClosePrice(P1) 
+ADRdwn_Copy (AdjustedClosePrice(P1) - Ask(INSIDE, CURRENT, NO)) / AvgDailyRange(ALL_VENUES, 20, NO)
+ADRpctx_Copy  AvgDailyRange(ALL_VENUES, 20, NO)  /  AdjustedClosePrice(P1)  * 100
+adrs  AvgDailyRange(ALL_VENUES, 20, NO) 
+adrs  AvgDailyRange(ALL_VENUES, 20, NO) 
+ADRup_Copy  (Ask(INSIDE, CURRENT, NO) - AdjustedClosePrice(P1)) / AvgDailyRange(ALL_VENUES, 20, NO)
+adv_20_QG1 AvgDayVolume(ALL_VENUES, 20, NO)
+AMREarnings_Copy EarningsEPS(News_Current, ACBO, Actual)
+ask_price Ask(INSIDE, CURRENT, NO)
+AskPri_Copy  Ask(PRIMARY, CURRENT, YES) 
+Asksize_Copy AskSize(INSIDE, CURRENT, YES)
+AskSzPri_Copy AskSize(PRIMARY, CURRENT, NO)
+ATR20_Copy ATRStock(ALL_VENUES, NO, DAILY, 20, CURRENT)
+ATRpct_Copy ATRStock(ALL_VENUES, NO, DAILY, 20, CURRENT) / AdjustedClosePrice(P1) * 100
+AV10_Copy AvgDayVolume(ALL_VENUES, 10, NO)
+AV15_Copy AvgDayVolume(ALL_VENUES, 15, YES)
+AV5_Copy  AvgDayVolume(ALL_VENUES, 5, NO) 
+AV90_Copy AvgDayVolume(ALL_VENUES, 90, NO)
+average_daily_range  AvgDailyRange(ALL_VENUES, 20, NO) 
+average_daily_volume  AvgDayVolume(ALL_VENUES, 90, NO) 
+AvgDlyRng_Copy  AvgDailyRange(ALL_VENUES, 20, NO) 
+AvgVolPrePost_Copy (  (DayVolume(ALL_VENUES, 1, P1, YES) - DayVolume(ALL_VENUES, 1, P1, NO)) +  (DayVolume(ALL_VENUES, 1, P2, YES) - DayVolume(ALL_VENUES, 1, P2, NO)) + (DayVolume(ALL_VENUES, 1, P3, YES) - DayVolume(ALL_VENUES, 1, P3, NO)) +  (DayVolume(ALL_VENUES, 1, P4, YES) - DayVolume(ALL_VENUES, 1, P4, NO)) + (DayVolume(ALL_VENUES, 1, P5, YES) - DayVolume(ALL_VENUES, 1, P5, NO)) ) * 1.0 / 5 
+AvgVolume10Day_Copy  AvgDayVolume(ALL_VENUES, 10, NO) 
+B_L_Copy  Bid(INSIDE, CURRENT, YES)  -  Last(ALL_VENUES, CURRENT, YES) 
+BA  (NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"repurchase*" or "buyback"')  
+ AND NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"share" or "shares"')   
+ AND (NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approve"') OR 
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approves"') OR   
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approved"')  OR  
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announce"') OR  
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announces"')  OR  
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announced"')  OR  
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorize"') OR   
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorizes"')  OR    
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorized"') OR  
+ NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorization"'))  
+ AND NOT NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, SummaryAndDetails, '"proposed offering" 
+ OR "notes" OR "convertible senior notes" OR "aggregate principal amount " OR "suspend" OR "suspends" OR
+ "suspended" OR "postpone" OR "postpones" OR "postponed"'))
+Basket_Top_Reco_QG1 (NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Catalyst Call"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Analys* Focus"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Alpha Generator"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"US Focus"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Analyst Favorites"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Core Ideas"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Franchise Pick"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Best Ideas"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Fresh Pick"') OR 
+ NewsSearch(News_Current, ACBO, StockNews, StockNews_Recommendations, AnySentiment, SummaryAndDetails, '"Top Picks"')) 
+bhtTR0_Copy ((ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >  .01 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 0.5 AND   Last(ALL_VENUES, CURRENT, NO) < MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False)  - 0.30) OR    (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  .51 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 0.75 AND  Last(ALL_VENUES, CURRENT, NO) < MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False)  - 0.50) OR      (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  .76 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 1.50 AND  Last(ALL_VENUES, CURRENT, NO) < MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False)  < 1.0) OR   (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  1.51 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 4 AND  Last(ALL_VENUES, CURRENT, NO) < MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False)  - 2.0) OR    (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  4.01 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <=  7 AND  Last(ALL_VENUES, CURRENT, NO) < MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False)  - 5.0)) 
+bhtTRss_Copy ((ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >  .01 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 0.5 AND  Last(ALL_VENUES, CURRENT, NO) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False)  > 0.25) OR    (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  .51 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 0.75 AND  Last(ALL_VENUES, CURRENT, NO) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False)  > 0.40) OR    (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  .76 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 1.50 AND  Last(ALL_VENUES, CURRENT, NO) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False)  > 1.0) OR     (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  1.51 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <= 4 AND  Last(ALL_VENUES, CURRENT, NO) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False)  > 2.0) OR   (ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT)  >=  4.01 AND  ATRStock(ALL_VENUES, NO, DAILY, 14, CURRENT) <=  7 AND  Last(ALL_VENUES, CURRENT, NO) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False)  > 5.0)) 
+bid_ask_spread  Spread(INSIDE, NO)
+bid_price  Bid(INSIDE, CURRENT, NO) 
+BidPri_Copy  Bid(PRIMARY, CURRENT, YES) 
+Bidsize_Copy BidSize(INSIDE, CURRENT, YES)
+BidSzPri_Copy  BidSize(PRIMARY, CURRENT, YES) 
+buyback     (
+		( (NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"repurchase*" or "buyback"')    
+		   AND 
+		   NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"share" or "shares"')     
+		   AND 
+		   (NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approve"') 
+			OR   
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approves"') 
+			OR     
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approved"')  
+			OR    
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announce"') 
+			OR    
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announces"')  
+			OR    
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announced"')  
+			OR    
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorize"') 
+			OR     
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorizes"')  
+			OR      
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorized"') 
+			OR    
+			NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorization"')
+			)    
+			AND 
+			NOT NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, SummaryAndDetails, '"proposed offering" 
+			OR "notes" OR "convertible senior notes" OR "aggregate principal amount " OR "suspend" OR "suspends" OR  "suspended" 
+			OR "postpone" OR "postpones" OR "postponed"')
+		    ) 
+			OR  
+			Source3(News_Current, ACBO, AnySentiment, Buybacks)
+		)
+
+        AND
+	  (
+		EarningsNewsEvent(News_Current, ACBO, False, Any) 
+		AND 
+		AdjustedClosePrice(P1) >= 1 
+		AND 
+		AdjustedClosePrice(P1) < 5000 
+		AND 
+		AvgDailyRange(ALL_VENUES, 20, NO) > 1 
+		AND 
+		AvgDayVolume(ALL_VENUES, 20, NO) > 200000 
+		AND 
+		AvgDayVolume(ALL_VENUES, 20, NO) < 3000000 
+		AND 
+		NOT IsInstrumentType(EXCHANGE_TRADED_FUND) 
+		AND 
+		NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) 
+		AND 
+		NOT IsInstrumentType(PREFERRED_STOCK) 
+		AND  
+		(DaysFromIPO > 30 OR  DaysFromIPO < 0)
+	   )
+   )	   
+
+	
+CCtime_Copy ConferenceCallTime(News_Current, ACBO, Any)
+Change_Copy Last(ALL_VENUES, CURRENT, YES) - AdjustedClosePrice(P1)
+Chg100min_Copy Last(ALL_VENUES, CURRENT, NO) -  MinuteOpen_I(ALL_VENUES, 16, P5, NO)
+Chg10min_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 2, P5, YES) 
+Chg15min_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 3, P5, YES) 
+Chg15Min_Copy Last(ALL_VENUES, CURRENT, NO) - MinuteClose_I(ALL_VENUES, 3, P5, NO)
+Chg1min_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 1, P1, YES)
+Chg1mLo_Copy  Last(ALL_VENUES, CURRENT, NO) -  MinuteLow(ALL_VENUES, 1, CURRENT, NO, False) 
+Chg1mpct_Copy (Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 1, P1, NO)) / MinuteClose_I(ALL_VENUES, 1, P1, NO) * 100       
+Chg30min_Copy Last(ALL_VENUES, CURRENT, NO) - MinuteOpen_I(ALL_VENUES, 6, P5, NO)
+Chg3min_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 1, P3, YES)
+Chg5min_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 1, P5, NO)
+Chg5minHi_Copy Last(ALL_VENUES, CURRENT, NO) -  MinuteHigh_I(ALL_VENUES, 5, P1, YES, False) 
+Chg5minLo_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False)
+Chg5mLo_Copy  Last(ALL_VENUES, CURRENT, NO) -  MinuteLow(ALL_VENUES, 5, CURRENT, NO, False) 
+Chg60min_Copy Last(ALL_VENUES, CURRENT, NO) - MinuteClose_I(ALL_VENUES, 12, P5, NO)
+ChgAsk_Copy Ask(INSIDE, CURRENT, YES) - ClosePrice(PRIMARY, P1, NO)
+ChgBid_Copy Bid(INSIDE, CURRENT, YES) - ClosePrice(PRIMARY, P1, NO)
+ChgHigh_Copy DayHigh(ALL_VENUES, 1, CURRENT, YES)  -  AdjustedClosePrice(P1) 
+ChgOpen_Copy Last(ALL_VENUES, CURRENT, NO) - OpenPrice(PRIMARY, CURRENT, NO)
+ChgPostAsk_Copy Ask(INSIDE, CURRENT, YES) - DayBar_Close(ALL_VENUES, 10, NO, '15:50') 
+ChgPostBid_Copy Bid(INSIDE, CURRENT,  YES) - DayBar_Close(ALL_VENUES, 60, NO, '15:00') 
+ChgPostBid2_Copy  Bid(INSIDE, CURRENT, YES)    - LatestLast(ALL_VENUES) 
+CHGxask_Copy  Ask(INSIDE, CURRENT, YES) -  AdjustedClosePrice(P1) 
+CHGxbid_Copy  Bid(INSIDE, CURRENT, YES) -  AdjustedClosePrice(P1) 
+Close_Copy ClosePrice(PRIMARY, P1, NO)
+close_price  ClosePrice(PRIMARY, P1, NO) 
+CloseHiLoPct_Copy (AdjustedClosePrice(P1)  -  DayLow(ALL_VENUES, 1, P1, NO))  /  (DayHigh(ALL_VENUES, 1, P1, NO)  -  DayLow(ALL_VENUES, 1, P1, NO))  * 100
+ClosePri_Copy ClosePrice(PRIMARY, P1, NO)
+Con60_Copy (MinuteHigh(ALL_VENUES, 60, CURRENT, NO, False) - MinuteLow(ALL_VENUES, 60, CURRENT, NO, False)) / MinuteLow(ALL_VENUES, 60, CURRENT, NO, False) * 100
+conference_call_start_time ConferenceCallTime(News_Current, MarketHours, Any)
+ConfTime_Copy  ConferenceCallTime(News_Current, ACBO, Any) 
+custom_test_function  Ask(INSIDE, CURRENT, NO) 
+custom_test_function_2  Ask(INSIDE, CURRENT, NO) 
+day_high  DayHigh(ALL_VENUES, 1, CURRENT, NO) 
+day_low  DayLow(ALL_VENUES, 1, CURRENT, NO) 
+DaysRange  DayHigh(ALL_VENUES, 1, CURRENT, NO) -  DayLow(ALL_VENUES, 1, CURRENT, NO) 
+Dif52Lo_Copy Last(ALL_VENUES, CURRENT, NO) - AdjustedClosePrice(P1) 
+Diff52hi_Copy Last(ALL_VENUES, CURRENT, NO) - AdjustedClosePrice(P1)
+DNHI_Copy Last(ALL_VENUES, CURRENT, YES) - DayHigh(ALL_VENUES, 1, CURRENT, YES) 
+DNHIpct_Copy (Last(ALL_VENUES, CURRENT, YES) - DayHigh(ALL_VENUES, 1, CURRENT, YES)) /  DayHigh(ALL_VENUES, 1, CURRENT, YES) * 100
+DownMost1_Copy  Ask(INSIDE, CURRENT, YES)  -  ClosePrice(PRIMARY, P1, NO) 
+DstAbv6_Copy Bid(INSIDE, CURRENT, YES) - EMAStock(ALL_VENUES, YES, MINUTES_5, PERIOD_7, CURRENT)
+DstBel6_Copy EMAStock(ALL_VENUES, YES, MINUTES_5, PERIOD_7, CURRENT) - Ask(INSIDE, CURRENT, NO)
+Earnings__Copy  EarningsEPS(News_Current, ACBO, Actual) 
+EarningsSupPos_Copy SurpriseEarningsEPS(SurprisePositive, ACBO, News_Current, ValueTypeNominal, 0.10)
+Econsensus_Copy EarningsEPS(News_Current, BeforeOpen, Consensus)
+ema_daily_7  EMAStock(ALL_VENUES, NO, DAILY, PERIOD_7, CURRENT) 
+EMA20_Copy EMAStock(ALL_VENUES, YES, MINUTES_5, PERIOD_20, CURRENT)
+entries_count  EntriesCount(HOURS, 8) 
+entry_triggers_count EntryTriggersCount(HOURS, 8)
+ETP_Pref_QG1  (IsInstrumentType(EXCHANGE_TRADED_FUND) OR IsInstrumentType(EXCHANGE_TRADED_NOTE) OR IsInstrumentType(PREFERRED_STOCK))
+ETP_QG1 (IsInstrumentType(EXCHANGE_TRADED_FUND) OR  IsInstrumentType(EXCHANGE_TRADED_NOTE)) 
+execution_price  ExecutionPrice 
+fifteen_minute_high MinuteHigh(ALL_VENUES, 15, CURRENT, NO, False)
+fifteen_minute_low MinuteLow(ALL_VENUES, 15, CURRENT, NO, False)
+five_minute_high  MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False) 
+five_minute_low  MinuteLow(ALL_VENUES, 5, CURRENT, NO, False) 
+five_minute_range (MinuteHigh(ALL_VENUES, 5, CURRENT, NO, False) - MinuteLow(ALL_VENUES, 5, CURRENT, NO, False))
+Float_Copy  FloatShares 
+GAP_Copy OpenPrice(PRIMARY, CURRENT, NO) - AdjustedClosePrice(P1)
+GAPDNpl_Copy   DayBar_Close(ALL_VENUES, 5, YES, '9:25')  - OpenPrice(PRIMARY, CURRENT, NO) 
+gapktg_Copy  OpenPrice(PRIMARY, CURRENT, NO)  -  AdjustedClosePrice(P1) 
+GAPPct_Copy (OpenPrice(PRIMARY, CURRENT, NO) - AdjustedClosePrice(P1)) / AdjustedClosePrice(P1) * 100
+GAPpl_Copy OpenPrice(PRIMARY, CURRENT, NO) -  DayBar_Close(ALL_VENUES, 5, YES, '9:25') 
+GAPpre_Copy  OpenPrice(PRIMARY, CURRENT, YES) - AdjustedClosePrice(P1) 
+GAPxx_Copy  OpenPrice(PRIMARY, CURRENT, NO) -  AdjustedClosePrice(P1) 
+High_Copy DayHigh(ALL_VENUES, 1, CURRENT, NO)
+High1to5_Copy DayHigh(ALL_VENUES, 5, CURRENT, NO)
+HL3D_Copy (DayHigh(ALL_VENUES, 3, CURRENT, NO) / DayLow(ALL_VENUES, 3, CURRENT, NO)) * 1.0    - 1
+hotlistup1_Copy Last(ALL_VENUES, CURRENT, YES) -  OpenPrice(PRIMARY, CURRENT, NO)  
+i15MOVE3_Copy  Last(ALL_VENUES, CURRENT, NO)  -  MinuteClose_I(ALL_VENUES, 15, P3, NO) 
+i15P1450_Copy  (EMAStock(ALL_VENUES, NO, MINUTES_15, PERIOD_14, P1) -  EMAStock(ALL_VENUES, NO, MINUTES_15, PERIOD_50, P1)) /  EMAStock(ALL_VENUES, NO, MINUTES_15, PERIOD_50, P2) * 100    
+i30EMA7dif_Copy  Last(ALL_VENUES, CURRENT, NO) -  EMAStock(ALL_VENUES, NO, MINUTES_30, PERIOD_7, CURRENT) 
+i5Divrg_Copy  Last(ALL_VENUES, CURRENT, NO) -  SMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, P1) 
+i5EMA14dif_Copy  Last(ALL_VENUES, CURRENT, NO) -  EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_14, CURRENT) 
+i5EMA14slo_Copy (EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_14, P1) -  EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_14, P3)) /  EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_14, P2) * 100
+i5EMA20_Copy EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, CURRENT)
+i5EMA20did_Copy  Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, CURRENT) 
+I5EMA7_dst_Copy Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_7, P1)
+i5EMA7chg_Copy Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_7, CURRENT)
+i5EMA7dst_Copy Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_7, CURRENT)
+i5EMA7pct_Copy (Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_7, CURRENT)) / EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_7, CURRENT) * 100
+i5Long_Copy Last(ALL_VENUES, CURRENT, NO) - MinuteHigh_I(ALL_VENUES, 5, CURRENT, NO, False) 
+i5NetChg_Copy Last(ALL_VENUES, CURRENT, NO) - MinuteClose_I(ALL_VENUES, 5, P1, NO) 
+i5P1450_Copy  (EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_14, P1) -  EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_50, P1)) /  EMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_50, P1) * 100     
+i5PctChg_Copy i5Netchg / Close
+i5RSI_Copy   RSIStock(ALL_VENUES, NO, MINUTES_5, 14, CURRENT) 
+i5RSI_1_Copy  RSIStock(ALL_VENUES, NO, MINUTES_5, 14, P1) 
+i5SMA20_Copy SMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, CURRENT)
+i5SMA20dif_Copy Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, CURRENT)
+i5SMAdif_Copy Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, CURRENT)
+i5StdDev_Copy BollingerBands(CURRENT, MINUTES_5, 20, ALL_VENUES, NO, UpperBand, V2) - BollingerBands(CURRENT, MINUTES_5, 20, ALL_VENUES, NO, UpperBand, V1)
+i60MOVE3_Copy  Last(ALL_VENUES, CURRENT, NO)  -  MinuteClose_I(ALL_VENUES, 60, P3, NO) 
+ibb_close_price RefStockNumericValue('IBB',ClosePrice(PRIMARY, P1, NO))
+ibb_minute_low RefStockNumericValue('IBB', MinuteLow(ALL_VENUES, 1, CURRENT, YES, True))
+ibb_percentage_change (ibb_minute_low - ibb_close_price) / ibb_close_price
+IDXADD ((NewsSearch(News_P1, AfterClose, StockNews, StockNews_Hot_Stocks, AnySentiment, Summary, '"replace" OR "added to"') AND NewsSearch(News_P1, AfterClose, StockNews, StockNews_Hot_Stocks, AnySentiment, Summary, '"open" OR "close"') AND NewsSearch(News_P1, AfterClose, StockNews, StockNews_Hot_Stocks, AnySentiment, Summary, '"400" OR "500" OR "600" OR "smallcap" OR "midcap" OR "largecap"') ) OR    ((NewsSearch(News_Current, ACBO, Any, StockNews_Hot_Stocks, AnySentiment, Summary,    '"to join S&P 400" OR "to join S&P 500" OR "to join S&P 600"')      OR     (NewsSearch(News_Current, ACBO, Any, StockNews_Hot_Stocks, AnySentiment, Summary, '"to replace"')  AND NewsSearch(News_Current, ACBO, Any, StockNews_Hot_Stocks, AnySentiment, Summary,    '" S&P 400" OR " S&P 500" OR "S&P 600" OR "S&P"')))))
+if IF
+ImbBuyPct_Copy IF(DayVolume(ALL_VENUES, 1, CURRENT, YES) = 0, 0, (1.0 * ImbalanceBuyVolume(NYSE)) / DayVolume(ALL_VENUES, 1, CURRENT, YES) * 100)
+ImbBuyPctTSX_Copy IF(DayVolume(ALL_VENUES, 1, CURRENT, YES) = 0, 0, (1.0 * ImbalanceBuyVolume(TSX_STOCK)) / DayVolume(ALL_VENUES, 1, CURRENT, YES) * 100)
+ImbBuyVol_Copy ImbalanceBuyVolume(NYSE)
+ImbBuyVolNSDQ_Copy  ImbalanceBuyVolume(NASDAQ) 
+ImbBuyVolTSX_Copy ImbalanceBuyVolume(TSX_STOCK) 
+ImbSellPct_Copy IF(DayVolume(ALL_VENUES, 1, CURRENT, YES) = 0, 0, (1.0 * ImbalanceSellVolume(NYSE)) / DayVolume(ALL_VENUES, 1, CURRENT, YES) * 100)
+ImbSellPctTSX_Copy IF(DayVolume(ALL_VENUES, 1, CURRENT, YES) = 0, 0, (1.0 * ImbalanceSellVolume(TSX_STOCK)) / DayVolume(ALL_VENUES, 1, CURRENT, YES) * 100)
+ImbSellVol_Copy ImbalanceSellVolume(NYSE) 
+ImbSellVolNSDQ_Copy  ImbalanceSellVolume(NASDAQ) 
+ImbSellVolTSX_Copy ImbalanceSellVolume(TSX_STOCK)
+ImbTime_Copy ImbalanceTime
+ImbVolBS_Copy IF(ImbalanceBuyVolume(NYSE) = 0, ImbalanceSellVolume(NYSE), ImbalanceBuyVolume(NYSE) - ImbalanceSellVolume(NYSE))
+IndAsk_Copy PMIAsk
+IndBid_Copy PMIBid
+IndChgX_Copy IF(PMIBid>0,(PMIBid - PMIAsk)/2 -  AdjustedClosePrice(P1)     , 1 ) 
+IndPct_Copy   ( PMIAsk  -  PMIBid  )  /  AdjustedClosePrice(P1) * 100
+IndTime_Copy PMITime
+IPODays_Copy  DaysFromIPO 
+IPOprc_Copy  IPOPrice 
+last_price  Last(ALL_VENUES, CURRENT, YES) 
+Last4pm_Copy  DayBar_Close(ALL_VENUES, 10, YES, '15:50') 
+LastPrePost_Copy Last(ALL_VENUES, CURRENT, YES)
+LastX_Copy Last(PRIMARY, CURRENT, NO)
+launch_rule_earnings ( (CurrentDate >= #2011-01-17# AND CurrentDate <= #2011-03-04#) OR (CurrentDate >= #2011-04-11# AND CurrentDate <= #2011-05-20#) OR (CurrentDate >= #2011-07-11# AND CurrentDate <= #2011-08-19#) OR (CurrentDate >= #2011-10-11# AND CurrentDate <= #2011-11-15#) OR (CurrentDate >= #2012-01-09# AND CurrentDate <= #2012-03-05#) OR (CurrentDate >= #2012-04-10# AND CurrentDate <= #2012-05-17#) OR (CurrentDate >= #2012-07-09# AND CurrentDate <= #2012-08-16#) OR (CurrentDate >= #2012-10-09# AND CurrentDate <= #2012-11-15#) OR (CurrentDate >= #2013-01-09# AND CurrentDate <= #2013-03-01#) OR (CurrentDate >= #2013-04-15# AND CurrentDate <= #2013-05-22#) OR (CurrentDate >= #2013-07-09# AND CurrentDate <= #2013-08-15#) OR (CurrentDate >= #2013-10-09# AND CurrentDate <= #2013-11-22#) OR (CurrentDate >= #2014-01-11# AND CurrentDate <= #2014-03-05#) OR (CurrentDate >= #2014-04-15# AND CurrentDate <= #2014-05-15#) OR (CurrentDate >= #2014-07-09# AND CurrentDate <= #2014-08-16#) OR (CurrentDate >= #2014-10-09# AND CurrentDate <= #2014-11-22#) OR (CurrentDate >= #2015-01-11# AND CurrentDate <= #2015-03-05#) OR (CurrentDate >= #2015-04-09# AND CurrentDate <= #2015-05-19#) OR (CurrentDate >= #2015-07-09# AND CurrentDate <= #2015-08-18#) OR (CurrentDate >= #2015-10-09# AND CurrentDate <= #2015-11-17#) OR (CurrentDate >= #2016-01-12# AND CurrentDate <= #2016-03-05#) OR (CurrentDate >= #2016-04-11# AND CurrentDate <= #2016-05-20#) OR (CurrentDate >= #2016-07-12# AND CurrentDate <= #2016-08-19#) OR (CurrentDate >= #2016-10-11# AND CurrentDate <= #2016-11-17#) OR (CurrentDate >= #2017-01-19# AND CurrentDate <= #2017-03-03#) OR (CurrentDate >= #2017-04-20# AND CurrentDate <= #2017-05-12#) OR (CurrentDate >= #2017-07-17# AND CurrentDate <= #2017-08-18#) OR (CurrentDate >= #2017-10-09# AND CurrentDate <= #2017-11-17#) OR (CurrentDate >= #2018-01-15# AND CurrentDate <= #2018-03-02#) OR (CurrentDate >= #2018-04-09# AND CurrentDate <= #2018-05-18#) OR (CurrentDate >= #2018-07-16# AND CurrentDate <= #2018-08-13#) OR (CurrentDate >= #2018-10-18# AND CurrentDate <= #2018-11-16#) OR (CurrentDate >= #2019-01-23# AND CurrentDate <= #2019-03-14#) OR (CurrentDate >= #2019-04-23# AND CurrentDate <= #2019-05-17#) OR (CurrentDate >= #2019-07-18# AND CurrentDate <= #2019-08-16#) )    
+launch_rule_imbalance_dates     ( 
+        (
+          ((CurrentDate >= #2017-03-01#) AND (CurrentDate <= #2018-05-25#)) 
+           OR   
+           (CurrentDate >= #2019-01-01#)
+        )      
+       AND 
+       (
+           (CurrentDate <> #2011-11-25#) 
+           AND 
+           (CurrentDate <> #2011-12-24#) 
+           AND 
+           (CurrentDate <> #2012-07-03#) 
+           AND 
+           (CurrentDate <> #2012-11-23#) 
+           AND 
+           (CurrentDate <> #2012-12-24#) 
+           AND 
+           (CurrentDate <> #2013-07-03#) 
+           AND 
+           (CurrentDate <> #2013-11-29#) 
+           AND 
+           (CurrentDate <> #2013-12-24#) 
+           AND 
+           (CurrentDate <> #2014-07-03#) 
+           AND 
+           (CurrentDate <> #2014-11-28#) 
+           AND 
+           (CurrentDate <> #2014-12-24#) 
+           AND 
+           (CurrentDate <> #2015-07-03#) 
+           AND 
+           (CurrentDate <> #2015-11-27#) 
+           AND 
+           (CurrentDate <> #2015-12-24#) 
+           AND 
+           (CurrentDate <> #2016-07-03#) 
+           AND 
+           (CurrentDate <> #2015-12-24#) 
+           AND 
+           (CurrentDate <> #2016-11-25#) 
+           AND 
+           (CurrentDate <> #2017-07-03#) 
+           AND 
+           (CurrentDate <> #2017-11-24#) 
+           AND 
+           (CurrentDate <> #2018-07-03#) 
+           AND 
+           (CurrentDate <> #2018-11-23#) 
+           AND 
+           (CurrentDate <> #2018-12-24#) 
+           AND 
+           (CurrentDate <> #2019-07-03#)
+        )
+    )
+launch_rule_imbalance_earnings_dates     ( 
+        (
+          ((CurrentDate >= #2017-03-01#) AND (CurrentDate <= #2018-05-25#)) 
+           OR   
+           (CurrentDate >= #2019-01-01#)
+        )      
+       AND 
+       (
+           (CurrentDate <> #2011-11-25#) 
+           AND 
+           (CurrentDate <> #2011-12-24#) 
+           AND 
+           (CurrentDate <> #2012-07-03#) 
+           AND 
+           (CurrentDate <> #2012-11-23#) 
+           AND 
+           (CurrentDate <> #2012-12-24#) 
+           AND 
+           (CurrentDate <> #2013-07-03#) 
+           AND 
+           (CurrentDate <> #2013-11-29#) 
+           AND 
+           (CurrentDate <> #2013-12-24#) 
+           AND 
+           (CurrentDate <> #2014-07-03#) 
+           AND 
+           (CurrentDate <> #2014-11-28#) 
+           AND 
+           (CurrentDate <> #2014-12-24#) 
+           AND 
+           (CurrentDate <> #2015-07-03#) 
+           AND 
+           (CurrentDate <> #2015-11-27#) 
+           AND 
+           (CurrentDate <> #2015-12-24#) 
+           AND 
+           (CurrentDate <> #2016-07-03#) 
+           AND 
+           (CurrentDate <> #2015-12-24#) 
+           AND 
+           (CurrentDate <> #2016-11-25#) 
+           AND 
+           (CurrentDate <> #2017-07-03#) 
+           AND 
+           (CurrentDate <> #2017-11-24#) 
+           AND 
+           (CurrentDate <> #2018-07-03#) 
+           AND 
+           (CurrentDate <> #2018-11-23#) 
+           AND 
+           (CurrentDate <> #2018-12-24#) 
+           AND 
+           (CurrentDate <> #2019-07-03#)
+        )
+    )
+    
+    AND
+    
+    (
+        (CurrentDate >= #2011-01-17# AND
+        CurrentDate <= #2011-03-04#) OR
+        (CurrentDate >= #2011-04-11# AND
+        CurrentDate <= #2011-05-20#) OR
+        (CurrentDate >= #2011-07-11# AND
+        CurrentDate <= #2011-08-19#) OR
+        (CurrentDate >= #2011-10-11# AND
+        CurrentDate <= #2011-11-15#) OR
+        (CurrentDate >= #2012-01-09# AND
+        CurrentDate <= #2012-03-05#) OR
+        (CurrentDate >= #2012-04-10# AND
+        CurrentDate <= #2012-05-17#) OR
+        (CurrentDate >= #2012-07-09# AND
+        CurrentDate <= #2012-08-16#) OR
+        (CurrentDate >= #2012-10-09# AND
+        CurrentDate <= #2012-11-15#) OR
+        (CurrentDate >= #2013-01-09# AND
+        CurrentDate <= #2013-03-01#) OR
+        (CurrentDate >= #2013-04-15# AND
+        CurrentDate <= #2013-05-22#) OR
+        (CurrentDate >= #2013-07-09# AND
+        CurrentDate <= #2013-08-15#) OR
+        (CurrentDate >= #2013-10-09# AND
+        CurrentDate <= #2013-11-22#) OR
+        (CurrentDate >= #2014-01-11# AND
+        CurrentDate <= #2014-03-05#) OR
+        (CurrentDate >= #2014-04-15# AND
+        CurrentDate <= #2014-05-15#) OR
+        (CurrentDate >= #2014-07-09# AND
+        CurrentDate <= #2014-08-16#) OR
+        (CurrentDate >= #2014-10-09# AND
+        CurrentDate <= #2014-11-22#) OR
+        (CurrentDate >= #2015-01-11# AND
+        CurrentDate <= #2015-03-05#) OR
+        (CurrentDate >= #2015-04-09# AND
+        CurrentDate <= #2015-05-19#) OR
+        (CurrentDate >= #2015-07-09# AND
+        CurrentDate <= #2015-08-18#) OR
+        (CurrentDate >= #2015-10-09# AND
+        CurrentDate <= #2015-11-17#) OR
+        (CurrentDate >= #2016-01-12# AND
+        CurrentDate <= #2016-03-05#) OR
+        (CurrentDate >= #2016-04-11# AND
+        CurrentDate <= #2016-05-20#) OR
+        (CurrentDate >= #2016-07-12# AND
+        CurrentDate <= #2016-08-19#) OR
+        (CurrentDate >= #2016-10-11# AND
+        CurrentDate <= #2016-11-17#) OR
+        (CurrentDate >= #2017-01-19# AND
+        CurrentDate <= #2017-03-03#) OR
+        (CurrentDate >= #2017-04-20# AND
+        CurrentDate <= #2017-05-12#) OR
+        (CurrentDate >= #2017-07-17# AND
+        CurrentDate <= #2017-08-18#) OR
+        (CurrentDate >= #2017-10-09# AND
+        CurrentDate <= #2017-11-17#) OR
+        (CurrentDate >= #2018-01-15# AND
+        CurrentDate <= #2018-03-02#) OR
+        (CurrentDate >= #2018-04-09# AND
+        CurrentDate <= #2018-05-18#) OR
+        (CurrentDate >= #2018-07-16# AND
+        CurrentDate <= #2018-08-13#) OR
+        (CurrentDate >= #2018-10-18# ANDmClose_Copy MinuteClose_I(ALL_VENUES, 1, P1, YES)
+mClose5_Copy  MinuteClose_I(ALL_VENUES, 1, P5, YES) 
+
+        CurrentDate <= #2018-11-16#) OR
+        (CurrentDate >= #2019-01-23# AND
+        CurrentDate <= #2019-03-14#) OR
+        (CurrentDate >= #2019-04-23# AND
+        CurrentDate <= #2019-05-17#)
+    )       
+
+
+
+
+LBollPctRng_Copy (Last(ALL_VENUES, CURRENT, NO) - BollingerBands(CURRENT, MINUTES_5, 20, ALL_VENUES, NO, LowerBand, V2)) / ( SMAStock(ALL_VENUES, NO, MINUTES_5, PERIOD_20, CURRENT) - BollingerBands(CURRENT, MINUTES_5, 20, ALL_VENUES, NO, LowerBand, V2))
+Low_Copy  DayLow(ALL_VENUES, 1, CURRENT, NO) 
+m3High_Copy  MinuteHigh(ALL_VENUES, 3, CURRENT, NO, false)  -  Last(ALL_VENUES, CURRENT, NO) 
+m3Low_Copy  Last(ALL_VENUES, CURRENT, NO)  -  MinuteLow(ALL_VENUES, 3, CURRENT, NO, false) 
+ Last(ALL_VENUES, CURRENT, NO)  -  MinuteLow(ALL_VENUES, 3, CURRENT, NO, false)   Last(ALL_VENUES, CURRENT, NO)  -  MinuteLow(ALL_VENUES, 3, CURRENT, NO, false) 
+ADRpctx_Copy  AvgDailyRange(ALL_VENUES, 20, NO)  mDstEMA20_Copy Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT)
+mDstSMA20_Copy Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT)
+mEMA14dif_Copy  Last(ALL_VENUES, CURRENT, NO) -  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_14, CURRENT) 
+mEMA20dif_Copy  Last(ALL_VENUES, CURRENT, YES) - EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT) 
+mEMA7pctdif_Copy   (Last(ALL_VENUES, CURRENT, NO)  -  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_7, CURRENT)  )  /  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_7, CURRENT)  *  100
+mHigh45_Copy MinuteHigh(ALL_VENUES, 45, CURRENT, YES, False)
+min_80prctgapdown_halfadr IF(   execution_price - .8 * (execution_price - close_price)   >   execution_price - .5 * average_daily_range ,   execution_price - .8 * (execution_price - close_price) ,   execution_price - .5 * average_daily_range )
+min_80prctgapup_halfadr IF(          
+    execution_price + .8 * (close_price - execution_price)          
+    <          
+    execution_price + .5 * average_daily_range    
+  ,          
+    execution_price + .8 * (close_price - execution_price)    
+  ,          
+    execution_price + .5 * average_daily_range    
+  )
+MinDayBarHi1-15_Copy  MinDayBar_High(ALL_VENUES, 1, NO, 15) 
+ 
+minute_high  MinuteHigh(ALL_VENUES, 1, CURRENT, NO, False) 
+minute_low  MinuteLow(ALL_VENUES, 1, CURRENT, NO, False) 
+minutes_from_midnight  TickTime 
+minutes_from_stock_open (seconds_from_stock_open/60)
+minutes_since_entry ((TickTimeSeconds - PositionEntryTime) / 60)
+mLow45_Copy MinuteLow(ALL_VENUES, 45, CURRENT, YES, False)
+/  AdjustedClosePrice(P1)  * 100
+adrs  AvgDailyRange(ALL_VENUES, 20, NO) 
+MM_Copy  (  2  *  ClosePrice(PRIMARY, P1, NO)  )  -  OpenPrice(PRIMARY, CURRENT, NO) 
+MOVE1m_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 1, P1, YES)
+mP1450_Copy  (EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_14, P1) -  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_50, P1)) /  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_50, P2) * 100     
+mRange_Copy  MinuteHigh_I(ALL_VENUES, 1, CURRENT, NO, False)  -  MinuteLow_I(ALL_VENUES, 1, CURRENT, NO, False) 
+MRL1_Copy  MinuteHigh_I(ALL_VENUES, 5, CURRENT, NO, false)  -   Last(ALL_VENUES, CURRENT, NO) 
+mRSI_1_Copy  RSIStock(ALL_VENUES, NO, MINUTES_1, 14, P1) 
+mSMA15_Copy  SMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_14, CURRENT)
+mSMA15dif_Copy Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_14, CURRENT)
+mSMA7_Copy SMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_7, CURRENT)
+mVol1_5_Copy   (MinuteVolume_I(ALL_VENUES, 1, CURRENT, NO) + 
+ MinuteVolume_I(ALL_VENUES, 1, P1, NO) +
+ MinuteVolume_I(ALL_VENUES, 1, P2, NO) +  
+ MinuteVolume_I(ALL_VENUES, 1, P3, NO) +
+ MinuteVolume_I(ALL_VENUES, 1, P4, NO) + 
+ MinuteVolume_I(ALL_VENUES, 1, P5, NO) )
+mVol5_Copy (  MinuteVolume_I(ALL_VENUES, 1, P5, NO) +   MinuteVolume_I(ALL_VENUES, 1, P4, NO) +   MinuteVolume_I(ALL_VENUES, 1, P3, NO) +  MinuteVolume_I(ALL_VENUES, 1, P2, NO)  +  MinuteVolume_I(ALL_VENUES, 1, P1, NO) +  MinuteVolume_I(ALL_VENUES, 1, CURRENT, NO)) 
+nER_QG EarningsNewsEvent(News_Current, ACBO, False, Any) AND NOT StockNews(News_Current, ACBO, AnySentiment, Earnings) AND NOT  TradeNews(News_Current, ACBO, AnySentiment, Earnings) AND NOT TradeNews(News_Current, ACBO, AnySentiment, GuidanceDown) AND NOT TradeNews(News_Current, ACBO, AnySentiment, GuidanceUp)  
+NetChange_Copy Last(ALL_VENUES, CURRENT, YES) - ClosePrice(PRIMARY, P1, NO)
+NetChg_Copy Last(ALL_VENUES, CURRENT, YES) - AdjustedClosePrice(P1) 
+NetChg3d_Copy Last(ALL_VENUES, CURRENT, YES) - AdjustedClosePrice(P3) 
+NetChgPreAsk_Copy Ask(INSIDE, CURRENT, YES) - ClosePrice(PRIMARY, P1, NO)
+NetChgPreBid_Copy Bid(INSIDE, CURRENT, YES) - ClosePrice(PRIMARY, P1, NO)
+News_Buyback_QG1 ( Source3(News_Current, ACBO, AnySentiment, Buybacks) OR  Source3(News_Current, ACBO, AnySentiment, Important_Buybacks)) 
+News_Dividend_QG1 ( Source3(News_Current, ACBO, AnySentiment, Dividend_Reduction) OR  Source3(News_Current, ACBO, AnySentiment, Dividend_Increase) OR  Source3(News_Current, ACBO, AnySentiment, Dividends) OR  Source3(News_Current, ACBO, AnySentiment, Special_Dividends)) 
+News_Earnings_AC_QG1  (EarningsNewsEvent(News_P1, AfterClose, True, Any) OR  Source3(News_P1, AfterClose, AnySentiment, Earnings)) 
+News_Earnings_P1_QG1 ( EarningsNewsEvent(News_P1, ACBO, True, Any) OR   Source3(News_P1, ACBO, AnySentiment, Earnings)) 
+News_Earnings_QG1  (EarningsNewsEvent(News_Current, ACBO, True, Any) OR  Source3(News_Current, ACBO, AnySentiment, Earnings))
+News_FDA_QG1  (Source3(News_Current, ACBO, AnySentiment, FDA_News) OR  Source3(News_Current, ACBO, AnySentiment, Important_FDA_News))   
+News_Guidance_QG1  (Source3(News_Current, ACBO, AnySentiment, Guidance) OR  Source3(News_Current, ACBO, AnySentiment, Important_Guidance)) 
+News_Insider_Trades_QG1 (  Source3(News_Current, ACBO, AnySentiment, Important_Insider_Trades) OR  Source3(News_Current, ACBO, AnySentiment, Insider_Trades) ) 
+News_MgmtChanges_QG1 (Source3(News_Current, ACBO, AnySentiment, Mgmt_Changes) OR  Source3(News_Current, ACBO, AnySentiment, Important_Mgmt_Changes)) 
+News_MNA_QG1 ( Source3(News_Current, ACBO, AnySentiment, MNA)  OR  Source3(News_Current, ACBO, AnySentiment, Important_MNA))  
+News_Ratings_Downgrade_QG1   (Source3(News_Current, ACBO, AnySentiment, Downgrades) OR  Source3(News_Current, ACBO, AnySentiment, Important_Downgrades) OR  RatingsAction(News_Current, BeforeOpen, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, ''))  
+News_Ratings_Downgrade_w/oGN_QG1 ((StockNews(News_Current, ACBO, AnySentiment, Downgrade) OR  Source3(News_Current, ACBO, AnySentiment, Downgrades)) AND NOT  GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType))   
+News_Ratings_QG1 (RatingsAction(News_Current, BeforeOpen, AnyRatingsAction, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '')                    OR                   Source3(News_Current, ACBO, AnySentiment, Analyst_News))
+News_Ratings_Upgrade_QG1 (RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') OR  Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Important_Upgrades) )  
+News_Ratings_Upgrades_w/oGN_QG1 ((StockNews(News_Current, ACBO, AnySentiment, Upgrade) OR  Source3(News_Current, ACBO, AnySentiment, Upgrades)) AND NOT  GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType))   
+News_SEC_filings_QG1 ( Source3(News_Current, ACBO, AnySentiment, SEC_Filings))
+News_Syndicate_Priced_QG1 (SyndicateType(News_Current, ACBO, Secondary) OR SyndicateType(News_Current, ACBO, BlockTrade) OR SyndicateType(News_Current, ACBO, SpotSecondary))
+News_Syndicate_QG1  (StockNews(News_Current, ACBO, AnySentiment, Syndicate)) 
+News_Upgrade_QG1 (StockNews(News_Current, ACBO, AnySentiment, Upgrade) OR  RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') OR  Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Important_Upgrades))
+no_news StockNewsEvent(News_Current, ACBO, False)
+number_of_current_box_positions  PositionCount(OPEN) 
+one_minute_low MinuteLow(ALL_VENUES, 1, CURRENT, YES, False)
+one_minute_since_entry seconds_since_entry > 60
+Open_Copy OpenPrice(PRIMARY, CURRENT, NO)
+open_pnl_per_share PositionDelta(ALL_VENUES, NO)
+open_price  OpenPrice(PRIMARY, CURRENT, NO) 
+OPGMM_Airlines_S_ND (    
+     DayBar_Volume(ALL_VENUES, 30, YES, '0')  > 0 
+     AND  
+     RefStockNumericValue('DAL',  AdjustedClosePrice(P1) )   >   RefStockNumericValue('DAL',MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False))  
+     + (.25*  RefStockNumericValue('DAL',AvgDailyRange(ALL_VENUES, 20, NO)))  
+     AND   
+     ((RefStockNumericValue('SPY', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) )/RefStockNumericValue('SPY', AdjustedClosePrice(P1)))-1)  > 
+     ((RefStockNumericValue('DAL', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) )/RefStockNumericValue('DAL', AdjustedClosePrice(P1)))-1)     
+     AND 
+     RefStockLogicalValue('DAL', NewsSearch(News_Current, BeforeOpen, Any, AnyGeneralNewsType, AnySentiment, Summary, '"reports"'))  
+     AND     
+     RefStockLogicalValue('DAL',NewsSearch(News_Current, BeforeOpen, Any, AnyGeneralNewsType, AnySentiment, Summary, '"operating performance" or 
+     "traffic"'))   AND   
+     RefStockLogicalValue('DAL',NewsSearch(News_Current, BeforeOpen, Any, AnyGeneralNewsType, AnySentiment, Summary, 
+     '"January" OR "February" OR   "March" OR "April" OR "May" OR "June" OR "July" OR "August" OR "September" OR "October" OR "November"OR "December"')
+     )
+)
+OPGMM_ArbNatGas_L_MK     (   
+        (  
+          RefStockNumericValue('UNG', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False)) > 0 
+          AND  
+          RefStockNumericValue('UNG', MinuteLow(ALL_VENUES, 5, CURRENT, YES, False)) > 0 
+          AND  
+          RefStockNumericValue('UNG', AdjustedClosePrice(P1)) > 0 
+          AND 
+          0.5*(RefStockNumericValue('UNG', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False)) +  RefStockNumericValue('UNG', MinuteLow(ALL_VENUES, 5, CURRENT, YES, False))) 
+          >=  1.02*RefStockNumericValue('UNG', AdjustedClosePrice(P1))
+        )
+        AND
+        (
+          AvgDailyRange(ALL_VENUES,20,NO) > 0.5 
+          AND 
+          EarningsNewsEvent(News_Current, ACBO, False, Any) 
+          AND 
+          NOT RatingsAction(News_Current, BeforeOpen, AnyRatingsAction, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') 
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Earnings) 
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Recommendations)  
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Upgrade)  
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Downgrade) 
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Initiation) 
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Syndicate) 
+          AND 
+          NOT StockNews(News_Current, ACBO, AnySentiment, Hot_Stocks)
+        )
+    )
+          
+
+OPGMM_ArbNatGas_S_MK     (   
+        (   
+            RefStockNumericValue('UNG', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False)) > 0 
+            AND  
+            RefStockNumericValue('UNG', MinuteLow(ALL_VENUES, 5, CURRENT, YES, False)) > 0 
+            AND  
+            RefStockNumericValue('UNG', AdjustedClosePrice(P1)) > 0 
+            AND 
+            0.5*(RefStockNumericValue('UNG', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False)) +  RefStockNumericValue('UNG', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False))) <=  0.98*RefStockNumericValue('UNG', AdjustedClosePrice(P1))
+        )
+        AND
+        (
+            AvgDailyRange(ALL_VENUES,20,NO) > 0.5 
+            AND 
+            EarningsNewsEvent(News_Current, ACBO, False, Any) 
+            AND 
+            NOT RatingsAction(News_Current, BeforeOpen, AnyRatingsAction, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') 
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Earnings) 
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Recommendations)  
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Upgrade)  
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Downgrade) 
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Initiation) 
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Syndicate) 
+            AND 
+            NOT StockNews(News_Current, ACBO, AnySentiment, Hot_Stocks)
+        )
+    )
+OPGMM_Buyback_L_QG     (
+		(
+		  (
+			   NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"repurchase*" or "buyback"')    
+			   AND 
+			   NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"share" or "shares"')     
+			   AND 
+			   (
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approve"') 
+					OR   
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approves"') 
+					OR     
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"approved"')  
+					OR    
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announce"') 
+					OR    
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announces"')  
+					OR    
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"announced"')  
+					OR    
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorize"') 
+					OR     
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorizes"')  
+					OR      
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorized"') 
+					OR    
+					NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, Summary, '"authorization"')
+				)    
+				AND 
+				NOT NewsSearch(News_Current, ACBO, StockNewsEvent, AnyGeneralNewsType, AnySentiment, SummaryAndDetails, '"proposed offering" 
+				OR "notes" OR "convertible senior notes" OR "aggregate principal amount " OR "suspend" OR "suspends" OR  "suspended" 
+				OR "postpone" OR "postpones" OR "postponed"')
+		   ) 
+		   OR  
+		   (Source3(News_Current, ACBO, AnySentiment, Buybacks))
+		)
+
+        AND
+	  (
+         NOT (News_Earnings_QG1 OR News_FDA_QG1 OR News_Guidance_QG1 OR News_MgmtChanges_QG1 OR News_Dividend_QG1 OR News_Syndicate_QG1 
+		 OR News_Insider_Trades_QG1) 
+		 AND 
+		 AdjustedClosePrice(P1) >= 1 AND AdjustedClosePrice(P1) < 5000 
+		 AND 
+		 AvgDailyRange(ALL_VENUES, 20, NO) > 1 
+		 AND 
+		 AvgDayVolume(ALL_VENUES, 20, NO) > 200000 AND AvgDayVolume(ALL_VENUES, 20, NO) < 3000000 
+		 AND 
+		 NOT (ETP_Pref_QG1)  
+		 AND  
+		 (DaysFromIPO > 30 OR  DaysFromIPO < 0)
+      )
+    )	  
+
+	
+OPGMM_Earnings_L_ND    (
+     DayBar_Volume(ALL_VENUES,120, YES, '07:00-9:26')  
+	 >= IF((.0050*AvgDayVolume(ALL_VENUES, 20, NO)) > 10000,  (.0050*AvgDayVolume(ALL_VENUES, 20, NO)),10000)  
+	 AND 
+	 DayBar_High(ALL_VENUES, 5, YES, '0')  >=  ( AdjustedClosePrice(P1) * 1.08 ) AND 
+	 (( AdjustedClosePrice(P1)/  OpenPrice(PRIMARY, P1, NO) )-1) <=.05
+   )
+	
+	AND
+	(
+		AdjustedClosePrice(P1) >= 10 
+		AND  
+		AvgDailyRange(ALL_VENUES, 20, NO) >= .25 
+		AND  
+		AvgDayVolume(ALL_VENUES, 20, NO) >= 400000 
+		AND 
+		AvgDayVolume(ALL_VENUES, 60, NO) >= 400000 
+		AND  
+		EarningsNewsEvent(News_Current, ACBO, True, Any) 
+		AND  
+		AdjustedClosePrice(P1) < 2000
+	)
+OPGMM_Earnings_L_ND_NSDQ     (
+        (  
+         NOT
+          PrimaryExchange(NYSE) 
+          AND 
+          DayBar_Volume (ALL_VENUES,120, YES, '07:00-9:26') >= 
+          IF((.0050*AvgDayVolume(ALL_VENUES, 20, NO)) > 10000, 
+          (.0050*AvgDayVolume(ALL_VENUES, 20, NO)),10000) 
+          AND 
+          DayBar_High (ALL_VENUES, 5, YES, '0') >= ( AdjustedClosePrice(P1) * 1.08 ) 
+          AND 
+          (( AdjustedClosePrice (P1)/ OpenPrice(PRIMARY, P1, NO) )-1) <=.05
+        )
+        
+        AND
+        
+        (
+            (EarningsNewsEvent(News_Current, ACBO, True, Any) 
+             OR 
+             Source3(News_Current, ACBO, AnySentiment, Earnings)
+            ) 
+            AND 
+            NOT IsInstrumentType(EXCHANGE_TRADED_FUND) 
+            AND 
+            NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) 
+            AND 
+            NOT IsInstrumentType(PREFERRED_STOCK) 
+            AND 
+            AdjustedClosePrice(P1) >= 10 AND AdjustedClosePrice(P1) < 2000 
+            AND 
+            AvgDailyRange(ALL_VENUES, 20, NO) >= .25 
+            AND 
+            AvgDayVolume(ALL_VENUES, 20, NO) >= 400000 AND AvgDayVolume(ALL_VENUES, 60, NO) >= 400000 
+            AND 
+            ( DaysFromIPO > 90 OR DaysFromIPO < 0)
+        )
+    )
+
+OPGMM_Earnings_L_ND_NYSE 
+    (
+        (  
+          PrimaryExchange(NYSE) 
+          AND 
+          DayBar_Volume (ALL_VENUES,120, YES, '07:00-9:29') >= 
+          IF((.0050*AvgDayVolume(ALL_VENUES, 20, NO)) > 10000, 
+          (.0050*AvgDayVolume(ALL_VENUES, 20, NO)),10000) 
+          AND 
+          DayBar_High (ALL_VENUES, 5, YES, '0') >= ( AdjustedClosePrice(P1) * 1.08 ) 
+          AND 
+          (( AdjustedClosePrice (P1)/ OpenPrice(PRIMARY, P1, NO) )-1) <=.05
+        )
+        
+        AND
+        
+        (
+            (EarningsNewsEvent(News_Current, ACBO, True, Any) 
+             OR 
+             Source3(News_Current, ACBO, AnySentiment, Earnings)
+            ) 
+            AND 
+            NOT IsInstrumentType(EXCHANGE_TRADED_FUND) 
+            AND 
+            NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) 
+            AND 
+            NOT IsInstrumentType(PREFERRED_STOCK) 
+            AND 
+            AdjustedClosePrice(P1) >= 10 AND AdjustedClosePrice(P1) < 2000 
+            AND 
+            AvgDailyRange(ALL_VENUES, 20, NO) >= .25 
+            AND 
+            AvgDayVolume(ALL_VENUES, 20, NO) >= 400000 AND AvgDayVolume(ALL_VENUES, 60, NO) >= 400000 
+            AND 
+            ( DaysFromIPO > 90 OR DaysFromIPO < 0)
+        )
+    )
+    
+
+OPGMM_Earnings_S_SK 	(	
+		(	
+			(  
+				 premarket_volume_bo_QG1 > 0.01*AvgDayVolume(ALL_VENUES, 20, NO)             
+				 AND             
+				 NOT ConferenceCall(News_Current, MarketHours, Any)             
+				 AND             
+				 AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0.05* AdjustedClosePrice(P1) 
+				 AND             
+				 EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) <              
+				 (0.5* AdjustedClosePrice(P1) + 0.5*premarket_low_acbo_QG1)             
+				 AND             
+				 AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 1             
+			)
+			
+			OR
+				
+			(	
+				 premarket_volume_bo_QG1 > 0.01*AvgDayVolume(ALL_VENUES, 20, NO)             
+				 AND             
+				 NOT ConferenceCall(News_Current, MarketHours, Any) 
+				 AND             
+				 AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0.05* AdjustedClosePrice(P1) 
+				 AND             
+				 EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) <              
+				 (0.5* AdjustedClosePrice(P1) + 0.5*premarket_low_bo_QG1)             
+				 AND             
+				 AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 1             
+			)
+		)
+		
+		AND
+
+		(
+			(News_Earnings_QG1) AND NOT (ETP_QG1) AND AvgDayVolume(ALL_VENUES,
+			20, NO) > 400000 AND AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25 AND
+			AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 500 AND (DaysFromIPO > 30
+			OR DaysFromIPO < 0 )
+		)
+	)
+OPGMM_Earnings_S_SK_NYSE     (    
+            NOT Source3(News_Current, ACBO, AnySentiment, MNA) 
+            AND  
+            NOT Source3(News_Current, ACBO, AnySentiment, Spinoff_News) 
+            AND 
+            IF((EarningsNewsEvent(News_P1, AfterClose, True, Any) OR  Source3(News_P1, AfterClose, AnySentiment, Earnings)) 
+               ,                  
+               DayBar_VolumeP(ALL_VENUES, 1, YES, '04:00-09:29', CURRENT) > 0.01*AvgDayVolume(ALL_VENUES, 20, NO)             
+               AND             
+               NOT ConferenceCall(News_Current, MarketHours, Any)             
+               AND             
+               AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0.05* AdjustedClosePrice(P1) 
+               AND             
+               EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) <              
+               (0.5* AdjustedClosePrice(P1) + 0.5*  IF(DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1) < 
+               DayBar_LowP(ALL_VENUES, 1, YES, '04:00-09:29', CURRENT)
+               ,    
+               DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+               , 
+               DayBar_LowP(ALL_VENUES, 1, YES, '04:00-09:29', CURRENT)))             
+               AND             
+               AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 1                      
+            ,
+              (
+                DayBar_VolumeP(ALL_VENUES, 1, YES, '04:00-09:29', CURRENT) > 0.01*AvgDayVolume(ALL_VENUES, 20, NO)             
+                AND             
+                NOT ConferenceCall(News_Current, MarketHours, Any)             
+                AND             
+                AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0.05* AdjustedClosePrice(P1)   
+                AND             
+                EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) < (0.5* AdjustedClosePrice(P1) + 
+                0.5*DayBar_LowP(ALL_VENUES, 1, YES, '04:00-09:29', CURRENT))             
+                AND             
+                AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 1             
+              )
+            )
+        
+        
+        AND
+        (
+            (EarningsNewsEvent(News_Current, ACBO, True, Any) 
+             OR 
+             Source3(News_Current, ACBO, AnySentiment, Earnings)) 
+             AND 
+             NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) 
+             AND NOT IsInstrumentType(PREFERRED_STOCK) 
+             AND  
+             AvgDayVolume(ALL_VENUES, 20, NO) > 400000 
+             AND 
+             AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25 
+             AND AdjustedClosePrice(P1) > 10 AND  AdjustedClosePrice(P1)    < 2500 
+             AND 
+             (DaysFromIPO > 30 OR  DaysFromIPO < 0 ) 
+             AND  
+             PrimaryExchange(NYSE)
+        )
+    )
+        
+        
+        
+        
+OPGMM_EarningsImbalance_L_MK     (            (               PrimaryExchange(NYSE)             AND             ImbalanceAt('09:29:10') > 2*ImbalanceAt('09:25:00')             AND             ImbalanceBuyVolume(NYSE) > 0             AND             ImbalanceAt('09:29:10') > 2*AvgOpenPrintSize(20)         )                  AND                  (             (StockNews(News_Current, ACBO, AnySentiment, Earnings)               OR               Source3(News_Current, ACBO, AnySentiment, Guidance)               OR               EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)              )               AND               NOT Source3(News_Current, ACBO, AnySentiment, MNA)               AND               AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500               AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 50000               AND               AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25               AND               NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)         )     )
+OPGMM_EarningsImbalance_S_MK     (            (              PrimaryExchange(NYSE)               AND               -1*ImbalanceAt('09:29:10') > 2*-1*ImbalanceAt('09:25:00')               AND               ImbalanceSellVolume(NYSE) > 0               AND               -1*ImbalanceAt('09:29:10') > 2*AvgOpenPrintSize(20)         )                  AND                  (             (StockNews(News_Current, ACBO, AnySentiment, Earnings)               OR               Source3(News_Current, ACBO, AnySentiment, Guidance)               OR              EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)              )               AND               NOT Source3(News_Current, ACBO, AnySentiment, MNA)               AND               AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500               AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 50000               AND               AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25               AND               NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)         )     )         

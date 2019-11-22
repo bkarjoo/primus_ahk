@@ -1,6 +1,12 @@
 #include wait_policy.ahk
 #include inform.ahk
 
+expression_builder_activate()
+{
+  WinActivate, PRIMU$ - Expression Builder
+  WinWaitActive, PRIMU$ - Expression Builder
+}
+
 expression_click_clear()
 {
   ; assumes expression builder is open
@@ -39,4 +45,57 @@ expression_set_code(rule)
   err := wait_only("PRIMU$ - Add/Edit Order Form", 2)
   if (err != 0)
     inform("Expression close didn't return control to order form.")
+}
+
+expression_click_edit_custom_expression()
+{
+  MouseClick, Left, 308, 508
+}
+
+row := 260
+loop,
+{
+  row += 13
+  expression_builder_activate()
+  if (row > 489)
+  {
+    MouseClick , Left, 400, 472
+    row := 286
+    inform_timeout("resuming in ", 3)
+  }
+
+
+  MouseClick, Left, 270, %row%
+
+  expression_click_edit_custom_expression()
+  Sleep, 500
+  MouseClick, Left, 275, 45
+  Sleep, 200
+  Send, ^a
+  Sleep, 200
+  Send, ^c
+  Sleep, 200
+  function_name := Clipboard
+  MouseClick, Left, 442, 306
+  Sleep, 200
+  Send, ^a
+  Sleep, 200
+  Send, ^c
+  Sleep, 200
+  function_def := Clipboard
+  MouseClick, Left, 50, 398
+  Sleep, 400
+  WinActivate, Untitled - Notepad
+  WinWaitActive, Untitled - Notepad
+  Clipboard := function_name
+  Send, ^v
+  Sleep, 200
+  Send, {Space}
+  Clipboard := function_def
+  Send, ^v
+  Sleep, 200
+  Send, {Enter}
+
+
+  Sleep, 200
 }
