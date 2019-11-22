@@ -1,4 +1,4 @@
-29// Preprocessor function
+// Preprocessor function
 // keep this open at all times for autocomplete
 // Autofill keywords
 // BUY
@@ -12,7 +12,7 @@
 // SECONDS
 // SELL
 // SHORT
-// TIF_OPENING
+// Tif_OPENING
 
 #define between(x, y, z) y > x AND y < z
 #define between_(x, y, z) y >= x AND y <= z
@@ -21,12 +21,12 @@
 #define and4(a,b,c,d) a AND b AND c AND d
 #define and5(a,b,c,d,e) a AND b AND c AND d AND e
 #define and6(a,b,c,d,e,f) a AND b AND c AND d AND e AND f
-#define max2(x,y) IF(x>y,x,y)
+#define max2(x,y) if(x>y,x,y)
 #define max3(x,y,z) max2(max2(x,y),z)
 #define max4(a,b,c,d) max2(max2(a,b),max2(c,d))
 #define max5(a,b,c,d,e) max2(max4(a,b,c,d),e)
 #define max6(a,b,c,d,e,f) max2(max4(a,b,c,d),max2(e,f))
-#define min2(x,y) IF(x<y,x,y)
+#define min2(x,y) if(x<y,x,y)
 #define min3(x,y,z) min2(min2(x,y),z)
 #define min4(a,b,c,d) min2(min2(a,b),min2(c,d))
 #define min5(a,b,c,d,e) min2(min4(a,b,c,d),e)
@@ -50,8 +50,11 @@
 #define ask Ask(INSIDE, CURRENT, NO)
 #define ask_pre_mkt Ask(INSIDE, CURRENT, YES)
 #define adr(x) AvgDailyRange(ALL_VENUES, x, NO)
+#define adrs adr(20)
 #define adv(x) AvgDayVolume(ALL_VENUES, x, NO)
+#define advs adv(20)
 #define atr(x) ATRStock(ALL_VENUES, NO, DAILY, x, CURRENT)
+#define atrs atr(20)
 #define atr_ext(x) ATRStock(ALL_VENUES, YES, DAILY, x, CURRENT)
 #define atr_5(x) ATRStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
 #define avg(x,y) ((x+y)/2)
@@ -63,8 +66,13 @@
 #define change_from_entry PositionDelta(ALL_VENUES, NO)
 #define unadjusted_close ClosePrice(PRIMARY, P1, NO)
 #define unadjusted_close_prv(x) ClosePrice(PRIMARY, x, NO)
+
+// studies
 // takes PERIOD_7 14 20 50 100 200
 #define SMA_daily(x) SMAStock(ALL_VENUES, NO, DAILY, x, CURRENT)
+#define donchian_long_stop DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel)
+
+// day bars
 #define day_bar_close(x, y) DayBar_Close(ALL_VENUES, x, YES, y)
 #define day_bar_low(x, y) DayBar_Low(ALL_VENUES, x, YES, y)
 #define day_bar_high(x, y) DayBar_High(ALL_VENUES, x, YES, y)
@@ -96,14 +104,14 @@
 #define entry_trigs_hr(x) EntryTriggersCount(HOURS, x)
 #define ETF EXCHANGE_TRADED_FUND
 #define ETN EXCHANGE_TRADED_NOTE
-#define etp_prefered_exclude  NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define etp_prefered_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
 #define execution ExecutionPrice
 #define exchange(x) PrimaryExchange(x)
 #define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
 #define imbalance_sell_vol(x) ImbalanceSellVolume(x)
 #define imbalance_paired_vol ImbPair
 #define imbalance_at(x) ImbalanceAt(x)
-#define initiated  (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR  Source3(News_Current, ACBO, AnySentiment, Initiations))
+#define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
 #define instrument_type(x) IsInstrumentType(x)
 #define is_halted IsHalt
 #define is_hard_to_borrow IsHardToBorrow
@@ -150,16 +158,24 @@
 #define time_from_open_minutes (TimeFromStockOpenSeconds/60)
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
 // news
+#define mna s3_MNA
+#define fda s3_FDA_News
+#define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
+#define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
+#define guidance s3_Guidance
+
 #define general_news GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType)
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
 #define source3_earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
 #define has_earnings (horizon_earnings(ACBO, True) or source3_earnings)
-#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any)  or  Source3(News_P1, ACBO, AnySentiment, Earnings))
+#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings))
 #define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
-#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True,  Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
+#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
 #define option_news Option_News
-#define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, SummaryAndDetails, x)
+#define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
+#define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+
 #define managment_change Mgmt_Changes
 #define s3(x) Source3(News_Current, ACBO, AnySentiment, x)
 #define s3_Form_13_D Source3(News_Current, ACBO, AnySentiment, Form_13_D)
@@ -211,6 +227,7 @@
 #define s3_Mgmt_Changes Source3(News_Current, ACBO, AnySentiment, Mgmt_Changes)
 #define s3_Mgmt_Comments Source3(News_Current, ACBO, AnySentiment, Mgmt_Comments)
 #define s3_MNA Source3(News_Current, ACBO, AnySentiment, MNA)
+
 #define s3_Initiations Source3(News_Current, ACBO, AnySentiment, Initiations)
 #define s3_Option_News Source3(News_Current, ACBO, AnySentiment, Option_News)
 #define s3_Political_News Source3(News_Current, ACBO, AnySentiment, Political_News)
@@ -249,7 +266,7 @@
 
 // functions of functions
 #define ref_stock_n(x, y) RefStockNumericValue(x, y)
-#define ref_stock_l(x, y)  RefStockLogicalValue(x, y)
+#define ref_stock_l(x, y) RefStockLogicalValue(x, y)
 #define r_adr(x, y) ref_stock_n(x, adr(y))
 #define r_briefing_news(x) ref_stock_l(x, briefing_news)
 #define r_close(x) ref_stock_n(x, close)
@@ -269,7 +286,7 @@
 #define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '08:00-09:27')
 #define pre_mkt_range pre_mkt_high - pre_mkt_low
 #define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '08:00-09:27')
-#define pre_mkt_last day_bar_close( 1, '08:00-09:27')
+#define pre_mkt_last day_bar_close( 1, '04:00-09:27')
 #define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '08:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '08:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '08:00-09:27'))/3
 #define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:00-20:00', P1)
 #define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:00-20:00', P1)
@@ -279,15 +296,23 @@
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
 #define spread ask - bid
 // nested ifs
-#define if IF
-#define if2(x, y, x2, y2, z) IF(x, y, IF(x2, y2, z))
-#define if3(x, y, x2, y2, x3, y3, z) IF(x, y, IF(x2, y2, IF(x3, y3, z)))
-#define if4(x, y, x2, y2, x3, y3, x4, y4, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, z))))
-#define if5(x, y, x2, y2, x3, y3, x4, y4, x5, y5, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, z)))))
-#define if6(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, IF(x6, y6, z))))))
-#define if7(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, IF(x6, y6, IF(x7, y7, z)))))))
-#define if8(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, IF(x6, y6, IF(x7, y7, IF(x8, y8, z))))))))
+#define if if
+#define if2(x, y, x2, y2, z) if(x, y, if(x2, y2, z))
+#define if3(x, y, x2, y2, x3, y3, z) if(x, y, if(x2, y2, if(x3, y3, z)))
+#define if4(x, y, x2, y2, x3, y3, x4, y4, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, z))))
+#define if5(x, y, x2, y2, x3, y3, x4, y4, x5, y5, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, z)))))
+#define if6(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, z))))))
+#define if7(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, if(x7, y7, z)))))))
+#define if8(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, if(x7, y7, if(x8, y8, z))))))))
+// position sizing
+#define adr_shares (shares_per_adr/adrs)
+#define opg_size_shares (perc_open_size * avg_open_size(10))
+#define ps_opg min3(adr_share, opg_size_shares, max_shares)
+
+
 // Launch Rules
+#define half_day (cd = .2011-11-25. or cd = .2012-07-03. or cd = .2012-11-23. or cd = .2012-12-24. or cd = .2013-07-03. or cd = .2013-11-29. or cd = .2013-12-24. or cd = .2014-07-03. or cd = .2014-11-28. or cd = .2014-12-24. or cd = .2014-12-25. or cd = .2015-11-27. or cd = .2015-12-24. or cd = .2016-11-25. or cd = .2017-07-03. or cd = .2017-11-24. or cd = .2018-07-03. or cd = .2018-11-23. or cd = .2018-12-24. or cd = .2019-07-03. or cd = .2015-08-24. or cd = .2016-06-30. or cd = .2017-06-29. or cd = .2018-06-29. or cd = .2019-06-28.)
+
 #define y11 (cd >= .2011-01-01. and cd <= .2011-12-31.)
 #define y12 (cd >= .2012-01-01. and cd <= .2012-12-31.)
 #define y13 (cd >= .2013-01-01. and cd <= .2013-12-31.)
