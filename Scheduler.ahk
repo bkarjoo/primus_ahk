@@ -82,7 +82,7 @@ process_completed_runs(queue_array)
 {
   trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   ; loop through boxes_in_queue array
-  N :=  boxes_in_queue.MaxIndex()
+  N :=  queue_array.MaxIndex()
   Loop, % N
   {
     reverse_i := N - A_Index + 1
