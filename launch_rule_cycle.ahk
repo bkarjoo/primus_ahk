@@ -43,7 +43,7 @@ create_cycle_name(y, m, h)
   return y . mo . "h" . h
 }
 
-break_down_launch_rule_into_cycles(schedule_cycles, cycle_names, start_year, start_month, start_half, end_year, end_month, end_half)
+break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, start_half, end_year, end_month, end_half, cycle_names)
 {
 
   y := start_year
@@ -96,8 +96,8 @@ run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names)
       cycle_launch_rule := cyclify_launch_rule(schedule_cycles[i], launch_rules)
       if (!WinExist("PRIMU$ - Black"))
         launcher_click_edit_box()
-      change_just_the_launch_rule(cycle_launch_rule, cycle_names[i])
-      change_just_the_description(cycle_name)
+      change_just_the_launch_rule(cycle_launch_rule)
+      change_just_the_description(cycle_names[i])
       click_validate_and_close()
       j := i
     }
