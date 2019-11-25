@@ -41,7 +41,7 @@ process_code(box_name, box_version)
 
   ; if not found build it, if found update it
   if (found)
-    update_box_no_launch_rules(box_name, box_version)
+    update_box(box_name, box_version)
   else
     build_local_box(box_name)
 
@@ -79,7 +79,7 @@ process_completed_run(box_name)
 
 process_completed_runs(queue_array)
 {
-  trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber)
+  trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   ; loop through boxes_in_queue array
   N :=  boxes_in_queue.MaxIndex()
   Loop, % N

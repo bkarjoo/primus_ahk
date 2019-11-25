@@ -18,15 +18,15 @@ build_i_path(code_component)
 {
 return "pp/" code_component . ".i"
 }
-build_bu_path(code_component, acronym)
+build_bu_path(code_component, name)
 {
-return "../bu/" . acronym . "/" . code_component . "_bu.i"
+return "../bu/" . name . "/" . code_component . "_bu.i"
 }
 
-updated(code_component, acronym) {
+updated(code_component, name) {
 
   i_file := what . ".c"
-  bu_file := "../bu/" . acronym . "/" . what . "_bu.i"
+  bu_file := "../bu/" . name . "/" . what . "_bu.i"
   FileGetTime, i_time, %i_file%
   FileGetTime, bu_time, %bu_file%
   return i_time > bu_time
@@ -39,15 +39,15 @@ confirm_file_exists(path)
     inform(msg)
 }
 
-backup(file_name, acronym, i_folder)
+backup(file_name, name, i_folder)
 {
 
   source := ""
   if (i_folder = "")
-    source := acronym . "/" . file_name . ".i"
+    source := name . "/" . file_name . ".i"
   else
     source := i_folder . "/" . file_name . ".i"
-  target := "../bu/" . acronym . "/" . file_name . "_bu.i"
+  target := "../bu/" . name . "/" . file_name . "_bu.i"
 
   FileCopy, %source%, %target%, 1
 }
@@ -88,10 +88,10 @@ confirm_compiled_files_exist()
   confirm_file_exists("pp/risk_management.i")
 }
 
-confirm_requisite_file_for_update(box_acronym)
+confirm_requisite_file_for_update(box_name)
 {
-  ; ../bu/ . box_acronym .. /
-  prefix := "../bu/" . box_acronym
+  ; ../bu/ . box_name .. /
+  prefix := "../bu/" . box_name
   confirm_file_exists(prefix . "/general_settings_bu.i")
   confirm_file_exists(prefix . "/entry_bu.i")
   confirm_file_exists(prefix . "/target_bu.i")
@@ -152,9 +152,9 @@ generic_code_parser(file_name, array)
 }
 
 
-create_backup_folder_helper(box_acronym)
+create_backup_folder_helper(box_name)
 {
-  bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
+  bu_md_cmd := "if not exist ..\bu\" . box_name . " md ..\bu\" . box_name
   run_cmd(bu_md_cmd)
 }
 
@@ -162,49 +162,49 @@ create_backup_folder()
 {
   general_settings := {}
   generic_code_parser("pp/general_settings.i", general_settings)
-  create_backup_folder_helper(general_settings["box_acronym"])
+  create_backup_folder_helper(general_settings["box_name"])
 }
 
-backup_compiled_files_helper(box_acronym, i_folder)
+backup_compiled_files_helper(box_name, i_folder)
 {
-  backup("basket", box_acronym, i_folder)
-  backup("entry", box_acronym, i_folder)
-  backup("general_settings", box_acronym, i_folder)
-  backup("launch_rules", box_acronym, i_folder)
-  backup("position_sizing", box_acronym, i_folder)
-  backup("stop", box_acronym, i_folder)
-  backup("target", box_acronym, i_folder)
-  backup("time_options", box_acronym, i_folder)
-  backup("risk_management", box_acronym, i_folder)
+  backup("basket", box_name, i_folder)
+  backup("entry", box_name, i_folder)
+  backup("general_settings", box_name, i_folder)
+  backup("launch_rules", box_name, i_folder)
+  backup("position_sizing", box_name, i_folder)
+  backup("stop", box_name, i_folder)
+  backup("target", box_name, i_folder)
+  backup("time_options", box_name, i_folder)
+  backup("risk_management", box_name, i_folder)
 }
 
 backup_compiled_files()
 {
   gs := {}
   generic_code_parser("pp/general_settings.i", gs)
-  backup_compiled_files_helper(gs["box_acronym"], "pp")
+  backup_compiled_files_helper(gs["box_name"], "pp")
 }
 
-backup_compiled_files_if_changed(ustate, box_acronym)
+backup_compiled_files_if_changed(ustate, box_name)
 {
   if (ustate["basket_updated"])
-    backup("basket", box_acronym, "pp")
+    backup("basket", box_name, "pp")
   if (ustate["entry_updated"])
-    backup("entry", box_acronym, "pp")
+    backup("entry", box_name, "pp")
   if (ustate["launch_rules_updated"])
-    backup("launch_rules", box_acronym, "pp")
+    backup("launch_rules", box_name, "pp")
   if (ustate["position_sizing_updated"])
-    backup("position_sizing", box_acronym, "pp")
+    backup("position_sizing", box_name, "pp")
   if (ustate["stop_updated"])
-    backup("stop", box_acronym, "pp")
+    backup("stop", box_name, "pp")
   if (ustate["target_updated"])
-    backup("target", box_acronym, "pp")
+    backup("target", box_name, "pp")
   if (ustate["general_settings_updated"])
-    backup("general_settings", box_acronym, "pp")
+    backup("general_settings", box_name, "pp")
   if (ustate["time_options_updated"])
-    backup("time_options", box_acronym, "pp")
+    backup("time_options", box_name, "pp")
   if (ustate["risk_management_updated"])
-    backup("risk_management", box_acronym, "pp")
+    backup("risk_management", box_name, "pp")
 }
 
 number_of_updated_files(array)
@@ -231,7 +231,7 @@ number_of_updated_files(array)
   return i
 }
 
-get_code_files_update_status(box_acronym, array)
+get_code_files_update_status(box_name, array)
 {
   array["basket_updated"] := file_updated(build_c_path("basket"), build_i_path("basket"))
   array["entry_updated"] := file_updated(build_c_path("entry"), build_i_path("entry"))

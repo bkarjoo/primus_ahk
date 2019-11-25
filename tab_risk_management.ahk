@@ -60,10 +60,10 @@ update_risk_management_helper(i_vars, bu_vars)
   set_maximum_order_shares(i_vars["maximum_order_shares"])
 }
 
-update_risk_management(acronym)
+update_risk_management(name)
 {
   i_path := build_i_path("risk_management")
-  bu_path := build_bu_path("risk_management", acronym)
+  bu_path := build_bu_path("risk_management", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)

@@ -64,10 +64,10 @@ update_launch_rules_helper(i_vars, bu_vars)
     set_launch_rule(i_vars["launch_rules"])
 }
 
-update_launch_rules(acronym)
+update_launch_rules(name)
 {
   i_path := build_i_path("launch_rules")
-  bu_path := build_bu_path("launch_rules", acronym)
+  bu_path := build_bu_path("launch_rules", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)
