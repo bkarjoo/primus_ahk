@@ -52,50 +52,53 @@ expression_click_edit_custom_expression()
   MouseClick, Left, 308, 508
 }
 
-row := 260
-loop,
+copy_cutom_functions_from_expression_builder()
 {
-  row += 13
-  expression_builder_activate()
-  if (row > 489)
+  row := 260
+  loop,
   {
-    MouseClick , Left, 400, 472
-    row := 286
-    inform_timeout("resuming in ", 3)
+    row += 13
+    expression_builder_activate()
+    if (row > 489)
+    {
+      MouseClick , Left, 400, 472
+      row := 286
+      inform_timeout("resuming in ", 3)
+    }
+
+
+    MouseClick, Left, 270, %row%
+
+    expression_click_edit_custom_expression()
+    Sleep, 500
+    MouseClick, Left, 275, 45
+    Sleep, 200
+    Send, ^a
+    Sleep, 200
+    Send, ^c
+    Sleep, 200
+    function_name := Clipboard
+    MouseClick, Left, 442, 306
+    Sleep, 200
+    Send, ^a
+    Sleep, 200
+    Send, ^c
+    Sleep, 200
+    function_def := Clipboard
+    MouseClick, Left, 50, 398
+    Sleep, 400
+    WinActivate, Untitled - Notepad
+    WinWaitActive, Untitled - Notepad
+    Clipboard := function_name
+    Send, ^v
+    Sleep, 200
+    Send, {Space}
+    Clipboard := function_def
+    Send, ^v
+    Sleep, 200
+    Send, {Enter}
+
+
+    Sleep, 200
   }
-
-
-  MouseClick, Left, 270, %row%
-
-  expression_click_edit_custom_expression()
-  Sleep, 500
-  MouseClick, Left, 275, 45
-  Sleep, 200
-  Send, ^a
-  Sleep, 200
-  Send, ^c
-  Sleep, 200
-  function_name := Clipboard
-  MouseClick, Left, 442, 306
-  Sleep, 200
-  Send, ^a
-  Sleep, 200
-  Send, ^c
-  Sleep, 200
-  function_def := Clipboard
-  MouseClick, Left, 50, 398
-  Sleep, 400
-  WinActivate, Untitled - Notepad
-  WinWaitActive, Untitled - Notepad
-  Clipboard := function_name
-  Send, ^v
-  Sleep, 200
-  Send, {Space}
-  Clipboard := function_def
-  Send, ^v
-  Sleep, 200
-  Send, {Enter}
-
-
-  Sleep, 200
 }
