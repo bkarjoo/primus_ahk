@@ -24,7 +24,7 @@ WinActivate, Trade Analysis Charting
 return
 
 +!f::
-WinActivate, PrimusBlotter
+WinActivate, D:\Users\
 return
 
 +!g::
