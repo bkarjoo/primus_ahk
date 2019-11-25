@@ -39,8 +39,6 @@ strip_existing_launch_rule_name_in_description(desc)
     return desc
 }
 
-msgbox % existing_launch_rule_name_in_description("201910h2 askdljflak lkjlksjd")
-
 append_to_front_of_box_description(append_txt)
 {
   click_design_tab()
