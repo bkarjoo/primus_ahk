@@ -20,7 +20,8 @@ set_launch_rule(rule)
 
 change_just_the_launch_rule(lr)
 {
-  click_launch_rule_tab()
+  click_launch_rule_tab_no_confirm()
+  sleep, 500
   set_launch_rule(lr)
 }
 

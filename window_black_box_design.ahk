@@ -76,6 +76,11 @@ click_launch_rule_tab()
     inform("Failed to select launch rule tab.")
 }
 
+click_launch_rule_tab_no_confirm()
+{
+  MouseClick, Left, 287, 32
+}
+
 click_validate_and_close()
 {
   res := activate_and_wait_only("PRIMU$ - B", 5)
