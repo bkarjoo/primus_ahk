@@ -327,7 +327,7 @@
 // position sizing
 #define adr_shares (shares_per_adr/adrs)
 #define opg_size_shares (perc_open_size * avg_opg_vol)
-#define ps_opg min3(adr_share, opg_size_shares, max_shares)
+#define ps_opg min3(adr_shares, opg_size_shares, max_shares)
 
 
 // fail safes
