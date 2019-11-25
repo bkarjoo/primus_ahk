@@ -18,9 +18,7 @@ selected_bbdesign_tab()
   ImageSearch, ox, oy, 0, 0, 500, 500, images/risk_management.PNG
   if (ErrorLevel = 0)
     return 4
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/launch_rule.PNG
-  if (ErrorLevel = 0)
-    return 5
+  return 5
 }
 
 click_and_confirm_bbd_tab(x, y, index)
