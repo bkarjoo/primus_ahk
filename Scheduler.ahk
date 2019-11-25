@@ -106,6 +106,7 @@ Loop
   trace("scheduler processing " . file_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   if (file_name = "")
   {
+    process_completed_runs(boxes_in_queue)
     wait_until_with_message(60, "Found no files in jobs folder. Will check again in a minute")
     continue
   }
