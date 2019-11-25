@@ -50,9 +50,10 @@ process_code(box_name, box_version)
 
   launch_rules := get_local_compiled(box_name, "launch_rules")
   cycles := []
-  break_down_launch_rule_into_cycles(cycles, launch_rules["launch_rule_start_year"], launch_rules["launch_rule_start_month"], launch_rules["launch_rule_start_month_half"], launch_rules["launch_rule_end_year"], launch_rules["launch_rule_end_month"], launch_rules["launch_rule_end_month_half"])
+  cycle_names := []
+  break_down_launch_rule_into_cycles(cycles, launch_rules["launch_rule_start_year"], launch_rules["launch_rule_start_month"], launch_rules["launch_rule_start_month_half"], launch_rules["launch_rule_end_year"], launch_rules["launch_rule_end_month"], launch_rules["launch_rule_end_month_half"], cycle_names)
 
-  run_launch_rule_cycles(cycles, launch_rules["launch_rules"])
+  run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names)
 
 }
 
