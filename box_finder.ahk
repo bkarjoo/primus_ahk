@@ -7,7 +7,7 @@ find_box(box_name)
   box_name := Trim(box_name, "`r") ; just incase
   launcher_activate()
   launcher_click_open_box()
-  sleep, 200
+  sleep, 1000
   open_blackbox_folder_search_mode_toggle()
   sleep 200
   open_blackbox_search_field_focus()
