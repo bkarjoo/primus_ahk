@@ -201,6 +201,7 @@ process_test_results(box_name)
   select_custom_blotter(box_name)
   capture_equity_curve()
   email_attachment(box_name, box_name, "image.png")
+  ; TODO delete image.png
 }
 
 ; TODO must check if AllRecords is checked, if not check it

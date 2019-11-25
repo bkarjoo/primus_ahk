@@ -74,7 +74,7 @@ process_instruction(box, version)
 
 process_completed_run(box_name)
 {
-  trace("process_completed_run", A_ThisFunc, A_ScriptName, A_LineNumber)
+  trace("process_completed_run", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   process_test_results(box_name)
 }
 
