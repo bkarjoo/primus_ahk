@@ -5,6 +5,7 @@
 #include box_name_builder.ahk
 #include window_order_form.ahk
 #include window_expression_builder.ahk
+#include check_boxes.ahk
 
 update_box_name(box_name)
 {
@@ -30,7 +31,17 @@ update_box_description(desc)
   sleep, 200
 }
 
-append_to_front_of_box_description(desc)
+strip_existing_launch_rule_name_in_description(desc)
+{
+  if (SubStr(desc, 1, 2) = "20" and SubStr(desc, 1, 6) is integer and SubStr(desc, 7, 1) = "h" and (SubStr(desc, 8, 1) = "1" or SubStr(desc, 8, 1) = "2") and SubStr(desc, 9, 1) = " ")
+    return SubStr(desc, 10)
+  else
+    return desc
+}
+
+msgbox % existing_launch_rule_name_in_description("201910h2 askdljflak lkjlksjd")
+
+append_to_front_of_box_description(append_txt)
 {
   click_design_tab()
   MouseClick, Left, 325, 125
@@ -38,7 +49,7 @@ append_to_front_of_box_description(desc)
   sleep, 200
   Send, ^c
   sleep, 200
-  Clipboard := desc . " " . Clipboard
+  Clipboard := append_txt . " " . strip_existing_launch_rule_name_in_description(Clipboard)
   sleep, 200
   Send, ^v
   sleep, 200
