@@ -90,7 +90,7 @@ click_basket_manager_run_filter()
   sleep, 200
 }
 
-open_existing_basket(acronym)
+open_existing_basket(name)
 {
   click_basket_manager_private_tab()
   sleep, 200
@@ -98,7 +98,7 @@ open_existing_basket(acronym)
   sleep, 200
   ; search for the basket
   click_basket_manager_filter_text_box()
-  Clipboard := acronym
+  Clipboard := name
   Send, ^v
   Sleep, 200
   click_basket_manager_run_filter()

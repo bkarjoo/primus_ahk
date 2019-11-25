@@ -18,39 +18,39 @@
 #include check_boxes.ahk
 #include box_finder.ahk
 
-; get acronym
+; get name
 gs := {}
 generic_code_parser("general_settings.c", gs)
-acronym := gs["box_acronym"]
+name := gs["box_name"]
 
 ; get update status
 file_state := {}
-get_code_files_update_status(acronym, file_state)
+get_code_files_update_status(name, file_state)
 updated_file_count := number_of_updated_files(file_state)
 
 if (updated_file_count = 0)
   inform("There's no files to update.")
 compile_code_files_if_changed(file_state)
 
-find_box(acronym)
+find_box(name)
 
 if (file_state["general_settings_updated"])
-  update_general_setting(acronym)
+  update_general_setting(name)
 if (file_state["entry_updated"])
-  update_entry(acronym)
+  update_entry(name)
 if (file_state["target_updated"])
-  update_target(acronym)
+  update_target(name)
 if (file_state["stop_updated"])
-  update_stop(acronym)
+  update_stop(name)
 if (file_state["basket_updated"])
-  update_basket(acronym)
+  update_basket(name)
 if (file_state["time_options_updated"] or file_state["position_sizing_updated"])
-  update_options(acronym)
+  update_options(name)
 if (file_state["risk_management_updated"])
-  update_risk_management(acronym)
+  update_risk_management(name)
 if (file_state["launch_rules_updated"])
-  update_launch_rules(acronym)
+  update_launch_rules(name)
 
 click_validate_and_close()
 
-backup_compiled_files_if_changed(file_state, acronym)
+backup_compiled_files_if_changed(file_state, name)

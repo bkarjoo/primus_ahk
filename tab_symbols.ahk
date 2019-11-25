@@ -98,10 +98,10 @@ update_basket_helper(i_vars, bu_vars)
   click_basket_manager_ok_button()
 }
 
-update_basket(acronym)
+update_basket(name)
 {
   i_path := build_i_path("basket")
-  bu_path := build_bu_path("basket", acronym)
+  bu_path := build_bu_path("basket", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)

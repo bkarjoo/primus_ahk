@@ -133,12 +133,12 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
     set_position_sizing_scheme(pi_vars["position_sizing"])
 }
 
-update_options(acronym)
+update_options(name)
 {
   ti_path := build_i_path("time_options")
-  tbu_path := build_bu_path("time_options", acronym)
+  tbu_path := build_bu_path("time_options", name)
   pi_path := build_i_path("position_sizing")
-  pbu_path := build_bu_path("position_sizing", acronym)
+  pbu_path := build_bu_path("position_sizing", name)
 
   ti_vars := {}
   tbu_vars := {}

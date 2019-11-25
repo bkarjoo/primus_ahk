@@ -176,7 +176,7 @@ set_general_settings_helper(i_vars)
 {
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
-  bname := build_box_name(i_vars["box_name"], i_vars["box_acronym"])
+  bname := build_box_name(i_vars["box_name"], i_vars["box_version"])
   update_box_name(bname)
   desc := build_box_description(i_vars["launch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
   update_box_description(desc)
@@ -206,8 +206,8 @@ update_general_setting_helper(i_vars, bu_vars)
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
 
-  bname := build_box_name(i_vars["box_name"], i_vars["box_acronym"])
-  if(i_vars["box_name"] != bu_vars["box_name"] or i_vars["box_acronym"] != bu_vars["box_acronym"])
+  bname := build_box_name(i_vars["box_name"], i_vars["box_version"])
+  if(i_vars["box_name"] != bu_vars["box_name"] or i_vars["box_version"] != bu_vars["box_version"])
     update_box_name(bname)
   desc := build_box_description(i_vars["blaunch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
   if(i_vars["blaunch_rule_name"] != bu_vars["blaunch_rule_name"] or i_vars["black_box_description"] != bu_vars["black_box_description"] or i_vars["basket_description"] != bu_vars["basket_description"])
@@ -238,10 +238,10 @@ update_general_setting_helper(i_vars, bu_vars)
   set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
 }
 
-update_general_setting(acronym)
+update_general_setting(name)
 {
   i_path := build_i_path("general_settings")
-  bu_path := build_bu_path("general_settings", acronym)
+  bu_path := build_bu_path("general_settings", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)
@@ -345,10 +345,10 @@ update_entry_helper(i_vars, bu_vars)
   }
 }
 
-update_entry(acronym)
+update_entry(name)
 {
   i_path := build_i_path("entry")
-  bu_path := build_bu_path("entry", acronym)
+  bu_path := build_bu_path("entry", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)
@@ -498,10 +498,10 @@ update_target_helper(i_vars, bu_vars)
   click_order_form_save_button()
 }
 
-update_target(acronym)
+update_target(name)
 {
   i_path := build_i_path("target")
-  bu_path := build_bu_path("target", acronym)
+  bu_path := build_bu_path("target", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)
@@ -617,10 +617,10 @@ update_stop_helper(i_vars, bu_vars)
   click_order_form_save_button()
 }
 
-update_stop(acronym)
+update_stop(name)
 {
   i_path := build_i_path("stop")
-  bu_path := build_bu_path("stop", acronym)
+  bu_path := build_bu_path("stop", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)
