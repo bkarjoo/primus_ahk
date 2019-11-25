@@ -178,7 +178,7 @@
 #define mna s3_MNA
 #define fda s3_FDA_News
 #define spinoff s3_Spinoff_News
-#define managment_change Mgmt_Changes
+#define managment_change s3_Mgmt_Changes
 #define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
 #define guidance s3_Guidance
