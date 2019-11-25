@@ -11,11 +11,11 @@ update_box_name(box_name)
   click_design_tab()
   MouseClick, Left, 252, 63
   Send, ^a
-  sleep, 100
+  sleep, 200
   Clipboard := box_name
-  sleep, 100
+  sleep, 200
   Send, ^v
-  sleep, 100
+  sleep, 200
 }
 
 update_box_description(desc)
@@ -23,18 +23,32 @@ update_box_description(desc)
   click_design_tab()
   MouseClick, Left, 325, 125
   Send, ^a
-  sleep, 100
+  sleep, 200
   Clipboard := desc
-  sleep, 100
+  sleep, 200
   Send, ^v
-  sleep, 100
+  sleep, 200
+}
+
+append_to_front_of_box_description(desc)
+{
+  click_design_tab()
+  MouseClick, Left, 325, 125
+  Send, ^a
+  sleep, 200
+  Send, ^c
+  sleep, 200
+  Clipboard := desc . " " . Clipboard
+  sleep, 200
+  Send, ^v
+  sleep, 200
 }
 
 set_black_box_side(side)
 {
   click_design_tab()
   MouseClick, Left, 200, 160
-  sleep, 100
+  sleep, 200
   if (side = "LONG")
     send, {Up}
   else if (side = "SHORT")
@@ -45,7 +59,7 @@ set_black_box_scheme(scheme)
 {
   click_design_tab()
   MouseClick, Left, 285, 190
-  sleep, 100
+  sleep, 200
   if (scheme = "OPG")
     MouseClick, Left, 285, 221
   else
@@ -118,7 +132,7 @@ target_open_existing_order()
 {
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 577
-  sleep, 100
+  sleep, 200
   MouseClick, Left, 900, 585
   WinWait, PRIMU$ - Add/Edit Order Form <EXIT_LIMIT_ORDER>
 }
@@ -138,7 +152,7 @@ stop_open_existing_order()
 {
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 725
-  sleep, 100
+  sleep, 200
   MouseClick, Left, 900, 735
   WinWait, PRIMU$ - Add/Edit Order Form <EXIT_STOP_ORDER>
 }
@@ -201,6 +215,11 @@ set_general_setting()
   set_general_settings_helper(general_settings)
 }
 
+change_just_the_description(cycle_name)
+{
+  append_to_front_of_box_description(cycle_name)
+}
+
 update_general_setting_helper(i_vars, bu_vars)
 {
   checkboxes := {}
@@ -209,8 +228,8 @@ update_general_setting_helper(i_vars, bu_vars)
   bname := build_box_name(i_vars["box_name"], i_vars["box_version"])
   if(i_vars["box_name"] != bu_vars["box_name"] or i_vars["box_version"] != bu_vars["box_version"])
     update_box_name(bname)
-  desc := build_box_description(i_vars["blaunch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
-  if(i_vars["blaunch_rule_name"] != bu_vars["blaunch_rule_name"] or i_vars["black_box_description"] != bu_vars["black_box_description"] or i_vars["basket_description"] != bu_vars["basket_description"])
+  desc := build_box_description(i_vars["launch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
+  if(i_vars["launch_rule_name"] != bu_vars["launch_rule_name"] or i_vars["black_box_description"] != bu_vars["black_box_description"] or i_vars["basket_description"] != bu_vars["basket_description"])
     update_box_description(desc)
   if(i_vars["black_box_side"] != bu_vars["black_box_side"])
     set_black_box_side(i_vars["black_box_side"])

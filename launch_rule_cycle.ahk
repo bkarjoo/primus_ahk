@@ -35,8 +35,15 @@ create_15_day_launch_rule(year, month, half)
   return s
 }
 
+create_cycle_name(y, m, h)
+{
+  mo := m
+  if (m < 10)
+    mo := "0" . mo
+  return y . mo . "h" . h
+}
 
-break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, start_half, end_year, end_month, end_half)
+break_down_launch_rule_into_cycles(schedule_cycles, cycle_names, start_year, start_month, start_half, end_year, end_month, end_half)
 {
 
   y := start_year
@@ -46,6 +53,7 @@ break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, sta
     {
       s := create_15_day_launch_rule(y,m,h)
       schedule_cycles.Push(s)
+      cycle_names.Push(create_cycle_name(y,m,h))
 
       if (y = end_year and m = end_month and h = end_half)
         break
@@ -75,7 +83,7 @@ cyclify_launch_rule(cycle, launch_rule)
 
 
 
-run_launch_rule_cycles(schedule_cycles, launch_rules)
+run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names)
 {
   quick_inform("run_launch_rule_cycles: # of cycles: " . schedule_cycles.MaxIndex())
 
@@ -88,7 +96,8 @@ run_launch_rule_cycles(schedule_cycles, launch_rules)
       cycle_launch_rule := cyclify_launch_rule(schedule_cycles[i], launch_rules)
       if (!WinExist("PRIMU$ - Black"))
         launcher_click_edit_box()
-      change_just_the_launch_rule(cycle_launch_rule)
+      change_just_the_launch_rule(cycle_launch_rule, cycle_names[i])
+      change_just_the_description(cycle_name)
       click_validate_and_close()
       j := i
     }
