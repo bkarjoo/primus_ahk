@@ -36,7 +36,7 @@ click_and_confirm_bbd_tab(x, y, index)
   MouseClick, Left, %x%, %y%
   Loop, 10
   {
-    sleep, 100
+    hour_glass_sleep(200)
     if (selected_bbdesign_tab() = index)
       return 1
     send, {Tab}
