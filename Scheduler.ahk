@@ -47,7 +47,7 @@ process_code(box_name, box_version)
   else
     build_local_box(box_name)
 
-    trace("backup " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+  trace("backup " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   backup_compiled_files_helper(box_name, "")
 
   launch_rules := get_local_compiled(box_name, "launch_rules")
