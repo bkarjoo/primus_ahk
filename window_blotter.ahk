@@ -11,6 +11,13 @@ activate_blotter()
    WinWaitActive, D:\Users\
 }
 
+click_refresh()
+{
+  activate_blotter()
+  MouseClick, Left, 186, 32
+  hour_glass_sleep(5000)
+}
+
 click_custom_blotter_tab()
 {
    activate_blotter()
@@ -155,6 +162,7 @@ open_create_custom_blotter()
 create_custom_blotter(box_name)
 {
   activate_blotter()
+  click_refresh()
   click_primus_blotter_tab()
   enter_box_name_filter(box_name)
   hour_glass_sleep(2000)
