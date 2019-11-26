@@ -1,4 +1,4 @@
-#include logger
+#include logger.ahk
 
 ; old deprecated version
 clipboard_paste(text) {
