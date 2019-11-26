@@ -13,7 +13,9 @@ update_box_name(box_name)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
+  sleep, 200
   MouseClick, Left, 252, 63
+  sleep, 200
   Send, ^a
   sleep, 200
   Clipboard := box_name
@@ -26,7 +28,9 @@ update_box_description(desc)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
+  sleep, 200
   MouseClick, Left, 325, 125
+  sleep, 200
   Send, ^a
   sleep, 200
   Clipboard := desc
