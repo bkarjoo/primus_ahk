@@ -72,12 +72,21 @@ compile_code_folder(code_folder)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   run_cmd("gcc " . code_folder . "\basket.c -E -o " . code_folder . "\basket.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\entry.c -E -o " . code_folder . "\entry.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\general_settings.c -E -o " . code_folder . "\general_settings.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\launch_rules.c -E -o " . code_folder . "\launch_rules.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\position_sizing.c -E -o " . code_folder . "\position_sizing.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\stop.c -E -o " . code_folder . "\stop.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\target.c -E -o " . code_folder . "\target.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\time_options.c -E -o " . code_folder . "\time_options.i -P")
+  sleep, 200
   run_cmd("gcc " . code_folder . "\risk_management.c -E -o " . code_folder . "\risk_management.i -P")
+  sleep, 200
 }
