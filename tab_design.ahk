@@ -6,9 +6,12 @@
 #include window_order_form.ahk
 #include window_expression_builder.ahk
 #include check_boxes.ahk
+#include logger.ahk
+
 
 update_box_name(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 252, 63
   Send, ^a
@@ -21,6 +24,7 @@ update_box_name(box_name)
 
 update_box_description(desc)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 325, 125
   Send, ^a
@@ -33,6 +37,7 @@ update_box_description(desc)
 
 strip_existing_launch_rule_name_in_description(desc)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (SubStr(desc, 1, 2) = "20" and SubStr(desc, 1, 6) is integer and SubStr(desc, 7, 1) = "h" and (SubStr(desc, 8, 1) = "1" or SubStr(desc, 8, 1) = "2") and SubStr(desc, 9, 1) = " ")
     return SubStr(desc, 10)
   else
@@ -41,6 +46,7 @@ strip_existing_launch_rule_name_in_description(desc)
 
 append_to_front_of_box_description(append_txt)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 325, 125
   Send, ^a
@@ -55,6 +61,7 @@ append_to_front_of_box_description(append_txt)
 
 set_black_box_side(side)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 200, 160
   sleep, 200
@@ -66,6 +73,7 @@ set_black_box_side(side)
 
 set_black_box_scheme(scheme)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 285, 190
   sleep, 200
@@ -77,6 +85,7 @@ set_black_box_scheme(scheme)
 
 entry_confirm_trigger(rule)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 450, 300
   Send, ^a
@@ -88,6 +97,7 @@ entry_confirm_trigger(rule)
 
 entry_update_trigger(rule)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 450, 300
   Send, ^a
@@ -103,6 +113,7 @@ entry_update_trigger(rule)
 
 entry_open_new_order()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 900, 375
   err := wait_only("PRIMU$ - Add/Edit Order Form <ENTRY_ORDER>", 5)
@@ -114,6 +125,7 @@ entry_open_new_order()
 
 entry_open_existing_order()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; assumes there's only one order, therefore click top line
   click_design_tab()
   MouseClick, Left, 400, 394
@@ -128,6 +140,7 @@ entry_open_existing_order()
 
 target_open_new_order()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 900, 556
   err := wait_only("PRIMU$ - Add/Edit Order Form", 5)
@@ -139,6 +152,7 @@ target_open_new_order()
 
 target_open_existing_order()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 577
   sleep, 200
@@ -148,6 +162,7 @@ target_open_existing_order()
 
 stop_open_new_order()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
   MouseClick, Left, 900, 705
   err := wait_only("PRIMU$ - Add/Edit Order Form", 5)
@@ -159,6 +174,7 @@ stop_open_new_order()
 
 stop_open_existing_order()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; assumes there's only one order, therefore click top line
   MouseClick, Left, 400, 725
   sleep, 200
@@ -168,6 +184,7 @@ stop_open_existing_order()
 
 get_design_tab_checkboxes(checkbox_array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkbox_array["permit_backtesting_check_box"] := [616, 120]
   checkbox_array["enter_on_last_check_box"] := [760, 69]
   checkbox_array["enter_on_bid_check_box"] := [760, 94]
@@ -197,6 +214,7 @@ get_design_tab_checkboxes(checkbox_array)
 
 set_general_settings_helper(i_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
   bname := build_box_name(i_vars["box_name"], i_vars["box_version"])
@@ -219,6 +237,7 @@ set_general_settings_helper(i_vars)
 
 set_general_setting()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   general_settings := {}
   generic_code_parser("pp/general_settings.i", general_settings)
   set_general_settings_helper(general_settings)
@@ -226,11 +245,13 @@ set_general_setting()
 
 change_just_the_description(cycle_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   append_to_front_of_box_description(cycle_name)
 }
 
 update_general_setting_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_design_tab_checkboxes(checkboxes)
 
@@ -268,6 +289,7 @@ update_general_setting_helper(i_vars, bu_vars)
 
 update_general_setting(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("general_settings")
   bu_path := build_bu_path("general_settings", name)
 
@@ -281,6 +303,7 @@ update_general_setting(name)
 
 set_entry_helper(entry)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -311,6 +334,7 @@ set_entry_helper(entry)
 
 set_entry()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   entry := {}
   generic_code_parser("pp/entry.i", entry)
 
@@ -319,11 +343,13 @@ set_entry()
 
 entry_vars_changed(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   return i_vars["entry_order_type"] != bu_vars["entry_order_type"] or i_vars["entry_order_side"] != bu_vars["entry_order_side"] or i_vars["entry_destination"] != bu_vars["entry_destination"] or i_vars["entry_tif"] != bu_vars["entry_tif"] or i_vars["entry_tif_seconds"] != bu_vars["entry_tif_seconds"] or i_vars["entry_order_limit"] != bu_vars["entry_order_limit"]
 }
 
 update_entry_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -334,6 +360,7 @@ update_entry_helper(i_vars, bu_vars)
 
   if(entry_vars_changed(i_vars, bu_vars)) ; does order form need to be opened
   {
+
     if (entry_open_existing_order() = 0)
       inform("Unable to open new order window.")
     if (i_vars["entry_order_type"] != bu_vars["entry_order_type"])
@@ -375,6 +402,7 @@ update_entry_helper(i_vars, bu_vars)
 
 update_entry(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("entry")
   bu_path := build_bu_path("entry", name)
 
@@ -388,6 +416,7 @@ update_entry(name)
 
 set_target_helper(target)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
@@ -425,6 +454,7 @@ set_target_helper(target)
 
 set_target()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   target := {}
   generic_code_parser("pp/target.i", target)
   set_target_helper(target)
@@ -432,6 +462,7 @@ set_target()
 
 target_vars_changed(i_vars, bu_vars)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 if (i_vars["target_order_type"] != bu_vars["target_order_type"])
   return 1
 if (i_vars["target_order_side"] != bu_vars["target_order_side"])
@@ -464,6 +495,7 @@ return 0
 
 update_target_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!target_vars_changed(i_vars, bu_vars))
     return
 
@@ -528,6 +560,7 @@ update_target_helper(i_vars, bu_vars)
 
 update_target(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("target")
   bu_path := build_bu_path("target", name)
 
@@ -541,6 +574,7 @@ update_target(name)
 
 set_stop_helper(stop)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
   stop_open_new_order()
@@ -566,6 +600,7 @@ set_stop_helper(stop)
 
 set_stop()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   stop := {}
   generic_code_parser("pp/stop.i", stop)
   set_stop_helper(stop)
@@ -573,6 +608,7 @@ set_stop()
 
 stop_vars_changed(i_vars, bu_vars)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 if (i_vars["stop_order_type"] != bu_vars["stop_order_type"])
   return 1
 if (i_vars["stop_order_side"] != bu_vars["stop_order_side"])
@@ -598,6 +634,7 @@ return 0
 
 update_stop_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!stop_vars_changed(i_vars, bu_vars))
     return
 
@@ -647,6 +684,7 @@ update_stop_helper(i_vars, bu_vars)
 
 update_stop(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("stop")
   bu_path := build_bu_path("stop", name)
 

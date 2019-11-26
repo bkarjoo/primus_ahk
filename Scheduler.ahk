@@ -28,9 +28,11 @@
 #include box_updater.ahk
 #include launch_rule_cycle.ahk
 #include receiver.ahk
+#include logger.ahk
 
 process_code(box_name, box_version)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   trace("compile " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
 
   compile_code_folder(box_name)
@@ -59,27 +61,30 @@ process_code(box_name, box_version)
 
 process_instruction(box, version)
 {
-    ; pull the code for the box
-    trace("git_clone " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
-    git_clone(box, version)
-    ; TODO confirm new box folder created
-    ; TODO confirm folder has all the requisite files
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  ; pull the code for the box
+  trace("git_clone " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+  git_clone(box, version)
+  ; TODO confirm new box folder created
+  ; TODO confirm folder has all the requisite files
 
-    process_code(box, version)
+  process_code(box, version)
 
-    ; delete the code for the box
-    trace("git remove " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
-    remove_git_dir(box)
+  ; delete the code for the box
+  trace("git remove " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+  remove_git_dir(box)
 }
 
 process_completed_run(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   trace("process_completed_run", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   process_test_results(box_name)
 }
 
 process_completed_runs(queue_array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   ; loop through boxes_in_queue array
   N :=  queue_array.MaxIndex()
@@ -100,6 +105,7 @@ boxes_in_queue := []
 ; loop load files
 Loop
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; atempt to fetch file from jobs folder
   get_jobs()
   file_name := get_top_file("jobs")
@@ -116,6 +122,7 @@ Loop
   ; loop over jobs
   Loop, % jobs.MaxIndex()
   {
+    log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
     ; processing a job state
     line := jobs[A_Index]
     trace("Processing " . line . " job.", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
@@ -135,8 +142,10 @@ Loop
     ; wait before going to the next job
     inform_timeout_pause_option("Done with job file " . box . " " . version, 2)
   }
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 
   move_completed_job_file(file_name)
   ; wait before checking for another file
   wait_until_with_message(15, "Completed 1 file.")
 }
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)

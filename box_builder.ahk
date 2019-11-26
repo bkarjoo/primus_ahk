@@ -22,9 +22,11 @@
 #include wait_policy.ahk
 #include inform.ahk
 #include code_parser.ahk
+#include logger.ahk
 
 build_local_box(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   quick_inform("build_local_box")
   create_backup_folder_helper(box_name)
   open_new_bb_design()

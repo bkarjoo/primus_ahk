@@ -1,8 +1,10 @@
 #include files.ahk
+#include logger.ahk
 
 
 get_options_variables(ops)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ops["use_time_options_check_box"] := [17,65]
   ops["use_time_options_trigger_point"] := [27,75]
   ops["start_subscription_trigger_point"] := [180,106]
@@ -17,6 +19,7 @@ get_options_variables(ops)
 
 set_time_option(trigger_point, time)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   time := Trim(time)
 
   tokens := StrSplit(time, " ")
@@ -44,6 +47,7 @@ set_time_option(trigger_point, time)
 
 set_position_sizing_scheme(code)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   sleep, 100
   MouseClick, Left, 200, 400
   sleep, 100
@@ -57,6 +61,7 @@ set_position_sizing_scheme(code)
 
 set_options_helper(timeo, pos)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   vars := {}
   get_options_variables(vars)
 
@@ -74,6 +79,7 @@ set_options_helper(timeo, pos)
 
 set_options()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   timeo := {}
   generic_code_parser("pp/time_options.i", timeo)
   pos := {}
@@ -83,6 +89,7 @@ set_options()
 
 options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (ti_vars["use_time_options"] != tbu_vars["use_time_options"])
     return 1
   if (ti_vars["start_subscription"] != tbu_vars["start_subscription"])
@@ -106,6 +113,7 @@ options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars)
 
 update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars))
     return
 
@@ -135,6 +143,7 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 
 update_options(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ti_path := build_i_path("time_options")
   tbu_path := build_bu_path("time_options", name)
   pi_path := build_i_path("position_sizing")

@@ -1,6 +1,8 @@
+#include logger
 
 ; old deprecated version
 clipboard_paste(text) {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Clipboard := text
   Send, ^v
   Send, {Enter}
@@ -10,6 +12,7 @@ clipboard_paste(text) {
 
 clipboard_simple_paste(text)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Clipboard := text
   Sleep, 200
   Send, ^v
@@ -18,6 +21,7 @@ clipboard_simple_paste(text)
 
 clipboard_simple_paste_followed_by_enter(text)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Clipboard := box_name
   Sleep, 200
   Send, ^v

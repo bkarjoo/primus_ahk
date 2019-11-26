@@ -1,9 +1,11 @@
 #include window_launcher.ahk
 #include window_open_blackbox.ahk
 #include clipboard_paste.ahk
+#include logger.ahk
 
 find_box(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   box_name := Trim(box_name, "`r") ; just incase
   launcher_activate()
   launcher_click_open_box()

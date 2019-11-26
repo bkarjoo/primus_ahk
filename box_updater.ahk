@@ -22,9 +22,11 @@
 #include wait_policy.ahk
 #include inform.ahk
 #include code_parser.ahk
+#include logger.ahk
 
 update_box(box_name, box_version)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   quick_inform("update_box")
   ; assumption box is downloaded and compiled
   update_general_setting_helper(get_local_compiled(box_name, "general_settings"),get_backup_compiled(box_name, "general_settings"))

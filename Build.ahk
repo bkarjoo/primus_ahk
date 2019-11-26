@@ -16,7 +16,9 @@
 #include files.ahk
 #include gcc_compile.ahk
 #include check_boxes.ahk
+#include logger.ahk
 
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 do_confirm_requisite_files := True
 do_compile_code_files := True
 do_create_backup_folder := True
@@ -31,6 +33,7 @@ do_launch_rules := True
 do_backup := True
 do_validate_and_close := True
 
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 if (do_confirm_requisite_files)
   confirm_requisite_files()
 if (do_compile_code_files)
@@ -60,3 +63,4 @@ if (do_backup)
   backup_compiled_files()
 
 click_validate_and_close()
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)

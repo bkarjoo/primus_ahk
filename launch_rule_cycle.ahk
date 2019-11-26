@@ -2,9 +2,11 @@
 #include inform.ahk
 #include window_launcher.ahk
 #include window_black_box_design.ahk
+#include logger.ahk
 
 create_15_day_launch_rule(year, month, half)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (month < 10)
     month := "0" . month
 
@@ -37,6 +39,7 @@ create_15_day_launch_rule(year, month, half)
 
 create_cycle_name(y, m, h)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   mo := m
   if (m < 10)
     mo := "0" . mo
@@ -45,7 +48,7 @@ create_cycle_name(y, m, h)
 
 break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, start_half, end_year, end_month, end_half, cycle_names)
 {
-
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   y := start_year
   m := start_month
   h := start_half
@@ -77,6 +80,7 @@ break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, sta
 
 cyclify_launch_rule(cycle, launch_rule)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   return "(" . cycle . ")" . " AND " . "(" . launch_rule . ")"
 
 }
@@ -85,6 +89,7 @@ cyclify_launch_rule(cycle, launch_rule)
 
 run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   quick_inform("run_launch_rule_cycles: # of cycles: " . schedule_cycles.MaxIndex())
 
   i := 1

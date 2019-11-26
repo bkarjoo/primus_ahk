@@ -1,8 +1,10 @@
 #include wait_policy.ahk
 #include files.ahk
+#include logger.ahk
 
 click_choose_basket()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   MouseClick, Left, 918, 64
   err := wait_only("Basket Manager", 60)
   if (err != 0)
@@ -11,6 +13,7 @@ click_choose_basket()
 
 set_basket_helper(basket)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes := {}
   get_edit_basket_checkboxes(checkboxes)
 
@@ -36,6 +39,7 @@ set_basket_helper(basket)
 
 set_basket()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   basket := {}
   generic_code_parser("pp/basket.i", basket)
   set_basket_helper(basket)
@@ -43,6 +47,7 @@ set_basket()
 
 basket_vars_changed(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (i_vars["basket_name"] != bu_vars["basket_name"])
     return 1
   if (i_vars["basket_description"] != bu_vars["basket_description"])
@@ -64,6 +69,7 @@ basket_vars_changed(i_vars, bu_vars)
 
 update_basket_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!basket_vars_changed)
     return
   checkboxes := {}
@@ -100,6 +106,7 @@ update_basket_helper(i_vars, bu_vars)
 
 update_basket(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("basket")
   bu_path := build_bu_path("basket", name)
 

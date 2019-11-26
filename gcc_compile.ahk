@@ -1,9 +1,11 @@
 #include clipboard_paste.ahk
 #include files.ahk
 #include cmd.ahk
+#include logger.ahk
 
 gcc_initial_compile()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   clipboard_paste("if not exist pp mkdir pp")
   clipboard_paste("gcc basket.c -E -o pp/basket.i -P")
   clipboard_paste("gcc entry.c -E -o pp/entry.i -P")
@@ -18,12 +20,14 @@ gcc_initial_compile()
 
 compile_code_files()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   gcc_initial_compile()
   confirm_compiled_files_exist()
 }
 
 compile_code_files_if_changed(ustate)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (ustate["basket_updated"])
     clipboard_paste("gcc basket.c -E -o pp/basket.i -P")
   if (ustate["entry_updated"])
@@ -48,6 +52,7 @@ compile_code_files_if_changed(ustate)
 
 git_clone(box_name, branch_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   creds := {}
   load_csv_dictionary("secret.csv", creds)
   repo_path := creds["github"] . box_name . ".git"
@@ -56,6 +61,7 @@ git_clone(box_name, branch_name)
 
 remove_git_dir(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   run_cmd("del /f /s /q " . box_name . "\.git 1>nul")
   run_cmd("rmdir /s /q " . box_name . "\.git")
   run_cmd("del " . box_name . "/S /Q")
@@ -64,6 +70,7 @@ remove_git_dir(box_name)
 
 compile_code_folder(code_folder)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   run_cmd("gcc " . code_folder . "\basket.c -E -o " . code_folder . "\basket.i -P")
   run_cmd("gcc " . code_folder . "\entry.c -E -o " . code_folder . "\entry.i -P")
   run_cmd("gcc " . code_folder . "\general_settings.c -E -o " . code_folder . "\general_settings.i -P")
