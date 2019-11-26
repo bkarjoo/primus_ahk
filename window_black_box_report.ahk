@@ -1,16 +1,19 @@
 #include window_blotter.ahk
 #include wait_policy.ahk
 #include inform.ahk
+#include logger.ahk
 
 
 activate_black_box_report()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   WinActivate, Black Box Report
   WinWaitActive, Black Box Report
 }
 
 save_black_box_reports()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; this loop keys down the blotter and saves reports in the active directory in docx format
   Loop
   {

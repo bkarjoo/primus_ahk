@@ -1,14 +1,17 @@
 #include wait_policy.ahk
 #include inform.ahk
+#include logger.ahk
 
 expression_builder_activate()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   WinActivate, PRIMU$ - Expression Builder
   WinWaitActive, PRIMU$ - Expression Builder
 }
 
 expression_click_clear()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; assumes expression builder is open
   ; clear existing code by pressing the clear button
   wait_activate_if_error("PRIMU$ - Expression", 2, 2)
@@ -18,12 +21,14 @@ expression_click_clear()
 
 expression_click_ok()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Expression", 2, 2)
   MouseClick, Left, 900, 550 ; press expression builder ok
 }
 
 expression_set_code(rule)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; assumes expression builder is open
   res := wait_activate_if_error("PRIMU$ - Expression", 2, 2)
   if (res != 1)
@@ -49,11 +54,13 @@ expression_set_code(rule)
 
 expression_click_edit_custom_expression()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   MouseClick, Left, 308, 508
 }
 
 copy_cutom_functions_from_expression_builder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   row := 260
   loop,
   {

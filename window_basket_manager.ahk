@@ -1,8 +1,10 @@
 #include wait_policy.ahk
 #include inform.ahk
+#include logger.ahk
 
 confirm_basket_manager_is_open()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("Basket Manager", 1)
   if (res = 0)
     inform("Cannot find basket manager window.")
@@ -10,6 +12,7 @@ confirm_basket_manager_is_open()
 
 basket_manager_private_tab_selected()
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 res := activate_and_wait_only("Basket Manager", 5)
 if (res = 0)
   inform("basket_manager_private_tab_selected can't activate basket manager")
@@ -21,6 +24,7 @@ return 0
 
 click_basket_manager_private_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("Basket Manager", 5)
   if (res = 0)
     inform("click_basket_manager_private_tab can't activate basket manager")
@@ -37,6 +41,7 @@ click_basket_manager_private_tab()
 
 basket_manager_sub_folder_selected()
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 res := activate_and_wait_only("Basket Manager", 5)
 if (res = 0)
   inform("basket_manager_sub_folder_selected can't activate basket manager")
@@ -48,6 +53,7 @@ return 0
 
 click_basket_manager_sub_folder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   MouseClick, Left, 118, 115
   sleep, 200
 }
@@ -56,6 +62,7 @@ click_basket_manager_sub_folder()
 
 basket_manager_new_basket()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("Basket Manager", 1)
   if (res := 0)
     inform("basket_manager_new_basket can't activate Basket Manager")
@@ -80,18 +87,21 @@ basket_manager_new_basket()
 
 click_basket_manager_filter_text_box()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   MouseClick, Left, 477, 72
   sleep, 200
 }
 
 click_basket_manager_run_filter()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   MouseClick, Left, 545, 70
   sleep, 200
 }
 
 open_existing_basket(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_basket_manager_private_tab()
   sleep, 200
   click_basket_manager_sub_folder()
@@ -112,6 +122,7 @@ open_existing_basket(name)
 
 click_basket_manager_ok_button()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("Basket Manager", 5)
   if (res = 0)
     inform("click_basket_manager_ok_button can't activate basket manager")
