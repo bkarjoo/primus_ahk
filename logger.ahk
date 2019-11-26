@@ -1,4 +1,4 @@
-
+#include timestamp.ahk
 
 log(msg)
 {
@@ -8,6 +8,6 @@ log(msg)
 
 log_trace(msg, file, function, line)
 {
-  txt := msg . " | file: " . file . " | function: " . function . " | line: " . line
+  txt := get_timestamp() . " | " . msg . " | file: " . file . " | function: " . function . " | line: " . line
   log(txt)
 }
