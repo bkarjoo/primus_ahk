@@ -128,15 +128,15 @@ Loop
     log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
     ; processing a job state
     line := jobs[A_Index]
+    line := Trim(line, "`r")
     trace("Processing " . line . " job.", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
     tokens := StrSplit(line, ",")
     box := tokens[1]
 
-
     ; check if there's no more boxes
     if (box = "")
       break
-    version := Trim(tokens[2],"`r")
+    version := tokens[2]
 
     y1 := tokens[3]
     m1 := tokens[4]
