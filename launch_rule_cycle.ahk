@@ -58,9 +58,6 @@ break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, sta
       schedule_cycles.Push(s)
       cycle_names.Push(create_cycle_name(y,m,h))
 
-      msgbox % y . " " . end_year . " " . (y = end_year)
-      msgbox % y . " " . end_month . " " . (m = end_month)
-      msgbox % y . " " . end_half . " " . (h = end_half)
       if (y = end_year and m = end_month and h = end_half)
         break
 
