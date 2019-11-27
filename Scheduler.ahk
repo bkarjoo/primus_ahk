@@ -30,7 +30,7 @@
 #include receiver.ahk
 #include logger.ahk
 
-process_code(box_name, box_version)
+process_code(box_name, box_version, y1, m1, h1, y2, m2, h2)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   trace("compile " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
@@ -53,13 +53,16 @@ process_code(box_name, box_version)
   launch_rules := get_local_compiled(box_name, "launch_rules")
   cycles := []
   cycle_names := []
-  break_down_launch_rule_into_cycles(cycles, launch_rules["launch_rule_start_year"], launch_rules["launch_rule_start_month"], launch_rules["launch_rule_start_month_half"], launch_rules["launch_rule_end_year"], launch_rules["launch_rule_end_month"], launch_rules["launch_rule_end_month_half"], cycle_names)
+
+  ; break_down_launch_rule_into_cycles(cycles, launch_rules["launch_rule_start_year"], launch_rules["launch_rule_start_month"], launch_rules["launch_rule_start_month_half"], launch_rules["launch_rule_end_year"], launch_rules["launch_rule_end_month"], launch_rules["launch_rule_end_month_half"], cycle_names)
+
+  break_down_launch_rule_into_cycles(cycles, y1, m1, h1, y2, m2, h2, cycle_names)
 
   run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names)
 
 }
 
-process_instruction(box, version)
+process_instruction(box, version, y1, m1, h1, y2, m2, h2)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; pull the code for the box
@@ -68,7 +71,7 @@ process_instruction(box, version)
   ; TODO confirm new box folder created
   ; TODO confirm folder has all the requisite files
 
-  process_code(box, version)
+  process_code(box, version, y1, m1, h1, y2, m2, h2)
 
   ; delete the code for the box
   trace("git remove " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
@@ -128,6 +131,12 @@ Loop
     trace("Processing " . line . " job.", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
     tokens := StrSplit(line, ",")
     box := tokens[1]
+    y1 := tokens[2]
+    m1 := tokens[3]
+    h1 := tokens[4]
+    y2 := tokens[5]
+    m2 := tokens[6]
+    h2 := tokens[7]
 
     ; check if there's no more boxes
     if (box = "")
@@ -135,7 +144,7 @@ Loop
     version := Trim(tokens[2],"`r")
 
     boxes_in_queue.Push(build_box_name(box, version))
-    process_instruction(box, version)
+    process_instruction(box, version, y1, m1, h1, y2, m2, h2)
 
     process_completed_runs(boxes_in_queue)
     get_jobs()
