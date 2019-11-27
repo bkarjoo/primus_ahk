@@ -131,17 +131,19 @@ Loop
     trace("Processing " . line . " job.", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
     tokens := StrSplit(line, ",")
     box := tokens[1]
-    y1 := tokens[2]
-    m1 := tokens[3]
-    h1 := tokens[4]
-    y2 := tokens[5]
-    m2 := tokens[6]
-    h2 := tokens[7]
+
 
     ; check if there's no more boxes
     if (box = "")
       break
     version := Trim(tokens[2],"`r")
+
+    y1 := tokens[3]
+    m1 := tokens[4]
+    h1 := tokens[5]
+    y2 := tokens[6]
+    m2 := tokens[7]
+    h2 := tokens[8]
 
     boxes_in_queue.Push(build_box_name(box, version))
     process_instruction(box, version, y1, m1, h1, y2, m2, h2)
