@@ -311,9 +311,10 @@ set_entry_helper(entry)
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
-  if (entry["black_box_scheme"] = "PlainVanilla")
+  if (entry["entry_trigger"] != "")
     if (entry_update_trigger(entry["entry_trigger"]) = 0)
       inform("Unable to set entry trigger.")
+
   if (entry_open_new_order() = 0)
     inform("Unable to open new order window.")
   set_order_form_order_type(entry["entry_order_type"])
