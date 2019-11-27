@@ -146,6 +146,7 @@ Loop
     h2 := tokens[8]
 
     boxes_in_queue.Push(build_box_name(box, version))
+    msgbox %  y1 . " " . m1 . " " . h1 . " " . y2 . " " . m2 . " " . h2
     process_instruction(box, version, y1, m1, h1, y2, m2, h2)
 
     process_completed_runs(boxes_in_queue)
