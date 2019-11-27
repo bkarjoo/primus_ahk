@@ -83,6 +83,7 @@
 #define SMA_daily(x) SMAStock(ALL_VENUES, NO, DAILY, x, CURRENT)
 #define EMA_5(x) EMAStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
 #define EMA_1_EH(x) EMAStock(ALL_VENUES, YES, MINUTES_1, x, CURRENT)
+#define RSI_1(x) RSIStock(ALL_VENUES, NO, MINUTES_1, x, CURRENT)
 
 #define donchian_long_stop DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel)
 
@@ -315,6 +316,10 @@
 #define post_mkt_close DayBar_CloseP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
 #define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))-SPY_n(close))/SPY_n(close))
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
+#define spy_day_high SPY_n(day_high)
+#define spy_day_low SPY_n(day_low)
+#define spy_day_range (spy_day_high - spy_day_low )
+#define spy_last SPY_n(last)
 #define spread ask - bid
 // nested ifs
 #define if IF
