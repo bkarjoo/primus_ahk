@@ -10,7 +10,7 @@ Run, mailsend.exe -to %emailToAddress% -from %emailFromAddress% -ssl -smtp smtp.
 send_mail_plain(emailToAddress,emailPass,emailFromAddress,emailSubject,emailMessage)
 {
 log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-Run, mailsend.exe -to %emailToAddress% -from %emailFromAddress% -ssl -smtp smtp.gmail.com -port 465 -sub %emailSubject% -M %emailMessage% +cc +bc -q -auth-plain -user %emailFromAddress% -pass %emailPass%,, Hide
+Run, mailsend.exe -to %emailToAddress% -from %emailFromAddress% -ssl -smtp smtp.gmail.com -port 465 -sub "%emailSubject%" -M "%emailMessage%" +cc +bc -q -auth-plain -user %emailFromAddress% -pass %emailPass%,, Hide
 }
 
 email_message(subj,msg)
