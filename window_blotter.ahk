@@ -231,11 +231,12 @@ select_custom_blotter(blotter_name)
 process_test_results(box_name)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  create_custom_blotter(box_name)
-  select_custom_blotter(box_name)
-  capture_equity_curve()
-  email_attachment(box_name, box_name, "image.png")
+  ;create_custom_blotter(box_name)
+  ;select_custom_blotter(box_name)
+  ;capture_equity_curve()
+  ;email_attachment(box_name, box_name, "image.png")
   ; TODO delete image.png
+  email_message(box_name . " completed.", "Time to create a custom blotter!")
 }
 
 ; TODO must check if AllRecords is checked, if not check it
