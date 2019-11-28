@@ -85,9 +85,11 @@
 #define EMA_1_EH(x) EMAStock(ALL_VENUES, YES, MINUTES_1, x, CURRENT)
 #define RSI_1(x) RSIStock(ALL_VENUES, NO, MINUTES_1, x, CURRENT)
 
-#define donchian_long_stop DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel)
+#define donchian_long_stop_5 DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel)
+#define donchian_long_stop_1 DonchianChannels(CURRENT, MINUTES_1, 20, NO, Donchian_LowerChannel)
 
 // day bars
+#define day_bar_open(x, y) DayBar_Open(ALL_VENUES, x, NO, y)
 #define day_bar_close(x, y) DayBar_Close(ALL_VENUES, x, YES, y)
 #define day_bar_low(x, y) DayBar_Low(ALL_VENUES, x, YES, y)
 #define day_bar_high(x, y) DayBar_High(ALL_VENUES, x, YES, y)
@@ -121,6 +123,7 @@
 #define ETF EXCHANGE_TRADED_FUND
 #define ETN EXCHANGE_TRADED_NOTE
 #define etp_prefered_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
 #define is_common_stock etp_prefered_exclude
 #define execution ExecutionPrice
 #define exchange(x) PrimaryExchange(x)
@@ -135,6 +138,8 @@
 #define last Last(ALL_VENUES,CURRENT,NO)
 #define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
 #define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
+#define ipo_price IPOPrice
+#define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
 #define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
 #define minute_low(x) MinuteLow(ALL_VENUES, x, CURRENT, NO, True)
 // take minute and P1-P5
@@ -158,8 +163,12 @@
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define new_high NewDayHigh(1, NO)
 #define new_low NewDayLow(1, NO)
+#define new_high_days(x) NewDayHigh(x, NO)
+#define new_low_days(x) NewDayLow(x, NO)
 #define new_high_ext NewDayHigh(1, YES)
 #define new_low_ext NewDayLow(1, YES)
+#define new_high_ext_days(x) NewDayHigh(x, YES)
+#define new_low_ext_days(x) NewDayLow(x, YES)
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
 #define open OpenPrice(PRIMARY, CURRENT, NO)
 #define open_prv(x) OpenPrice(PRIMARY, x, NO)
@@ -179,6 +188,8 @@
 #define time_from_open_minutes (TimeFromStockOpenSeconds/60)
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
 #define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
+#define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
+#define vwap VWAP(CURRENT, NO, VWAP, V1, ALL_VENUES)
 
 // news
 #define mna s3_MNA
