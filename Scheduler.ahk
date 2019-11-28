@@ -30,7 +30,76 @@
 #include receiver.ahk
 #include logger.ahk
 
-process_code(box_name, box_version, y1, m1, h1, y2, m2, h2)
+process_completed_run(box_name)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  trace("process_completed_run", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+  process_test_results(box_name)
+}
+
+process_completed_runs(queue_array)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+  ; loop through boxes_in_queue array
+  N :=  queue_array.MaxIndex()
+  Loop, % N
+  {
+    reverse_i := N - A_Index + 1
+    if (number_of_active_runs_for_box(queue_array[reverse_i]) = 0)
+    {
+      process_completed_run(queue_array[reverse_i])
+      queue_array.RemoveAt(reverse_i)
+    }
+  }
+}
+
+run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names, boxes_in_queue)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  quick_inform("run_launch_rule_cycles: # of cycles: " . schedule_cycles.MaxIndex())
+
+  i := 1
+  j := 0
+  loop
+  {
+    if (i != j)
+    {
+      cycle_launch_rule := cyclify_launch_rule(schedule_cycles[i], launch_rules)
+      if (!WinExist("PRIMU$ - Black"))
+        launcher_click_edit_box()
+      change_just_the_launch_rule(cycle_launch_rule)
+      change_just_the_description(cycle_names[i])
+      click_validate_and_close()
+      j := i
+    }
+
+    if (number_of_free_slots() > 1)
+    {
+      launcher_click_play()
+      succeeded := is_success()
+      quick_inform("succeeded: " . succeeded)
+      if (succeeded)
+      {
+        btq_action_press_ok()
+        Sleep, 1000
+        i := i + 1
+        if (i > schedule_cycles.MaxIndex())
+          break
+        continue
+      }
+      else
+      {
+        btq_action_press_ok()
+      }
+    }
+    process_completed_runs(boxes_in_queue)
+    wait_until_with_message(60, "waiting for free slots...")
+  }
+}
+
+
+process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   trace("compile " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
@@ -58,11 +127,11 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2)
 
   break_down_launch_rule_into_cycles(cycles, y1, m1, h1, y2, m2, h2, cycle_names)
 
-  run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names)
+  run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names, boxes_in_queue)
 
 }
 
-process_instruction(box, version, y1, m1, h1, y2, m2, h2)
+process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; pull the code for the box
@@ -71,36 +140,14 @@ process_instruction(box, version, y1, m1, h1, y2, m2, h2)
   ; TODO confirm new box folder created
   ; TODO confirm folder has all the requisite files
 
-  process_code(box, version, y1, m1, h1, y2, m2, h2)
+  process_code(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 
   ; delete the code for the box
   trace("git remove " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   remove_git_dir(box)
 }
 
-process_completed_run(box_name)
-{
-  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  trace("process_completed_run", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
-  process_test_results(box_name)
-}
 
-process_completed_runs(queue_array)
-{
-  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  trace("process_completed_runs", A_ThisFunc, A_ScriptName, A_LineNumber, 3)
-  ; loop through boxes_in_queue array
-  N :=  queue_array.MaxIndex()
-  Loop, % N
-  {
-    reverse_i := N - A_Index + 1
-    if (number_of_active_runs_for_box(queue_array[reverse_i]) = 0)
-    {
-      process_completed_run(queue_array[reverse_i])
-      queue_array.RemoveAt(reverse_i)
-    }
-  }
-}
 
 ; this array keeps track of boxes that are queued up
 boxes_in_queue := []
@@ -147,7 +194,7 @@ Loop
 
     boxes_in_queue.Push(build_box_name(box, version))
 
-    process_instruction(box, version, y1, m1, h1, y2, m2, h2)
+    process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 
     process_completed_runs(boxes_in_queue)
     get_jobs()
