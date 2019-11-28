@@ -27,8 +27,8 @@ save_black_box_reports()
     activate_black_box_report()
     sleep, 500
     MouseClick, Left, 336, 32
-    sleep, 500
-    MouseClick, Left, 372, 98
+    sleep, 750
+    MouseClick, Left, 372, 79
     sleep, 500
 
     WinWait, Save As
@@ -52,3 +52,5 @@ save_black_box_reports()
     inform_timeout(msg, 5)
   }
 }
+
+save_black_box_reports()

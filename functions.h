@@ -111,6 +111,7 @@
 #define day_range_prv(x) (DayHigh(ALL_VENUES,1,x,NO) - DayLow(ALL_VENUES,1,x,NO))
 #define day_range_ext_prv(x) (DayHigh(ALL_VENUES,1,x,YES)-DayLow(ALL_VENUES,1,x,YES))
 #define day_volume DayVolume(ALL_VENUES,1,CURRENT,NO)
+#define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
 #define entries EntriesCount(HOURS, 8)
 #define entry_time_sec PositionEntryTime
 #define entry_trigs_day EntryTriggersCount(HOURS, 8)
@@ -157,6 +158,8 @@
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define new_high NewDayHigh(1, NO)
 #define new_low NewDayLow(1, NO)
+#define new_high_ext NewDayHigh(1, YES)
+#define new_low_ext NewDayLow(1, YES)
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
 #define open OpenPrice(PRIMARY, CURRENT, NO)
 #define open_prv(x) OpenPrice(PRIMARY, x, NO)
@@ -175,6 +178,7 @@
 #define time_from_open_sec TimeFromStockOpenSeconds
 #define time_from_open_minutes (TimeFromStockOpenSeconds/60)
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
+#define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
 
 // news
 #define mna s3_MNA
@@ -275,6 +279,7 @@
 // take ACBO
 #define conference_call(x) ConferenceCall(News_Current, x, Any)
 #define conference_call_mkt_hrs ConferenceCall(News_Current, MarketHours, Any)
+#define conference_call_time ConferenceCallTime(News_Current, MarketHours, EarningsCall)
 
 // briefing_news takes True or False
 #define briefing_news(x) StockNewsEvent(News_Current, ACBO, x)
@@ -320,7 +325,7 @@
 #define spy_day_low SPY_n(day_low)
 #define spy_day_range (spy_day_high - spy_day_low )
 #define spy_last SPY_n(last)
-#define spread ask - bid
+#define spread Spread(INSIDE, NO)
 // nested ifs
 #define if IF
 #define if2(x, y, x2, y2, z) if(x, y, if(x2, y2, z))
