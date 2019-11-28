@@ -28,15 +28,15 @@ update_box_description(desc)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
-  sleep, 200
+  sleep, 1000
   MouseClick, Left, 325, 125
-  sleep, 200
+  sleep, 500
   Send, ^a
   sleep, 200
   Clipboard := desc
   sleep, 200
   Send, ^v
-  sleep, 200
+  sleep, 500
 }
 
 strip_existing_launch_rule_name_in_description(desc)
