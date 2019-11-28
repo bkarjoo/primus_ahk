@@ -3,7 +3,7 @@
 && AND
 _AvgR_30m ((MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P1) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P1)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P2) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P2)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P3) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P3)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P4) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P4)) + (MaxDayBar_HighP(ALL_VENUES, 1, NO, '9:30-9:34', P5) - MinDayBar_LowP(ALL_VENUES, 1, NO, '9:30-9:34', P5)))/5
 _PositionHold TickTimeSeconds - PositionEntryTime
-_Premkt_Range IF(         (DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES)) >         IF(                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT) >                 IF(                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0 AND (MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')) > AvgDailyRange(ALL_VENUES, 20, NO)                     ,                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                     ,                         AvgDailyRange(ALL_VENUES, 20, NO)                     )         ,                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)         ,                 IF(                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0                 ,                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                 ,                     AvgDailyRange(ALL_VENUES, 20, NO)                 )         ) ,         (DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES)) ,         IF(                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT) >                 IF(                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0  AND (MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')) > AvgDailyRange(ALL_VENUES, 20, NO)                     ,                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                     ,                         AvgDailyRange(ALL_VENUES, 20, NO)                     )         ,                 ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)         ,                 IF(                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0                 ,                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                 ,                     AvgDailyRange(ALL_VENUES, 20, NO)                 )         ) )
+_Premkt_Range IF(         (day_range_prv(P1)) >         IF(                 atr(7) >                 IF(                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0 AND (MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')) > adrs                     ,                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                     ,                         adrs                     )         ,                 atr(7)         ,                 IF(                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0                 ,                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                 ,                     adrs                 )         ) ,         (day_range_prv(P1)) ,         IF(                 atr(7) >                 IF(                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0  AND (MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')) > adrs                     ,                         MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                     ,                         adrs                     )         ,                 atr(7)         ,                 IF(                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') > 0 AND MinDayBar_Low(ALL_VENUES, 120, YES, '0') > 0                 ,                     MaxDayBar_High(ALL_VENUES, 120, YES, '0') - MinDayBar_Low(ALL_VENUES, 120, YES, '0')                 ,                     adrs                 )         ) )
 _Stock_News_Syndicates_Only AND NOT  StockNews(News_Current, ACBO, AnySentiment, Hot_Stocks) AND NOT  StockNews(News_Current, ACBO, AnySentiment, General_News) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Earnings) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Conference_Events) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Recommendations) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Upgrade) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Downgrade) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Initiation) AND NOT  StockNews(News_Current, ACBO, AnySentiment, Periodicals)
 _TrailingLong5m IF(DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel) - 0.1 >= DayLow(ALL_VENUES, 1, CURRENT, NO) - 0.1, DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel) - 0.1, DayLow(ALL_VENUES, 1, CURRENT, NO) - 0.1)
 _TrailingShort5m IF(DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_UpperChannel) + 0.1 <= DayHigh(ALL_VENUES, 1, CURRENT, NO) + 0.1, DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_UpperChannel) + 0.1, DayHigh(ALL_VENUES, 1, CURRENT, NO) + 0.1)
@@ -12,11 +12,11 @@ _TrailingShort5m IF(DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_UpperC
 A_L_Copy  Ask(INSIDE, CURRENT, YES)  -  Last(ALL_VENUES, CURRENT, YES)
 AB_Copy Ask(INSIDE, CURRENT, NO) - Bid(INSIDE, CURRENT, NO)
 adjusted_close_price  AdjustedClosePrice(P1)
-ADRdwn_Copy (AdjustedClosePrice(P1) - Ask(INSIDE, CURRENT, NO)) / AvgDailyRange(ALL_VENUES, 20, NO)
-ADRpctx_Copy  AvgDailyRange(ALL_VENUES, 20, NO)  /  AdjustedClosePrice(P1)  * 100
-adrs  AvgDailyRange(ALL_VENUES, 20, NO)
-adrs  AvgDailyRange(ALL_VENUES, 20, NO)
-ADRup_Copy  (Ask(INSIDE, CURRENT, NO) - AdjustedClosePrice(P1)) / AvgDailyRange(ALL_VENUES, 20, NO)
+ADRdwn_Copy (AdjustedClosePrice(P1) - Ask(INSIDE, CURRENT, NO)) / adrs
+ADRpctx_Copy  adrs  /  AdjustedClosePrice(P1)  * 100
+adrs  adrs
+adrs  adrs
+ADRup_Copy  (Ask(INSIDE, CURRENT, NO) - AdjustedClosePrice(P1)) / adrs
 adv_20_QG1 AvgDayVolume(ALL_VENUES, 20, NO)
 AMREarnings_Copy EarningsEPS(News_Current, ACBO, Actual)
 ask_price Ask(INSIDE, CURRENT, NO)
@@ -29,9 +29,9 @@ AV10_Copy AvgDayVolume(ALL_VENUES, 10, NO)
 AV15_Copy AvgDayVolume(ALL_VENUES, 15, YES)
 AV5_Copy  AvgDayVolume(ALL_VENUES, 5, NO)
 AV90_Copy AvgDayVolume(ALL_VENUES, 90, NO)
-average_daily_range  AvgDailyRange(ALL_VENUES, 20, NO)
+average_daily_range  adrs
 average_daily_volume  AvgDayVolume(ALL_VENUES, 90, NO)
-AvgDlyRng_Copy  AvgDailyRange(ALL_VENUES, 20, NO)
+AvgDlyRng_Copy  adrs
 AvgVolPrePost_Copy (  (DayVolume(ALL_VENUES, 1, P1, YES) - DayVolume(ALL_VENUES, 1, P1, NO)) +  (DayVolume(ALL_VENUES, 1, P2, YES) - DayVolume(ALL_VENUES, 1, P2, NO)) + (DayVolume(ALL_VENUES, 1, P3, YES) - DayVolume(ALL_VENUES, 1, P3, NO)) +  (DayVolume(ALL_VENUES, 1, P4, YES) - DayVolume(ALL_VENUES, 1, P4, NO)) + (DayVolume(ALL_VENUES, 1, P5, YES) - DayVolume(ALL_VENUES, 1, P5, NO)) ) * 1.0 / 5
 AvgVolume10Day_Copy  AvgDayVolume(ALL_VENUES, 10, NO)
 B_L_Copy  Bid(INSIDE, CURRENT, YES)  -  Last(ALL_VENUES, CURRENT, YES)
@@ -109,7 +109,7 @@ buyback     (
 		AND
 		AdjustedClosePrice(P1) < 5000
 		AND
-		AvgDailyRange(ALL_VENUES, 20, NO) > 1
+		adrs > 1
 		AND
 		AvgDayVolume(ALL_VENUES, 20, NO) > 200000
 		AND
@@ -443,7 +443,7 @@ Low_Copy  DayLow(ALL_VENUES, 1, CURRENT, NO)
 m3High_Copy  MinuteHigh(ALL_VENUES, 3, CURRENT, NO, false)  -  Last(ALL_VENUES, CURRENT, NO)
 m3Low_Copy  Last(ALL_VENUES, CURRENT, NO)  -  MinuteLow(ALL_VENUES, 3, CURRENT, NO, false)
  Last(ALL_VENUES, CURRENT, NO)  -  MinuteLow(ALL_VENUES, 3, CURRENT, NO, false)   Last(ALL_VENUES, CURRENT, NO)  -  MinuteLow(ALL_VENUES, 3, CURRENT, NO, false)
-ADRpctx_Copy  AvgDailyRange(ALL_VENUES, 20, NO)  mDstEMA20_Copy Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT)
+ADRpctx_Copy  adrs  mDstEMA20_Copy Last(ALL_VENUES, CURRENT, NO) - EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT)
 mDstSMA20_Copy Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT)
 mEMA14dif_Copy  Last(ALL_VENUES, CURRENT, NO) -  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_14, CURRENT)
 mEMA20dif_Copy  Last(ALL_VENUES, CURRENT, YES) - EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_20, CURRENT)
@@ -468,7 +468,7 @@ minutes_from_stock_open (seconds_from_stock_open/60)
 minutes_since_entry ((TickTimeSeconds - PositionEntryTime) / 60)
 mLow45_Copy MinuteLow(ALL_VENUES, 45, CURRENT, YES, False)
 /  AdjustedClosePrice(P1)  * 100
-adrs  AvgDailyRange(ALL_VENUES, 20, NO)
+adrs  adrs
 MM_Copy  (  2  *  ClosePrice(PRIMARY, P1, NO)  )  -  OpenPrice(PRIMARY, CURRENT, NO)
 MOVE1m_Copy Last(ALL_VENUES, CURRENT, YES) - MinuteClose_I(ALL_VENUES, 1, P1, YES)
 mP1450_Copy  (EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_14, P1) -  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_50, P1)) /  EMAStock(ALL_VENUES, NO, MINUTES_1, PERIOD_50, P2) * 100
@@ -521,7 +521,7 @@ OPGMM_Airlines_S_ND (
      DayBar_Volume(ALL_VENUES, 30, YES, '0')  > 0
      AND
      RefStockNumericValue('DAL',  AdjustedClosePrice(P1) )   >   RefStockNumericValue('DAL',MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False))
-     + (.25*  RefStockNumericValue('DAL',AvgDailyRange(ALL_VENUES, 20, NO)))
+     + (.25*  RefStockNumericValue('DAL',adrs))
      AND
      ((RefStockNumericValue('SPY', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) )/RefStockNumericValue('SPY', AdjustedClosePrice(P1)))-1)  >
      ((RefStockNumericValue('DAL', MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) )/RefStockNumericValue('DAL', AdjustedClosePrice(P1)))-1)
@@ -647,7 +647,7 @@ OPGMM_Buyback_L_QG     (
 		 AND
 		 AdjustedClosePrice(P1) >= 1 AND AdjustedClosePrice(P1) < 5000
 		 AND
-		 AvgDailyRange(ALL_VENUES, 20, NO) > 1
+		 adrs > 1
 		 AND
 		 AvgDayVolume(ALL_VENUES, 20, NO) > 200000 AND AvgDayVolume(ALL_VENUES, 20, NO) < 3000000
 		 AND
@@ -670,7 +670,7 @@ OPGMM_Earnings_L_ND    (
 	(
 		AdjustedClosePrice(P1) >= 10
 		AND
-		AvgDailyRange(ALL_VENUES, 20, NO) >= .25
+		adrs >= .25
 		AND
 		AvgDayVolume(ALL_VENUES, 20, NO) >= 400000
 		AND
@@ -710,7 +710,7 @@ OPGMM_Earnings_L_ND_NSDQ     (
             AND
             AdjustedClosePrice(P1) >= 10 AND AdjustedClosePrice(P1) < 2000
             AND
-            AvgDailyRange(ALL_VENUES, 20, NO) >= .25
+            adrs >= .25
             AND
             AvgDayVolume(ALL_VENUES, 20, NO) >= 400000 AND AvgDayVolume(ALL_VENUES, 60, NO) >= 400000
             AND
@@ -748,7 +748,7 @@ OPGMM_Earnings_L_ND_NYSE
             AND
             AdjustedClosePrice(P1) >= 10 AND AdjustedClosePrice(P1) < 2000
             AND
-            AvgDailyRange(ALL_VENUES, 20, NO) >= .25
+            adrs >= .25
             AND
             AvgDayVolume(ALL_VENUES, 20, NO) >= 400000 AND AvgDayVolume(ALL_VENUES, 60, NO) >= 400000
             AND
@@ -792,7 +792,7 @@ OPGMM_Earnings_S_SK 	(
 
 		(
 			(News_Earnings_QG1) AND NOT (ETP_QG1) AND AvgDayVolume(ALL_VENUES,
-			20, NO) > 400000 AND AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25 AND
+			20, NO) > 400000 AND adrs >= 0.25 AND
 			AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 500 AND (DaysFromIPO > 30
 			OR DaysFromIPO < 0 )
 		)
@@ -846,7 +846,7 @@ OPGMM_Earnings_S_SK_NYSE     (
              AND
              AvgDayVolume(ALL_VENUES, 20, NO) > 400000
              AND
-             AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25
+             adrs >= 0.25
              AND AdjustedClosePrice(P1) > 10 AND  AdjustedClosePrice(P1)    < 2500
              AND
              (DaysFromIPO > 30 OR  DaysFromIPO < 0 )
@@ -858,10 +858,10 @@ OPGMM_Earnings_S_SK_NYSE     (
 
 
 
-OPGMM_EarningsImbalance_L_MK     (            (               PrimaryExchange(NYSE)             AND             ImbalanceAt('09:29:10') > 2*ImbalanceAt('09:25:00')             AND             ImbalanceBuyVolume(NYSE) > 0             AND             ImbalanceAt('09:29:10') > 2*AvgOpenPrintSize(20)         )                  AND                  (             (StockNews(News_Current, ACBO, AnySentiment, Earnings)               OR               Source3(News_Current, ACBO, AnySentiment, Guidance)               OR               EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)              )               AND               NOT Source3(News_Current, ACBO, AnySentiment, MNA)               AND               AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500               AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 50000               AND               AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25               AND               NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)         )     )
-OPGMM_EarningsImbalance_S_MK     (            (              PrimaryExchange(NYSE)               AND               -1*ImbalanceAt('09:29:10') > 2*-1*ImbalanceAt('09:25:00')               AND               ImbalanceSellVolume(NYSE) > 0               AND               -1*ImbalanceAt('09:29:10') > 2*AvgOpenPrintSize(20)         )                  AND                  (             (StockNews(News_Current, ACBO, AnySentiment, Earnings)               OR               Source3(News_Current, ACBO, AnySentiment, Guidance)               OR              EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)              )               AND               NOT Source3(News_Current, ACBO, AnySentiment, MNA)               AND               AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500               AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 50000               AND               AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25               AND               NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)         )     )
+OPGMM_EarningsImbalance_L_MK     (            (               PrimaryExchange(NYSE)             AND             ImbalanceAt('09:29:10') > 2*ImbalanceAt('09:25:00')             AND             ImbalanceBuyVolume(NYSE) > 0             AND             ImbalanceAt('09:29:10') > 2*AvgOpenPrintSize(20)         )                  AND                  (             (StockNews(News_Current, ACBO, AnySentiment, Earnings)               OR               Source3(News_Current, ACBO, AnySentiment, Guidance)               OR               EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)              )               AND               NOT Source3(News_Current, ACBO, AnySentiment, MNA)               AND               AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500               AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 50000               AND               adrs >= 0.25               AND               NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)         )     )
+OPGMM_EarningsImbalance_S_MK     (            (              PrimaryExchange(NYSE)               AND               -1*ImbalanceAt('09:29:10') > 2*-1*ImbalanceAt('09:25:00')               AND               ImbalanceSellVolume(NYSE) > 0               AND               -1*ImbalanceAt('09:29:10') > 2*AvgOpenPrintSize(20)         )                  AND                  (             (StockNews(News_Current, ACBO, AnySentiment, Earnings)               OR               Source3(News_Current, ACBO, AnySentiment, Guidance)               OR              EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)              )               AND               NOT Source3(News_Current, ACBO, AnySentiment, MNA)               AND               AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500               AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 50000               AND               adrs >= 0.25               AND               NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)         )     )
 OPGMM_EarningsOE_L_QG     (            (               RefStockNumericValue('SPY',  MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) ) >               RefStockNumericValue('SPY',   AdjustedClosePrice(P1)  )               AND               DayVolume(ALL_VENUES, 1, CURRENT, YES)  >= IF((.01*AvgDayVolume(ALL_VENUES, 20, NO)) > 10000,  (              .01*AvgDayVolume(ALL_VENUES, 20, NO)),10000)                AND                MinuteLow(ALL_VENUES, 5, CURRENT, YES, False)    >=  ( AdjustedClosePrice(P1) * 1.08)               AND               MinuteLow(ALL_VENUES, 5, CURRENT, YES, False)                  >=  (   DayLow(ALL_VENUES, 1, CURRENT, YES)  + (0.5*(DayHigh(ALL_VENUES, 1, CURRENT, YES) -                 DayLow(ALL_VENUES, 1, CURRENT, YES)  )))         )         AND         (             AdjustedClosePrice(P1) >= 10              AND               AvgDailyRange(ALL_VENUES, 30, NO) >= 1              AND               AvgDayVolume(ALL_VENUES, 30, NO) >=500000              AND               (EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings))             AND               AdjustedClosePrice(P1) < 2000         )     )
-OPGMM_EarningsOE_S_QG     (            (                DayVolume(ALL_VENUES, 1, CURRENT, YES)  >= IF((.0050*AvgDayVolume(ALL_VENUES, 20, NO)) > 10000,               (.0050*AvgDayVolume(ALL_VENUES, 20, NO)),10000)                AND                AdjustedClosePrice(P1) >=  (  MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False)* 1.08)                AND                AdjustedClosePrice(P1)    > (  MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) +              ((3/4)*(DayHigh(ALL_VENUES, 1, CURRENT, YES) -  AdjustedClosePrice(P1) )))         )         AND         (             AdjustedClosePrice(P1) >= 10              AND               AvgDailyRange(ALL_VENUES, 20, NO) >= .25              AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 500000              AND              AvgDayVolume(ALL_VENUES, 60, NO) >= 500000              AND              (EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings))             AND               AdjustedClosePrice(P1) < 2000         )     )
+OPGMM_EarningsOE_S_QG     (            (                DayVolume(ALL_VENUES, 1, CURRENT, YES)  >= IF((.0050*AvgDayVolume(ALL_VENUES, 20, NO)) > 10000,               (.0050*AvgDayVolume(ALL_VENUES, 20, NO)),10000)                AND                AdjustedClosePrice(P1) >=  (  MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False)* 1.08)                AND                AdjustedClosePrice(P1)    > (  MinuteHigh(ALL_VENUES, 5, CURRENT, YES, False) +              ((3/4)*(DayHigh(ALL_VENUES, 1, CURRENT, YES) -  AdjustedClosePrice(P1) )))         )         AND         (             AdjustedClosePrice(P1) >= 10              AND               adrs >= .25              AND               AvgDayVolume(ALL_VENUES, 20, NO) >= 500000              AND              AvgDayVolume(ALL_VENUES, 60, NO) >= 500000              AND              (EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings))             AND               AdjustedClosePrice(P1) < 2000         )     )
 OPGMM_EarningsRoll_S_SK     (
         (
             premarket_volume_bo_QG1 > 0.005* AvgDayVolume(ALL_VENUES, 20, NO)
@@ -877,7 +877,7 @@ OPGMM_EarningsRoll_S_SK     (
         AND
         (
          (News_Earnings_QG1) AND AvgDayVolume(ALL_VENUES, 20, NO) > 400000 AND
-         AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25 AND AdjustedClosePrice(P1) > 10 AND
+         adrs >= 0.25 AND AdjustedClosePrice(P1) > 10 AND
          AdjustedClosePrice(P1) < 2500 AND (DaysFromIPO > 30 OR DaysFromIPO < 0 )
         )
     )
@@ -906,7 +906,7 @@ OPGMM_EarningsRoll_S_SK_NSDQ     (
              AND
              AvgDayVolume(ALL_VENUES, 20, NO) > 400000
              AND
-             AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25
+             adrs >= 0.25
              AND
              AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500
              AND (DaysFromIPO > 30 OR DaysFromIPO < 0 )
@@ -938,7 +938,7 @@ OPGMM_EarningsRoll_S_SK_NYSE     (
              AND
              AvgDayVolume(ALL_VENUES, 20, NO) > 400000
              AND
-             AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25
+             adrs >= 0.25
              AND
              AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 2500
              AND (DaysFromIPO > 30 OR DaysFromIPO < 0 )
@@ -967,7 +967,7 @@ OPGMM_EarningsRollover_S_SK 	(
 			AND
 			AvgDayVolume(ALL_VENUES,20, NO) > 250000
 			AND
-			AvgDailyRange(ALL_VENUES, 20, NO) > 0.5
+			adrs > 0.5
 			AND
 			AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 500
 			AND
@@ -1013,7 +1013,7 @@ OPGMM_InsiderTrade_L_MK 	(
 			EarningsNewsEvent(News_Current, ACBO, False, Any) AND NOT StockNews
 			(News_Current, ACBO, AnySentiment, Earnings) AND AdjustedClosePrice(P1) >= 5 AND
 			AdjustedClosePrice(P1) < 2500 AND AvgDayVolume(ALL_VENUES, 20, NO) >= 50000 AND
-			AvgDailyRange(ALL_VENUES, 20, NO) > 0.25 AND NOT IsInstrumentType
+			adrs > 0.25 AND NOT IsInstrumentType
 			(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE)
 			AND NOT IsInstrumentType(PREFERRED_STOCK)
 		)
@@ -1039,7 +1039,7 @@ OPGMM_MNACNS_S_MK 					(NOT (News_Earnings_QG1) AND NOT StockNews(News_Current,
 						(News_Current, ACBO, Source3, MNA, AnySentiment, SummaryAndDetails, '"cash and stock
 						transaction"')
 					)
-OPGMM_RatingsDowngrade_S_SK     (            (             DayBar_High(ALL_VENUES, 120, YES, '0') > 1 AND             DayBar_Volume(ALL_VENUES, 120, YES, '0') > 0.01* AvgDayVolume(ALL_VENUES, 20, NO)             AND AdjustedClosePrice(P1) - EMAStock(ALL_VENUES,             YES, MINUTES_1, PERIOD_7, CURRENT) > 0.025* AdjustedClosePrice(P1) AND             EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) < 0.25*             AdjustedClosePrice(P1) + 0.75* DayLow(ALL_VENUES, 1, CURRENT, YES)         )         AND         (               (Source3(News_Current, ACBO, AnySentiment, Downgrades) OR  Source3(News_Current, ACBO, AnySentiment, Important_Downgrades) OR  RatingsAction(News_Current, BeforeOpen, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, ''))   AND NOT (RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') OR  Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Important_Upgrades) )   AND             NOT (EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)) AND NOT Source3(News_Current, ACBO, AnySentiment, Guidance)  AND AvgDayVolume             (ALL_VENUES, 20, NO) > 400000 AND AvgDailyRange(ALL_VENUES, 20, NO) > 0.5 AND             AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 500 AND NOT  IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK) AND (             DaysFromIPO > 30 OR DaysFromIPO < 0 )         )     )
+OPGMM_RatingsDowngrade_S_SK     (            (             DayBar_High(ALL_VENUES, 120, YES, '0') > 1 AND             DayBar_Volume(ALL_VENUES, 120, YES, '0') > 0.01* AvgDayVolume(ALL_VENUES, 20, NO)             AND AdjustedClosePrice(P1) - EMAStock(ALL_VENUES,             YES, MINUTES_1, PERIOD_7, CURRENT) > 0.025* AdjustedClosePrice(P1) AND             EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) < 0.25*             AdjustedClosePrice(P1) + 0.75* DayLow(ALL_VENUES, 1, CURRENT, YES)         )         AND         (               (Source3(News_Current, ACBO, AnySentiment, Downgrades) OR  Source3(News_Current, ACBO, AnySentiment, Important_Downgrades) OR  RatingsAction(News_Current, BeforeOpen, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, ''))   AND NOT (RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') OR  Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Important_Upgrades) )   AND             NOT (EarningsNewsEvent(News_Current, ACBO, True, Any) OR Source3(News_Current, ACBO, AnySentiment, Earnings)) AND NOT Source3(News_Current, ACBO, AnySentiment, Guidance)  AND AvgDayVolume             (ALL_VENUES, 20, NO) > 400000 AND adrs > 0.5 AND             AdjustedClosePrice(P1) > 10 AND AdjustedClosePrice(P1) < 500 AND NOT  IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK) AND (             DaysFromIPO > 30 OR DaysFromIPO < 0 )         )     )
 OPGMM_RatingsDowngrade_S_SK_test (
 (DaysFromIPO > 30 OR  DaysFromIPO < 0)
 AND
@@ -1103,7 +1103,7 @@ OPGMM_RecoFavAnalysts_L_MK     (
             AND
             AdjustedClosePrice(P1) >= 1 AND AdjustedClosePrice(P1) < 500
             AND
-            AvgDailyRange(ALL_VENUES, 20, NO) > 0.25
+            adrs > 0.25
             AND
             AvgDayVolume(ALL_VENUES, 20, NO) > 200000
             AND
@@ -1180,7 +1180,7 @@ OPGMM_SecondaryPricedBC_L_SK (
 	(
 	 AvgDayVolume(ALL_VENUES, 20, NO) > 50000
 	 AND
-	 AvgDailyRange(ALL_VENUES, 20, NO) > 0.1
+	 adrs > 0.1
 	 AND
 	 AdjustedClosePrice(P1) > 10
 	 AND
@@ -1220,7 +1220,7 @@ OPGMM_SecondaryPricedv2_L_RG (
 	 )
 )
 OPGMM_SecRG_L (         ( (SyndicateType(News_Current, ACBO, Secondary) OR SyndicateType(News_Current, ACBO, SpotSecondary))       AND           MinuteLow(ALL_VENUES, 5, CURRENT, YES, FALSE) > AdjustedClosePrice(P1)        AND                     MinuteLow(ALL_VENUES, 5, CURRENT, YES, FALSE) >= 10      )              AND             (        AdjustedClosePrice(P1) > 5        AND        AdjustedClosePrice(P1) < 1000        AND        AvgDayVolume(ALL_VENUES, 20, NO) > 50000        AND        AvgDailyRange(ALL_VENUES,20,NO) > 0.1 AND ( DaysFromIPO > 30 OR  DaysFromIPO < 0 )        ) )
-OPGMM_SecSK_L (     (     (SyndicateType(News_Current, ACBO, Secondary) OR SyndicateType(News_Current, ACBO, SpotSecondary))      AND      DayBar_High(ALL_VENUES, 120, YES, '0')  > 1       AND         DayVolume(ALL_VENUES, 1, CURRENT, YES) > 0.0025* AvgDayVolume(ALL_VENUES, 20, NO)       AND        AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0       AND       EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0.4* DayLow(ALL_VENUES, 1, CURRENT, YES)   + 0.6* AdjustedClosePrice(P1)      )            AND           (      AvgDayVolume(ALL_VENUES, 20, NO) > 50000       AND        AvgDailyRange(ALL_VENUES, 20, NO) > 0.1       AND        AdjustedClosePrice(P1) > 10       AND        AdjustedClosePrice(P1) < 1000 AND ( DaysFromIPO > 30 OR  DaysFromIPO < 0 )        )   )
+OPGMM_SecSK_L (     (     (SyndicateType(News_Current, ACBO, Secondary) OR SyndicateType(News_Current, ACBO, SpotSecondary))      AND      DayBar_High(ALL_VENUES, 120, YES, '0')  > 1       AND         DayVolume(ALL_VENUES, 1, CURRENT, YES) > 0.0025* AvgDayVolume(ALL_VENUES, 20, NO)       AND        AdjustedClosePrice(P1) - EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0       AND       EMAStock(ALL_VENUES, YES, MINUTES_1, PERIOD_7, CURRENT) > 0.4* DayLow(ALL_VENUES, 1, CURRENT, YES)   + 0.6* AdjustedClosePrice(P1)      )            AND           (      AvgDayVolume(ALL_VENUES, 20, NO) > 50000       AND        adrs > 0.1       AND        AdjustedClosePrice(P1) > 10       AND        AdjustedClosePrice(P1) < 1000 AND ( DaysFromIPO > 30 OR  DaysFromIPO < 0 )        )   )
 OPGMM_SyndicateCombo_L_QG     (
         (
             (
@@ -1245,7 +1245,7 @@ OPGMM_SyndicateCombo_L_QG     (
                 AnyGeneralNewsType, AnySentiment, SummaryAndDetails, '"deal size" AND "rais*"'))
                 AND Bid(INSIDE, CURRENT, YES) > 20) OR (NOT SyndicateType(News_Current,
                 ACBO, IPO) AND SyndicateBookRunner(News_Current, ACBO, 'JPMS')) ) AND
-                ( AdjustedClosePrice(P1) > 20 AND AvgDailyRange(ALL_VENUES, 20, NO) > 0.5
+                ( AdjustedClosePrice(P1) > 20 AND adrs > 0.5
                 AND AvgDayVolume(ALL_VENUES, 20, NO) > 500000 AND AvgDayVolume
                 (ALL_VENUES, 20, NO) < 5000000 )
             )
@@ -1286,7 +1286,7 @@ OPGMM_TopReco_L_MK     (
             AND
             NOT StockNews(News_Current, ACBO, AnySentiment, Downgrade)
             AND
-            AvgDailyRange(ALL_VENUES, 20, NO) > 0.5 AND AvgDayVolume(ALL_VENUES, 20, NO) > 300000
+            adrs > 0.5 AND AvgDayVolume(ALL_VENUES, 20, NO) > 300000
         )
         AND
         (
@@ -1356,7 +1356,7 @@ OPGMR_ClearPrice_L_MK     (
           AND
           AvgDayVolume(ALL_VENUES, 20, NO) >= 100000
           AND
-          AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25
+          adrs >= 0.25
           AND
           NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
           AND
@@ -1381,7 +1381,7 @@ OPGMR_ClearPrice_S_MK     (
             AND
             AvgDayVolume(ALL_VENUES, 20, NO) >= 100000
             AND
-            AvgDailyRange(ALL_VENUES, 20, NO) >= 0.25 AND
+            adrs >= 0.25 AND
             NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
             AND
             ( DaysFromIPO > 30 OR  DaysFromIPO < 0 )
@@ -1430,7 +1430,7 @@ OPGMR_Initiation_S_ND     (
             AND
             AdjustedClosePrice(P1) >= 10  AND ClosePrice(PRIMARY, P1, NO) >= 10
             AND
-            AvgDailyRange(ALL_VENUES, 20, NO) >= .5 AND
+            adrs >= .5 AND
             AvgDayVolume(ALL_VENUES, 20, NO) < 3000000
             AND
             NOT (News_Earnings_QG1) AND NOT (News_Guidance_QG1)  AND NOT
@@ -1573,35 +1573,35 @@ PS_2_5pdv_1padv_2k_QG1         IF
                 0.025*DayVolume(ALL_VENUES, 1, CURRENT, YES),
                 0.01* AvgDayVolume (ALL_VENUES, 20, NO)
             )
-        )
+        ) min3(.01 * advs, .025 * day_volume, max_shares)
 
 QCondition_Copy IsQuoteCondition(INSIDE, 'K')
 QG_Corp_news  Source3(News_Current, ACBO, AnySentiment, Corp_News) OR Source3(News_Current, ACBO, AnySentiment, Credit_Ratings) OR Source3(News_Current, ACBO, AnySentiment, Dividends) OR Source3(News_Current, ACBO, AnySentiment, Equity_Offerings) OR Source3(News_Current, ACBO, AnySentiment, FDA_News) OR Source3(News_Current, ACBO, AnySentiment, Hedge_Fund_News) OR Source3(News_Current, ACBO, AnySentiment, Insider_Trades) OR Source3(News_Current, ACBO, AnySentiment, Mgmt_Changes) OR Source3(News_Current, ACBO, AnySentiment, MNA) OR Source3(News_Current, ACBO, AnySentiment, Rumors) OR Source3(News_Current, ACBO, AnySentiment, Spinoff_News) OR Source3(News_Current, ACBO, AnySentiment, Buybacks)
 QG2_PS_Risk_QG1             IF  (
-                  IF(AvgDailyRange(ALL_VENUES, 20, NO) < ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT),
-                     ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT), AvgDailyRange(ALL_VENUES, 20, NO)
+                  IF(adrs < atr(7),
+                     atr(7), adrs
                      )
 
                      <
 
-                  IF( DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES) <
-                      DayHigh(ALL_VENUES, 1, CURRENT, YES) -  DayLow(ALL_VENUES, 1, CURRENT, YES),
-                      DayHigh(ALL_VENUES, 1, CURRENT, YES) -  DayLow(ALL_VENUES, 1, CURRENT, YES),
-                      DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES)
+                  IF( day_range_prv(P1) <
+                      day_range,
+                      day_range,
+                      day_range_prv(P1)
                      )
 
                      ,
-                  IF( DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES) <
-                      DayHigh(ALL_VENUES, 1, CURRENT, YES) -  DayLow(ALL_VENUES, 1, CURRENT, YES),
-                      DayHigh(ALL_VENUES, 1, CURRENT, YES) -  DayLow(ALL_VENUES, 1, CURRENT, YES),
-                      DayHigh(ALL_VENUES, 1, P1, YES) -  DayLow(ALL_VENUES, 1, P1, YES)
+                  IF( day_range_prv(P1) <
+                      day_range,
+                      day_range,
+                      day_range_prv(P1)
                      ),
 
-                  IF( AvgDailyRange(ALL_VENUES, 20, NO) < ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT),
-                      ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT), AvgDailyRange(ALL_VENUES, 20, NO)
+                  IF( adrs < atr(7),
+                      atr(7), adrs
                      )
 
-            )
+            ) max4(adrs, atr(7), day_range_prv(P1), day_range)
 Range_Copy DayHigh(ALL_VENUES, 1, CURRENT, NO) - DayLow(ALL_VENUES, 1, CURRENT, NO)
 Range10_Copy AvgDailyRange(ALL_VENUES, 10, NO)
 Range100_Copy AvgDailyRange(ALL_VENUES, 100, NO)
@@ -1609,7 +1609,7 @@ Range15_Copy AvgDailyRange(ALL_VENUES, 15, NO)
 Range90_Copy AvgDailyRange(ALL_VENUES, 90, NO)
 RangeNJT5m_Copy MinuteHigh_I(PRIMARY, 5, CURRENT, NO, False) - MinuteLow_I(PRIMARY, 5, CURRENT, NO, False)
 RaRn_Copy IF((DayHigh(ALL_VENUES, 1, CURRENT, YES) - DayLow(ALL_VENUES, 1, CURRENT, YES))>(1.0 *  (DayHigh(ALL_VENUES, 1, CURRENT, YES) - DayLow(ALL_VENUES, 1, CURRENT, YES))  / (AvgDailyRange(ALL_VENUES, 100, NO) *  IF(TickTime <= 570, 1, TickTime - 570)  / 390 )),(DayHigh(ALL_VENUES, 1, CURRENT, YES) - DayLow(ALL_VENUES, 1, CURRENT, YES)),(1.0 *  (DayHigh(ALL_VENUES, 1, CURRENT, YES) - DayLow(ALL_VENUES, 1, CURRENT, YES))  / (AvgDailyRange(ALL_VENUES, 100, NO) *  IF(TickTime <= 570, 1, TickTime - 570)  / 390 )))
-Rebal06/23/2017  5000/AvgDailyRange(ALL_VENUES, 20, NO)
+Rebal06/23/2017  5000/adrs
 relative_volume_p5  RelativeVolume(P5, RelativeVolume_Average, PRIMARY)
 RelativeVol_Copy 1.0 * DayVolume(ALL_VENUES, 1, CURRENT, NO) / ( AvgDayVolume(ALL_VENUES, 10, NO) * IF(TickTime <= 570, 1, TickTime - 570)  / 390 )
 RelVol15_Copy DayVolume(ALL_VENUES, 1, CURRENT, NO) / ( AvgDayVolume(ALL_VENUES, 15, NO) * ( TickTime - 570.0)/ 390 )
@@ -1629,13 +1629,13 @@ rvol21_Copy VN21 * 100
 seconds_from_stock_open TimeFromStockOpenSeconds
 seconds_since_entry (TickTimeSeconds - PositionEntryTime)
 session_volume DayVolume(ALL_VENUES, 1, CURRENT, NO)
-ShareSize 5000/ AvgDailyRange(ALL_VENUES, 20, NO)
+ShareSize 5000/ adrs
 SMA200_Copy SMAStock(ALL_VENUES, NO, DAILY, PERIOD_200, CURRENT)
 SMA200diff_Copy Last(ALL_VENUES, CURRENT, NO) - SMAStock(ALL_VENUES, NO, DAILY, PERIOD_200, CURRENT)
 SMA20pct_Copy  (Last(ALL_VENUES, CURRENT, NO) -  SMAStock(ALL_VENUES, NO, DAILY, PERIOD_20, CURRENT)) /  SMAStock(ALL_VENUES, NO, DAILY, PERIOD_20, CURRENT)  * 100
 SMA50dif_Copy  Last(ALL_VENUES, CURRENT, NO)  -  SMAStock(ALL_VENUES, NO, DAILY, PERIOD_50, CURRENT)
 SmallerRange IF ( AvgDailyRange < DaysRange , AvgDailyRange, DaysRange )
-SmallerRange2 IF (  AvgDailyRange(ALL_VENUES, 20, NO)  < DaysRange ,  AvgDailyRange(ALL_VENUES, 20, NO) , DaysRange )
+SmallerRange2 IF (  adrs  < DaysRange ,  adrs , DaysRange )
 spy_adjusted_close_down_only close_price*spy_adjustment_down_only
 spy_adjusted_close_price RefStockNumericValue('SPY', AdjustedClosePrice(P1))
 spy_adjusted_close_up_only (close_price*spy_adjustment_up_only)
@@ -1649,13 +1649,13 @@ spy_minute_low RefStockNumericValue('SPY',MinuteLow(ALL_VENUES,1,CURRENT,YES,Tru
 spy_net_change spy_last_price-spy_close_price
 spy_percentage_change ((spy_net_change)/spy_close_price)
 stock_trading_down ( Last(ALL_VENUES, CURRENT, YES)  <  ClosePrice(PRIMARY, P1, NO) )
-StretchTRdn_Copy  ( OpenPrice(PRIMARY, CURRENT, NO) - Last(ALL_VENUES, CURRENT, NO) ) /  ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)
-StretchTRup_Copy  (Last(ALL_VENUES, CURRENT, NO) -  OpenPrice(PRIMARY, CURRENT, NO) ) /  ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)
-StretchTRup7_Copy  (Last(ALL_VENUES, CURRENT, NO) -  OpenPrice(PRIMARY, CURRENT, NO) ) /  ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)
+StretchTRdn_Copy  ( OpenPrice(PRIMARY, CURRENT, NO) - Last(ALL_VENUES, CURRENT, NO) ) /  atr(7)
+StretchTRup_Copy  (Last(ALL_VENUES, CURRENT, NO) -  OpenPrice(PRIMARY, CURRENT, NO) ) /  atr(7)
+StretchTRup7_Copy  (Last(ALL_VENUES, CURRENT, NO) -  OpenPrice(PRIMARY, CURRENT, NO) ) /  atr(7)
 sufficient_openning_print_size OpeningPrintSize(PRIMARY, P1, NO) > 1000 AND OpeningPrintSize(PRIMARY, P2, NO) > 1000 AND OpeningPrintSize(PRIMARY, P3, NO) > 1000 AND OpeningPrintSize(PRIMARY, P4, NO) > 1000 AND  DayVolume(ALL_VENUES, 1, P5, NO)
 ten_minute_high MinuteHigh(ALL_VENUES, 10, CURRENT, NO, False)
 ten_minute_low MinuteLow(ALL_VENUES, 10, CURRENT, NO, False)
-test12  AvgDailyRange(ALL_VENUES, 20, NO)
+test12  adrs
 thirty_minute_high MinuteHigh(ALL_VENUES, 30, CURRENT, NO, False)
 thirty_minute_low MinuteLow(ALL_VENUES, 30, CURRENT, NO, False)
 tick_time TickTime
@@ -1664,8 +1664,8 @@ total_volume DayVolume(ALL_VENUES, 1, CURRENT, YES)
 TrdSize_Copy  LastSize(ALL_VENUES, CURRENT, YES)
 TrdSz_Copy LastSize(ALL_VENUES, CURRENT, YES)
 TrdSzPct_Copy LastSize(ALL_VENUES, CURRENT, YES) / AvgDayVolume(ALL_VENUES, 10, NO) * 100
-TRpctLNG_Copy ( OpenPrice(PRIMARY, CURRENT, NO) -  Last(ALL_VENUES, CURRENT, NO)        ) / ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)
-TRpctSHORT_Copy ( Last(ALL_VENUES, CURRENT, NO) -  OpenPrice(PRIMARY, CURRENT, NO) ) / ATRStock(ALL_VENUES, NO, DAILY, 7, CURRENT)
+TRpctLNG_Copy ( OpenPrice(PRIMARY, CURRENT, NO) -  Last(ALL_VENUES, CURRENT, NO)        ) / atr(7)
+TRpctSHORT_Copy ( Last(ALL_VENUES, CURRENT, NO) -  OpenPrice(PRIMARY, CURRENT, NO) ) / atr(7)
 ttest_Copy  DayVolume(ALL_VENUES, 1, CURRENT, NO) /  AvgDayVolume(ALL_VENUES, 15, NO)
 twenty_five_minute_low  MinuteLow(ALL_VENUES, 25, CURRENT, NO, False)
 twenty_minute_low MinuteLow(ALL_VENUES, 20, CURRENT, NO, False)
