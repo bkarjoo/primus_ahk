@@ -78,7 +78,7 @@ compile_code_folder(code_folder)
   run_cmd("gcc " . code_folder . "\general_settings.c -E -o " . code_folder . "\general_settings.i -P")
   sleep, 200
   run_cmd("gcc " . code_folder . "\launch_rules.c -E -o " . code_folder . "\launch_rules.i -P")
-  sleep, 200
+  sleep, 1000
   run_cmd("gcc " . code_folder . "\position_sizing.c -E -o " . code_folder . "\position_sizing.i -P")
   sleep, 200
   run_cmd("gcc " . code_folder . "\stop.c -E -o " . code_folder . "\stop.i -P")
