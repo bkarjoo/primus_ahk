@@ -358,10 +358,10 @@ update_entry_helper(i_vars, bu_vars)
   checkboxes := {}
   get_order_form_check_boxes(checkboxes)
 
-  if (i_vars["black_box_scheme"] = "PlainVanilla")
-    if (i_vars["entry_trigger"] != bu_vars["entry_trigger"])
-      if (entry_update_trigger(i_vars["entry_trigger"]) = 0)
-        inform("Unable to set entry trigger.")
+
+  if (i_vars["entry_trigger"] != bu_vars["entry_trigger"])
+    if (entry_update_trigger(i_vars["entry_trigger"]) = 0)
+      inform("Unable to set entry trigger.")
 
   if(entry_vars_changed(i_vars, bu_vars)) ; does order form need to be opened
   {
