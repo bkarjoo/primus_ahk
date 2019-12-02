@@ -67,7 +67,9 @@ git_commit_bu()
   bu_path := creds["bu_path"]
   ; git -C bu_path add .
   cmd := "git -C " . bu_path . " add ."
+  run_cmd(cmd)
   cmd := "git -C " . bu_path . " commit -m updated"
+  run_cmd(cmd)
 }
 
 git_push_bu()
@@ -78,6 +80,7 @@ git_push_bu()
   bu_path := creds["bu_path"]
   ; git -C bu_path push
   cmd := "git -C " . bu_path . " push"
+  run_cmd(cmd)
 }
 
 remove_git_dir(box_name)
