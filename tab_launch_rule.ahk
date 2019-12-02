@@ -10,9 +10,9 @@ get_launch_rule_tab_vars(vars)
 set_launch_rule(rule)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  sleep, 200
+  sleep, 300
   MouseClick, Left, 217, 300
-  sleep, 200
+  sleep, 300
   Send, ^a
   sleep, 200
   Clipboard := StrReplace(rule, ".", "#")
