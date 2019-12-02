@@ -4,6 +4,7 @@
 // BUY
 // CSFB
 // LIMIT
+// STOP_LIMIT
 // OPG
 // PERIOD_7
 // PERIOD_20
@@ -104,6 +105,7 @@
 #define day_low DayLow(ALL_VENUES,1,CURRENT,NO)
 #define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
 #define day_low_ext DayLow(ALL_VENUES,1,CURRENT,YES)
+#define day_range_ext (day_high_ext - day_low_ext)
 #define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
 #define day_low_prv(x) DayLow(ALL_VENUES,1,x,NO)
 #define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
