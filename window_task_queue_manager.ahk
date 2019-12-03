@@ -1,10 +1,23 @@
 #include wait_policy.ahk
 #include logger.ahk
 
+Count(H, N)
+{
+	Pos := 0, Count := 0
+	Loop
+		If (Pos := InStr(H, N, False, Pos + 1))
+			Count++
+		else
+			break
+
+	return Count
+}
+
 word_count(str, word)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  return (count, regexReplace( str, "(" word ")", word, count ))
+  ;return (count, regexReplace( str, "(" word ")", word, count ))
+  return Count(str,word)
 }
 
 task_queue_manager_select_and_copy_all()

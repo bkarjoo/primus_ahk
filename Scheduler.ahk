@@ -118,6 +118,8 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 
   trace("backup " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   backup_compiled_files_helper(box_name, "")
+  git_commit_bu()
+  git_push_bu()
 
   launch_rules := get_local_compiled(box_name, "launch_rules")
   cycles := []
