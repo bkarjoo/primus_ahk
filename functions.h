@@ -180,6 +180,7 @@
 #define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
 #define price_delta(x) PriceDelta(ALL_VENUES, x, NO)
+#define position_delta PositionDelta(ALL_VENUES, NO)
 // formula, period 0tick else minute, top x, validity margin
 #define rank(a,b,c,d) IsInRanking(a,b,c,d)
 #define time_minute TickTime
