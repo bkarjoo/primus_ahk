@@ -1,7 +1,9 @@
 #include files.ahk
+#include logger.ahk
 
 get_risk_management_tab_vars(vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   vars["enable_black_box_risk_management_check_box"] := [15,50]
   vars["enable_black_box_risk_management_trigger_point"] := [21,58]
 }
@@ -9,6 +11,7 @@ get_risk_management_tab_vars(vars)
 
 set_maximum_order_shares(shares)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   sleep, 100
   MouseClick, Left, 217, 634
   sleep, 100
@@ -22,6 +25,7 @@ set_maximum_order_shares(shares)
 
 set_risk_management_helper(rm)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   vars := {}
   get_risk_management_tab_vars(vars)
 
@@ -32,6 +36,7 @@ set_risk_management_helper(rm)
 
 set_risk_management()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   rm := {}
   generic_code_parser("pp/risk_management.i", rm)
   set_risk_management_helper(rm)
@@ -39,6 +44,7 @@ set_risk_management()
 
 risk_management_changed(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if(i_vars["enable_black_box_risk_management"] != bu_vars["enable_black_box_risk_management"])
     return 1
   if(i_vars["maximum_order_shares"] != bu_vars["maximum_order_shares"])
@@ -48,6 +54,7 @@ risk_management_changed(i_vars, bu_vars)
 
 update_risk_management_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!risk_management_changed(i_vars, bu_vars))
     return
 
@@ -60,10 +67,11 @@ update_risk_management_helper(i_vars, bu_vars)
   set_maximum_order_shares(i_vars["maximum_order_shares"])
 }
 
-update_risk_management(acronym)
+update_risk_management(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("risk_management")
-  bu_path := build_bu_path("risk_management", acronym)
+  bu_path := build_bu_path("risk_management", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)

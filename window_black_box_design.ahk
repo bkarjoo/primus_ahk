@@ -1,8 +1,10 @@
 #include wait_policy.ahk
 #include inform.ahk
+#include logger.ahk
 
 selected_bbdesign_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("PRIMU$ - B", 5)
   if (res = 0)
     inform("selected_bbdesign_tab can't activate blackbox design")
@@ -25,6 +27,7 @@ selected_bbdesign_tab()
 
 click_and_confirm_bbd_tab(x, y, index)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("PRIMU$ - B", 5)
   if (res != 1)
     inform("Cannot activate black box design.")
@@ -33,7 +36,7 @@ click_and_confirm_bbd_tab(x, y, index)
   MouseClick, Left, %x%, %y%
   Loop, 10
   {
-    sleep, 100
+    hour_glass_sleep(200)
     if (selected_bbdesign_tab() = index)
       return 1
     send, {Tab}
@@ -43,6 +46,7 @@ click_and_confirm_bbd_tab(x, y, index)
 
 click_design_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_and_confirm_bbd_tab(26, 32, 1)
   if (res = 0)
     inform("Failed to select design tab.")
@@ -50,6 +54,7 @@ click_design_tab()
 
 click_symbols_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_and_confirm_bbd_tab(77, 32, 2)
   if (res = 0)
     inform("Failed to select symbols tab.")
@@ -57,6 +62,7 @@ click_symbols_tab()
 
 click_options_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_and_confirm_bbd_tab(123, 32, 3)
   if (res = 0)
     inform("Failed to select options tab.")
@@ -64,6 +70,7 @@ click_options_tab()
 
 click_risk_management_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_and_confirm_bbd_tab(187, 32, 4)
   if (res = 0)
     inform("Failed to select risk management tab.")
@@ -71,6 +78,7 @@ click_risk_management_tab()
 
 click_launch_rule_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_and_confirm_bbd_tab(287, 32, 5)
   if (res = 0)
     inform("Failed to select launch rule tab.")
@@ -78,6 +86,7 @@ click_launch_rule_tab()
 
 click_validate_and_close()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("PRIMU$ - B", 5)
   if (res != 1)
     inform("Cannot activate black box design.")
@@ -95,5 +104,6 @@ click_validate_and_close()
 
 finalize_build()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_validate_and_close()
 }

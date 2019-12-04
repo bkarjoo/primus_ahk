@@ -4,3 +4,7 @@ secret.csv
 jobs/
 done/
 *~
+*.c
+*.i
+image.png
+*.txt

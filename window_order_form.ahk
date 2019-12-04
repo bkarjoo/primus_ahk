@@ -1,8 +1,10 @@
 #include wait_policy.ahk
 #include inform.ahk
+#include logger.ahk
 
 click_order_form_save_button()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Black", 530, 480, 2, 1)
   if (res = 0)
     inform("click_order_form_save_button failed.")
@@ -10,6 +12,7 @@ click_order_form_save_button()
 
 set_order_form_order_type(type)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: LIMIT, STOP_LIMIT, PRIMUS_STOP, PRIMUS_AEL
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 190, 64
@@ -30,6 +33,7 @@ set_order_form_order_type(type)
 
 confirm_order_type(type)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 ; TODO implement
 ; confirms correct order type was selected
 ; in case dev changes order, or program is interrupted during execution
@@ -37,6 +41,7 @@ confirm_order_type(type)
 
 set_order_form_order_side(side)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: BUY, SELL, SHORT
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 190, 90
@@ -55,6 +60,7 @@ set_order_form_order_side(side)
 
 set_order_form_destination(dest)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: CSFB
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 374, 63
@@ -71,6 +77,7 @@ set_order_form_destination(dest)
 
 open_limit_price_expression_builder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 150, 2, 2)
   if (res = 0)
     inform("open_limit_price_expression_builder failed.")
@@ -78,6 +85,7 @@ open_limit_price_expression_builder()
 
 open_stop_price_expression_builder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 240, 2, 2)
   if (res = 0)
     inform("open_stop_price_expression_builder failed.")
@@ -85,6 +93,7 @@ open_stop_price_expression_builder()
 
 set_order_form_TIF(tif)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: SECONDS, TIF_OPENING, TIF_DAY
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 199, 307
@@ -103,6 +112,7 @@ set_order_form_TIF(tif)
 
 set_order_form_TIF2(tif)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: SECONDS, TIF_IOC, TIF_DAY
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 465, 330
@@ -121,6 +131,7 @@ set_order_form_TIF2(tif)
 
 set_order_form_TIF_seconds(seconds)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 243, 308
   sleep, 200
@@ -131,6 +142,7 @@ set_order_form_TIF_seconds(seconds)
 
 set_order_form_TIF2_seconds(seconds)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 507, 332
   sleep, 200
@@ -146,6 +158,7 @@ set_order_form_TIF2_seconds(seconds)
 
 open_trail_trigger_expression_builder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 250, 2, 2)
   if (res = 0)
     inform("open_trail_trigger_expression_builder failed.")
@@ -153,6 +166,7 @@ open_trail_trigger_expression_builder()
 
 open_trail_how_expression_builder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 330, 2, 2)
   if (res = 0)
     inform("open_trail_how_expression_builder failed.")
@@ -160,6 +174,7 @@ open_trail_how_expression_builder()
 
 open_trail_increment_expression_builder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 390, 2, 2)
   if (res = 0)
     inform("open_trail_increment_expression_builder failed.")
@@ -170,6 +185,7 @@ open_trail_increment_expression_builder()
 
 click_common_order_parameters_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 84, 121
   sleep, 500 ; TODO should be image search tab confirm
@@ -177,6 +193,7 @@ click_common_order_parameters_tab()
 
 click_primus_stop_order_tab()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 241, 121
   sleep, 500 ; TODO should be image search tab confirm
@@ -189,6 +206,7 @@ click_primus_stop_order_tab()
 
 open_ael_trigger_expression_builder()
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 160, 2, 2)
 if (res = 0)
   inform("open_ael_trigger_expression_builder failed.")
@@ -196,6 +214,7 @@ if (res = 0)
 
 open_ael_how_expression_builder()
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 200, 2, 2)
 if (res = 0)
   inform("open_ael_how_expression_builder failed.")
@@ -203,6 +222,7 @@ if (res = 0)
 
 open_ael_time_increment_expression_builder()
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 250, 2, 2)
 if (res = 0)
   inform("open_ael_time_increment_expression_builder failed.")
@@ -210,6 +230,7 @@ if (res = 0)
 
 open_ael_price_increment_expression_builder()
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 300, 2, 2)
 if (res = 0)
   inform("open_ael_price_increment_expression_builder failed.")
@@ -217,6 +238,7 @@ if (res = 0)
 
 get_order_form_check_boxes(checkboxes)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   checkboxes["aggregated_tif_check_box"] := [310, 290]
   checkboxes["calc_lmt_prc_durng_ord_plcmnt_check_box"] := [318, 343]
   checkboxes["is_proactive_check_box"] := [12, 344]

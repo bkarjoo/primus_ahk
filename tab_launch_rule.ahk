@@ -1,15 +1,18 @@
+#include logger.ahk
 ; launch_rules -----------------------------------------------------------------
 get_launch_rule_tab_vars(vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   vars["enable_black_box_launch_rule_check_box"] := [14,49]
   vars["enable_black_box_launch_rule_trigger_point"] := [21,57]
 }
 
 set_launch_rule(rule)
 {
-  sleep, 200
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  sleep, 300
   MouseClick, Left, 217, 300
-  sleep, 200
+  sleep, 300
   Send, ^a
   sleep, 200
   Clipboard := StrReplace(rule, ".", "#")
@@ -20,12 +23,14 @@ set_launch_rule(rule)
 
 change_just_the_launch_rule(lr)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_launch_rule_tab()
   set_launch_rule(lr)
 }
 
 set_launch_rules_helper(lr)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   vars := {}
   get_launch_rule_tab_vars(vars)
 
@@ -36,6 +41,7 @@ set_launch_rules_helper(lr)
 
 set_launch_rules()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   lr := {}
   generic_code_parser("pp/launch_rules.i", lr)
   set_launch_rules_helper(lr)
@@ -43,6 +49,7 @@ set_launch_rules()
 
 launch_rules_changed(i_vars, bu_vars)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 if(i_vars["enable_black_box_launch_rule"] != bu_vars["enable_black_box_launch_rule"])
   return 1
 if(i_vars["launch_rules"] != bu_vars["launch_rules"])
@@ -52,6 +59,7 @@ return 0
 
 update_launch_rules_helper(i_vars, bu_vars)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!launch_rules_changed(i_vars, bu_vars))
     return
 
@@ -64,10 +72,11 @@ update_launch_rules_helper(i_vars, bu_vars)
     set_launch_rule(i_vars["launch_rules"])
 }
 
-update_launch_rules(acronym)
+update_launch_rules(name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_path := build_i_path("launch_rules")
-  bu_path := build_bu_path("launch_rules", acronym)
+  bu_path := build_bu_path("launch_rules", name)
 
   i_vars := {}
   generic_code_parser(i_path, i_vars)
