@@ -15,9 +15,9 @@ Count(H, N)
 
 word_count(str, word)
 {
-  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  ;return (count, regexReplace( str, "(" word ")", word, count ))
-  return Count(str,word)
+  ;log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  return (count, regexReplace( str, "(" word ")", word, count ))
+  ;return Count(str,word)
 }
 
 task_queue_manager_select_and_copy_all()

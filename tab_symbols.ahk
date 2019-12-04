@@ -21,6 +21,7 @@ set_basket_helper(basket)
   click_choose_basket()
   click_basket_manager_private_tab()
   basket_manager_new_basket()
+  sleep, 1000 ; there's no way to ensure basket window is open since it doesn't have a handle
   set_basket_name(basket["basket_name"])
   set_basket_description(basket["basket_description"])
   set_check_box(basket["activate_dynamic_basket_rules"], checkboxes["activate_dynamic_basket_rules_check_box"], checkboxes["activate_dynamic_basket_rules_trigger_point"])
