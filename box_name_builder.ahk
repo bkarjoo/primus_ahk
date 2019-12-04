@@ -8,6 +8,6 @@ build_box_name(box_name, box_version) {
 
 build_box_description(launch_name, desc, basket) {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  name := launch_name . " b: " . basket . " d: " . desc
+  name := launch_name . " " . basket . " " . desc
   return name
 }
