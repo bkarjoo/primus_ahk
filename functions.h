@@ -197,6 +197,7 @@
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
 #define vwap VWAP(CURRENT, NO, VWAP, V1, ALL_VENUES)
 #define week_low(x) WeekLow(ALL_VENUES, x, CURRENT, NO)
+#define week_high(x)WeekHigh(ALL_VENUES, x, CURRENT, NO)
 
 // news
 #define mna s3_MNA
