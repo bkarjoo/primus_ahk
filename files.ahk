@@ -1,9 +1,11 @@
 #include wait_policy.ahk
 #include clipboard_paste.ahk
 #include cmd.ahk
+#include logger.ahk
 
 file_updated(c_path, i_path)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 FileGetTime, p1time, %c_path%
 FilegetTime, p2time, %i_path%
 return p1time > p2time
@@ -12,21 +14,25 @@ return p1time > p2time
 ; code_component = entry, target, stop, etc...
 build_c_path(code_component)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 return code_component . ".c"
 }
 build_i_path(code_component)
 {
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 return "pp/" code_component . ".i"
 }
-build_bu_path(code_component, acronym)
+build_bu_path(code_component, name)
 {
-return "../bu/" . acronym . "/" . code_component . "_bu.i"
+log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+return "../bu/" . name . "/" . code_component . "_bu.i"
 }
 
-updated(code_component, acronym) {
-
+updated(code_component, name)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i_file := what . ".c"
-  bu_file := "../bu/" . acronym . "/" . what . "_bu.i"
+  bu_file := "../bu/" . name . "/" . what . "_bu.i"
   FileGetTime, i_time, %i_file%
   FileGetTime, bu_time, %bu_file%
   return i_time > bu_time
@@ -34,26 +40,28 @@ updated(code_component, acronym) {
 
 confirm_file_exists(path)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   msg := "File " . path . " not found."
   if !FileExist(path)
     inform(msg)
 }
 
-backup(file_name, acronym, i_folder)
+backup(file_name, name, i_folder)
 {
-
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   source := ""
   if (i_folder = "")
-    source := acronym . "/" . file_name . ".i"
+    source := name . "/" . file_name . ".i"
   else
     source := i_folder . "/" . file_name . ".i"
-  target := "../bu/" . acronym . "/" . file_name . "_bu.i"
+  target := "../bu/" . name . "/" . file_name . "_bu.i"
 
   FileCopy, %source%, %target%, 1
 }
 
 confirm_image_search_files_exist()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   confirm_file_exists("images/checked.PNG")
   confirm_file_exists("images/design.PNG")
   confirm_file_exists("images/launch_rule.PNG")
@@ -64,6 +72,7 @@ confirm_image_search_files_exist()
 
 confirm_code_files_exist()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   confirm_file_exists("general_settings.c")
   confirm_file_exists("entry.c")
   confirm_file_exists("target.c")
@@ -77,6 +86,7 @@ confirm_code_files_exist()
 
 confirm_compiled_files_exist()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   confirm_file_exists("pp/general_settings.i")
   confirm_file_exists("pp/entry.i")
   confirm_file_exists("pp/target.i")
@@ -88,10 +98,11 @@ confirm_compiled_files_exist()
   confirm_file_exists("pp/risk_management.i")
 }
 
-confirm_requisite_file_for_update(box_acronym)
+confirm_requisite_file_for_update(box_name)
 {
-  ; ../bu/ . box_acronym .. /
-  prefix := "../bu/" . box_acronym
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  ; ../bu/ . box_name .. /
+  prefix := "../bu/" . box_name
   confirm_file_exists(prefix . "/general_settings_bu.i")
   confirm_file_exists(prefix . "/entry_bu.i")
   confirm_file_exists(prefix . "/target_bu.i")
@@ -104,12 +115,14 @@ confirm_requisite_file_for_update(box_acronym)
 
 confirm_requisite_files()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   confirm_image_search_files_exist()
   confirm_code_files_exist()
 }
 
 generic_code_parser(file_name, array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Loop
   {
     FileReadLine, Line, %file_name%, %A_Index%
@@ -152,63 +165,69 @@ generic_code_parser(file_name, array)
 }
 
 
-create_backup_folder_helper(box_acronym)
+create_backup_folder_helper(box_name)
 {
-  bu_md_cmd := "if not exist ..\bu\" . box_acronym . " md ..\bu\" . box_acronym
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  bu_md_cmd := "if not exist ..\bu\" . box_name . " md ..\bu\" . box_name
   run_cmd(bu_md_cmd)
 }
 
 create_backup_folder()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   general_settings := {}
   generic_code_parser("pp/general_settings.i", general_settings)
-  create_backup_folder_helper(general_settings["box_acronym"])
+  create_backup_folder_helper(general_settings["box_name"])
 }
 
-backup_compiled_files_helper(box_acronym, i_folder)
+backup_compiled_files_helper(box_name, i_folder)
 {
-  backup("basket", box_acronym, i_folder)
-  backup("entry", box_acronym, i_folder)
-  backup("general_settings", box_acronym, i_folder)
-  backup("launch_rules", box_acronym, i_folder)
-  backup("position_sizing", box_acronym, i_folder)
-  backup("stop", box_acronym, i_folder)
-  backup("target", box_acronym, i_folder)
-  backup("time_options", box_acronym, i_folder)
-  backup("risk_management", box_acronym, i_folder)
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  backup("basket", box_name, i_folder)
+  backup("entry", box_name, i_folder)
+  backup("general_settings", box_name, i_folder)
+  backup("launch_rules", box_name, i_folder)
+  backup("position_sizing", box_name, i_folder)
+  backup("stop", box_name, i_folder)
+  backup("target", box_name, i_folder)
+  backup("time_options", box_name, i_folder)
+  backup("risk_management", box_name, i_folder)
 }
 
 backup_compiled_files()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   gs := {}
   generic_code_parser("pp/general_settings.i", gs)
-  backup_compiled_files_helper(gs["box_acronym"], "pp")
+  backup_compiled_files_helper(gs["box_name"], "pp")
 }
 
-backup_compiled_files_if_changed(ustate, box_acronym)
+backup_compiled_files_if_changed(ustate, box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (ustate["basket_updated"])
-    backup("basket", box_acronym, "pp")
+    backup("basket", box_name, "pp")
   if (ustate["entry_updated"])
-    backup("entry", box_acronym, "pp")
+    backup("entry", box_name, "pp")
   if (ustate["launch_rules_updated"])
-    backup("launch_rules", box_acronym, "pp")
+    backup("launch_rules", box_name, "pp")
   if (ustate["position_sizing_updated"])
-    backup("position_sizing", box_acronym, "pp")
+    backup("position_sizing", box_name, "pp")
   if (ustate["stop_updated"])
-    backup("stop", box_acronym, "pp")
+    backup("stop", box_name, "pp")
   if (ustate["target_updated"])
-    backup("target", box_acronym, "pp")
+    backup("target", box_name, "pp")
   if (ustate["general_settings_updated"])
-    backup("general_settings", box_acronym, "pp")
+    backup("general_settings", box_name, "pp")
   if (ustate["time_options_updated"])
-    backup("time_options", box_acronym, "pp")
+    backup("time_options", box_name, "pp")
   if (ustate["risk_management_updated"])
-    backup("risk_management", box_acronym, "pp")
+    backup("risk_management", box_name, "pp")
 }
 
 number_of_updated_files(array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   i := 0
   if (array["basket_updated"])
     i := i + 1
@@ -231,8 +250,9 @@ number_of_updated_files(array)
   return i
 }
 
-get_code_files_update_status(box_acronym, array)
+get_code_files_update_status(box_name, array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   array["basket_updated"] := file_updated(build_c_path("basket"), build_i_path("basket"))
   array["entry_updated"] := file_updated(build_c_path("entry"), build_i_path("entry"))
   array["target_updated"] := file_updated(build_c_path("target"), build_i_path("target"))
@@ -246,6 +266,7 @@ get_code_files_update_status(box_acronym, array)
 
 read_lines(file_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   FileRead, LoadedText, %file_name%
   oText := StrSplit(LoadedText, "`n")
   ;Loop, % oText.MaxIndex()
@@ -255,6 +276,7 @@ read_lines(file_name)
 
 list_files(path)
 {
+    log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
     files =
     Loop % path . "\\*.*"
     {
@@ -265,6 +287,7 @@ list_files(path)
 
 get_top_file(path)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Loop % path . "\\*.*"
   {
     return A_LoopFileName
@@ -274,6 +297,7 @@ get_top_file(path)
 
 load_csv_dictionary(file_path, output_array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Loop, Read, %file_path%
   {
     Loop, Parse, A_LoopReadLine, CSV
@@ -287,6 +311,7 @@ load_csv_dictionary(file_path, output_array)
 ; read the csv into a key value associative array
 load_jobs(file_path, output_array)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Loop, Read, %file_path%
   {
     Loop, Parse, A_LoopReadLine, CSV
@@ -299,6 +324,7 @@ load_jobs(file_path, output_array)
 
 move_completed_job_file(file_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   source_path := "jobs\" . file_name
   dest_path := "done\" . file_name
   FileMove, %source_path%, %dest_path%, 1

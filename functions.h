@@ -1,9 +1,10 @@
-29// Preprocessor function
+// Preprocessor function
 // keep this open at all times for autocomplete
 // Autofill keywords
 // BUY
 // CSFB
 // LIMIT
+// STOP_LIMIT
 // OPG
 // PERIOD_7
 // PERIOD_20
@@ -12,7 +13,7 @@
 // SECONDS
 // SELL
 // SHORT
-// TIF_OPENING
+// Tif_OPENING
 
 #define between(x, y, z) y > x AND y < z
 #define between_(x, y, z) y >= x AND y <= z
@@ -21,12 +22,12 @@
 #define and4(a,b,c,d) a AND b AND c AND d
 #define and5(a,b,c,d,e) a AND b AND c AND d AND e
 #define and6(a,b,c,d,e,f) a AND b AND c AND d AND e AND f
-#define max2(x,y) IF(x>y,x,y)
+#define max2(x,y) if(x>y,x,y)
 #define max3(x,y,z) max2(max2(x,y),z)
 #define max4(a,b,c,d) max2(max2(a,b),max2(c,d))
 #define max5(a,b,c,d,e) max2(max4(a,b,c,d),e)
 #define max6(a,b,c,d,e,f) max2(max4(a,b,c,d),max2(e,f))
-#define min2(x,y) IF(x<y,x,y)
+#define min2(x,y) if(x<y,x,y)
 #define min3(x,y,z) min2(min2(x,y),z)
 #define min4(a,b,c,d) min2(min2(a,b),min2(c,d))
 #define min5(a,b,c,d,e) min2(min4(a,b,c,d),e)
@@ -36,6 +37,16 @@
 #define or4(a,b,c,d) (a OR b OR c OR d)
 #define or5(a,b,c,d,e) (a OR b OR c OR d OR e)
 #define or6(a,b,c,d,e,f) (a OR b OR c OR d OR e OR f)
+#define sum2(a,b) (a+b)
+#define sum3(a,b,c) (a+b+c)
+#define sum4(a,b,c,d) (a+b+c+d)
+#define sum5(a,b,c,d,e) (a+b+c+d+e)
+#define sum6(a,b,c,d,e,f) (a+b+c+d+e+f)
+#define avg2(a,b) (sum2(a,b)/2)
+#define avg3(a,b,c) (sum3(a,b,c)/3)
+#define avg4(a,b,c,d) (sum4(a,b,c,d)/4)
+#define avg5(a,b,c,d,e) (sum5(a,b,c,d,e)/5)
+#define avg6(a,b,c,d,e,f) (sum6(a,b,c,d,e,f)/6)
 #define and AND
 #define or OR
 #define not NOT
@@ -50,12 +61,16 @@
 #define ask Ask(INSIDE, CURRENT, NO)
 #define ask_pre_mkt Ask(INSIDE, CURRENT, YES)
 #define adr(x) AvgDailyRange(ALL_VENUES, x, NO)
+#define adrs adr(20)
 #define adv(x) AvgDayVolume(ALL_VENUES, x, NO)
+#define advs adv(20)
 #define atr(x) ATRStock(ALL_VENUES, NO, DAILY, x, CURRENT)
+#define atrs atr(20)
 #define atr_ext(x) ATRStock(ALL_VENUES, YES, DAILY, x, CURRENT)
 #define atr_5(x) ATRStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
 #define avg(x,y) ((x+y)/2)
 #define avg_open_size(x) AvgOpenPrintSize(x)
+#define avg_opg_vol avg_open_size(10)
 #define avg_volume_till_now(x) (AvgDayVolume(ALL_VENUES, x, NO)/390) * (TimeFromStockOpenSeconds/60)
 #define bid Bid(INSIDE, CURRENT, NO)
 #define bid_pre_mkt Bid(INSIDE, CURRENT, YES)
@@ -63,8 +78,19 @@
 #define change_from_entry PositionDelta(ALL_VENUES, NO)
 #define unadjusted_close ClosePrice(PRIMARY, P1, NO)
 #define unadjusted_close_prv(x) ClosePrice(PRIMARY, x, NO)
+
+// studies
 // takes PERIOD_7 14 20 50 100 200
 #define SMA_daily(x) SMAStock(ALL_VENUES, NO, DAILY, x, CURRENT)
+#define EMA_5(x) EMAStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
+#define EMA_1_EH(x) EMAStock(ALL_VENUES, YES, MINUTES_1, x, CURRENT)
+#define RSI_1(x) RSIStock(ALL_VENUES, NO, MINUTES_1, x, CURRENT)
+
+#define donchian_long_stop_5 DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel)
+#define donchian_long_stop_1 DonchianChannels(CURRENT, MINUTES_1, 20, NO, Donchian_LowerChannel)
+
+// day bars
+#define day_bar_open(x, y) DayBar_Open(ALL_VENUES, x, NO, y)
 #define day_bar_close(x, y) DayBar_Close(ALL_VENUES, x, YES, y)
 #define day_bar_low(x, y) DayBar_Low(ALL_VENUES, x, YES, y)
 #define day_bar_high(x, y) DayBar_High(ALL_VENUES, x, YES, y)
@@ -79,15 +105,16 @@
 #define day_low DayLow(ALL_VENUES,1,CURRENT,NO)
 #define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
 #define day_low_ext DayLow(ALL_VENUES,1,CURRENT,YES)
+#define day_range_ext (day_high_ext - day_low_ext)
 #define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
 #define day_low_prv(x) DayLow(ALL_VENUES,1,x,NO)
 #define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
 #define day_low_ext_prv(x) DayLow(ALL_VENUES,1,x,YES)
-#define day_range (DayHigh(ALL_VENUES,1,CURRENT,NO) - DayLow(ALL_VENUES,1,CURRENT,NO))
-#define day_range_ext (DayHigh(ALL_VENUES,1,CURRENT,YES)- DayLow(ALL_VENUES,1,CURRENT,YES))
+#define day_range (DayHigh(ALL_VENUES,1,CURRENT,NO) - DayLow(ALL_VENUES,1,CURRENT,NO)) 
 #define day_range_prv(x) (DayHigh(ALL_VENUES,1,x,NO) - DayLow(ALL_VENUES,1,x,NO))
 #define day_range_ext_prv(x) (DayHigh(ALL_VENUES,1,x,YES)-DayLow(ALL_VENUES,1,x,YES))
 #define day_volume DayVolume(ALL_VENUES,1,CURRENT,NO)
+#define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
 #define entries EntriesCount(HOURS, 8)
 #define entry_time_sec PositionEntryTime
 #define entry_trigs_day EntryTriggersCount(HOURS, 8)
@@ -96,20 +123,24 @@
 #define entry_trigs_hr(x) EntryTriggersCount(HOURS, x)
 #define ETF EXCHANGE_TRADED_FUND
 #define ETN EXCHANGE_TRADED_NOTE
-#define etp_prefered_exclude  NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define etp_prefered_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
+#define is_common_stock etp_prefered_exclude
 #define execution ExecutionPrice
 #define exchange(x) PrimaryExchange(x)
 #define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
 #define imbalance_sell_vol(x) ImbalanceSellVolume(x)
 #define imbalance_paired_vol ImbPair
 #define imbalance_at(x) ImbalanceAt(x)
-#define initiated  (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR  Source3(News_Current, ACBO, AnySentiment, Initiations))
+#define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
 #define instrument_type(x) IsInstrumentType(x)
 #define is_halted IsHalt
 #define is_hard_to_borrow IsHardToBorrow
 #define last Last(ALL_VENUES,CURRENT,NO)
 #define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
 #define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
+#define ipo_price IPOPrice
+#define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
 #define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
 #define minute_low(x) MinuteLow(ALL_VENUES, x, CURRENT, NO, True)
 // take minute and P1-P5
@@ -130,8 +161,15 @@
 #define minute_range_ext(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, False) - MinuteLow(ALL_VENUES, x, CURRENT, YES, False))
 #define min_range_p1_p5(x) day_range_prv(P1) > x and day_range_prv(P2) > x and day_range_prv(P3) > x and day_range_prv(P4) > x and day_range_prv(P5) > x
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
+#define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define new_high NewDayHigh(1, NO)
 #define new_low NewDayLow(1, NO)
+#define new_high_days(x) NewDayHigh(x, NO)
+#define new_low_days(x) NewDayLow(x, NO)
+#define new_high_ext NewDayHigh(1, YES)
+#define new_low_ext NewDayLow(1, YES)
+#define new_high_ext_days(x) NewDayHigh(x, YES)
+#define new_low_ext_days(x) NewDayLow(x, YES)
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
 #define open OpenPrice(PRIMARY, CURRENT, NO)
 #define open_prv(x) OpenPrice(PRIMARY, x, NO)
@@ -139,7 +177,9 @@
 #define position_count_open PositionCount(OPEN)
 #define pre_mkt_perc_chg ((day_bar_close(1, '08:00-09:27') - close)/close)
 #define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
 #define price_delta(x) PriceDelta(ALL_VENUES, x, NO)
+#define position_delta PositionDelta(ALL_VENUES, NO)
 // formula, period 0tick else minute, top x, validity margin
 #define rank(a,b,c,d) IsInRanking(a,b,c,d)
 #define time_minute TickTime
@@ -149,18 +189,32 @@
 #define time_from_open_sec TimeFromStockOpenSeconds
 #define time_from_open_minutes (TimeFromStockOpenSeconds/60)
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
+#define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
+#define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
+#define vwap VWAP(CURRENT, NO, VWAP, V1, ALL_VENUES)
+
 // news
+#define mna s3_MNA
+#define fda s3_FDA_News
+#define spinoff s3_Spinoff_News
+#define managment_change s3_Mgmt_Changes
+#define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
+#define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
+#define guidance s3_Guidance
+
 #define general_news GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType)
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
 #define source3_earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
 #define has_earnings (horizon_earnings(ACBO, True) or source3_earnings)
-#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any)  or  Source3(News_P1, ACBO, AnySentiment, Earnings))
+#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings))
 #define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
-#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True,  Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
+#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
 #define option_news Option_News
-#define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, SummaryAndDetails, x)
-#define managment_change Mgmt_Changes
+#define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
+#define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+
+
 #define s3(x) Source3(News_Current, ACBO, AnySentiment, x)
 #define s3_Form_13_D Source3(News_Current, ACBO, AnySentiment, Form_13_D)
 #define s3_Form_13_F Source3(News_Current, ACBO, AnySentiment, Form_13_F)
@@ -211,6 +265,7 @@
 #define s3_Mgmt_Changes Source3(News_Current, ACBO, AnySentiment, Mgmt_Changes)
 #define s3_Mgmt_Comments Source3(News_Current, ACBO, AnySentiment, Mgmt_Comments)
 #define s3_MNA Source3(News_Current, ACBO, AnySentiment, MNA)
+
 #define s3_Initiations Source3(News_Current, ACBO, AnySentiment, Initiations)
 #define s3_Option_News Source3(News_Current, ACBO, AnySentiment, Option_News)
 #define s3_Political_News Source3(News_Current, ACBO, AnySentiment, Political_News)
@@ -221,6 +276,7 @@
 #define s3_Short Source3(News_Current, ACBO, AnySentiment, Short)
 #define s3_Special_Dividends Source3(News_Current, ACBO, AnySentiment, Special_Dividends)
 #define s3_Spinoff_News Source3(News_Current, ACBO, AnySentiment, Spinoff_News)
+
 #define s3_Buybacks Source3(News_Current, ACBO, AnySentiment, Buybacks)
 #define s3_Stock_Splits Source3(News_Current, ACBO, AnySentiment, Stock_Splits)
 #define s3_Popular_News Source3(News_Current, ACBO, AnySentiment, Popular_News)
@@ -236,6 +292,7 @@
 // take ACBO
 #define conference_call(x) ConferenceCall(News_Current, x, Any)
 #define conference_call_mkt_hrs ConferenceCall(News_Current, MarketHours, Any)
+#define conference_call_time ConferenceCallTime(News_Current, MarketHours, EarningsCall)
 
 // briefing_news takes True or False
 #define briefing_news(x) StockNewsEvent(News_Current, ACBO, x)
@@ -249,7 +306,7 @@
 
 // functions of functions
 #define ref_stock_n(x, y) RefStockNumericValue(x, y)
-#define ref_stock_l(x, y)  RefStockLogicalValue(x, y)
+#define ref_stock_l(x, y) RefStockLogicalValue(x, y)
 #define r_adr(x, y) ref_stock_n(x, adr(y))
 #define r_briefing_news(x) ref_stock_l(x, briefing_news)
 #define r_close(x) ref_stock_n(x, close)
@@ -265,29 +322,45 @@
 #define SPY_n(x) RefStockNumericValue('SPY', x)
 #define USO_n(x) RefStockNumericValue('USO', x)
 
-#define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '08:00-09:27')
-#define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '08:00-09:27')
+#define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_range pre_mkt_high - pre_mkt_low
-#define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '08:00-09:27')
-#define pre_mkt_last day_bar_close( 1, '08:00-09:27')
-#define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '08:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '08:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '08:00-09:27'))/3
-#define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:00-20:00', P1)
-#define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:00-20:00', P1)
+#define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_last day_bar_close( 1, '04:00-09:27')
+#define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))/3
+#define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+#define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
 #define post_mkt_range (post_mkt_high - post_mkt_low)
-#define post_mkt_close DayBar_CloseP(ALL_VENUES, 1, YES, '16:00-20:00', P1)
-#define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '08:00-09:27'))-SPY_n(close))/SPY_n(close))
+#define post_mkt_close DayBar_CloseP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+#define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))-SPY_n(close))/SPY_n(close))
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
-#define spread ask - bid
+#define spy_day_high SPY_n(day_high)
+#define spy_day_low SPY_n(day_low)
+#define spy_day_range (spy_day_high - spy_day_low )
+#define spy_last SPY_n(last)
+#define spread Spread(INSIDE, NO)
 // nested ifs
 #define if IF
-#define if2(x, y, x2, y2, z) IF(x, y, IF(x2, y2, z))
-#define if3(x, y, x2, y2, x3, y3, z) IF(x, y, IF(x2, y2, IF(x3, y3, z)))
-#define if4(x, y, x2, y2, x3, y3, x4, y4, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, z))))
-#define if5(x, y, x2, y2, x3, y3, x4, y4, x5, y5, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, z)))))
-#define if6(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, IF(x6, y6, z))))))
-#define if7(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, IF(x6, y6, IF(x7, y7, z)))))))
-#define if8(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, z) IF(x, y, IF(x2, y2, IF(x3, y3, IF(x4, y4, IF(x5, y5, IF(x6, y6, IF(x7, y7, IF(x8, y8, z))))))))
+#define if2(x, y, x2, y2, z) if(x, y, if(x2, y2, z))
+#define if3(x, y, x2, y2, x3, y3, z) if(x, y, if(x2, y2, if(x3, y3, z)))
+#define if4(x, y, x2, y2, x3, y3, x4, y4, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, z))))
+#define if5(x, y, x2, y2, x3, y3, x4, y4, x5, y5, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, z)))))
+#define if6(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, z))))))
+#define if7(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, if(x7, y7, z)))))))
+#define if8(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, if(x7, y7, if(x8, y8, z))))))))
+// position sizing
+#define adr_shares (shares_per_adr/adrs)
+#define opg_size_shares (perc_open_size * avg_opg_vol)
+#define ps_opg min3(adr_shares, opg_size_shares, max_shares)
+
+
+// fail safes
+#define server_crash_fail_safe entry_trigs_sec(10) = 0
+
 // Launch Rules
+#define half_day (cd = .2011-11-25. or cd = .2012-07-03. or cd = .2012-11-23. or cd = .2012-12-24. or cd = .2013-07-03. or cd = .2013-11-29. or cd = .2013-12-24. or cd = .2014-07-03. or cd = .2014-11-28. or cd = .2014-12-24. or cd = .2014-12-25. or cd = .2015-11-27. or cd = .2015-12-24. or cd = .2016-11-25. or cd = .2017-07-03. or cd = .2017-11-24. or cd = .2018-07-03. or cd = .2018-11-23. or cd = .2018-12-24. or cd = .2019-07-03. or cd = .2015-08-24. or cd = .2016-06-30. or cd = .2017-06-29. or cd = .2018-06-29. or cd = .2019-06-28.)
+#define fed_day (cd = .2013-03-20. or cd = .2013-05-01. or cd = .2013-06-19. or cd = .2013-07-31. or cd = .2013-09-18. or cd = .2013-10-30. or cd = .2013-12-18. or cd = .2014-01-29. or cd = .2014-03-19. or cd = .2014-04-30. or cd = .2014-06-18. or cd = .2014-07-30. or cd = .2014-09-17. or cd = .2014-10-29. or cd = .2014-12-17. or cd = .2015-01-28. or cd = .2015-03-18. or cd = .2015-04-29. or cd = .2015-06-17. or cd = .2015-07-29. or cd = .2015-09-17. or cd = .2015-10-28. or cd = .2015-12-16. or cd = .2016-01-27. or cd = .2016-03-16. or cd = .2016-04-27. or cd = .2016-06-15. or cd = .2016-07-27. or cd = .2016-09-21. or cd = .2016-11-02. or cd = .2016-12-14. or cd = .2017-02-01. or cd = .2017-03-15. or cd = .2017-05-03. or cd = .2017-06-14. or cd = .2017-07-26. or cd = .2017-09-20. or cd = .2017-11-01. or cd = .2017-12-13. or cd = .2018-01-31. or cd = .2018-03-21. or cd = .2018-05-02. or cd = .2018-06-13. or cd = .2018-08-01. or cd = .2018-09-26. or cd = .2018-11-08. or cd = .2018-12-19. or cd = .2019-01-30. or cd = .2019-03-20. or cd = .2019-05-01. or cd = .2019-06-19. or cd = .2019-07-31. or cd = .2019-09-18. or cd = .2019-10-30.)
+
 #define y11 (cd >= .2011-01-01. and cd <= .2011-12-31.)
 #define y12 (cd >= .2012-01-01. and cd <= .2012-12-31.)
 #define y13 (cd >= .2013-01-01. and cd <= .2013-12-31.)
@@ -747,3 +820,6 @@
 #define os2018 os181 or os182 or os183 or os184
 #define is2019 is191 or is192 or is193 or is194
 #define os2019 os191 or os192 or os193 or os194
+
+// symbol baskets
+#define CEF_Basket AAIDX ACP ACV ADX AEF AFB AFT AGD AIF AKP AOD APF ARDC ASA ASG ATRYX AVK AWF AWP BAF BBF BBK BBN BCV BCX BDJ BDREX BFITX BFK BFO BFY BFZ BGB BGFLX BGH BGR BGT BGX BGY BHK BHV BIF BIT BKK BKN BKT BLE BLGFX BLW BME BNY BOE BQH BSD BSE BSL BST BTA BTO BTT BTZ BUI BWG BXMX BYM BZM CADEX CAF CCA CCD CCLFX CEDIX CEE CEM CEN CET CEV CGO CHI CHN CHW CHY CIF CII CIK CLM CMU CNRLX CNROX CRDTX CREDX CRF CSQ CTR CUBA CXE CXH DBL DDF DEX DFP DHF DHY DIAX DMB DMF DMO DNI DNP DPG DSE DSL DSM DSU DTF DUC EAD ECC ECF EDD EDF EDI EEA EFF EFR EFT EGF EGIF EHI EIM EMD EMF EMO ENX EOD EOI EOS EOT ERC ERH ETB ETG ETJ ETO ETV ETW ETX ETY EVF EVG EVM EVN EVT EVV EVY EXD EXG FAM FAX FCO FCREX FCT FDEU FEI FEN FEO FFA FFC FGB FIF FLC FMN FMO FMY FOF FPF FPL FRA FSD FT FTF FUND FXBY GAB GAM GBAB GCV GDL GDO GDV GER GF GFY GGM GGN GGT GGZ GHY GIM GIREX GLBFX GLO GLQ GLU GLV GMZ GNT GOF GPM GRF GRX GUT HEQ HFRO HIE HIO HIX HNW HPF HPI HPS HQH HQL HTD HTY HYB HYI HYT IAE IAF IDE IFN IGA IGD IGI IGR IHD IID IIF IIM INB INF INSI IQI IRL IRR ISD IVH JCE JDD JEQ JFR JGH JHI JHS JHY JLS JMF JMLP JMM JMT JOF JPC JPI JPS JQC JRI JRO JRS JSD JTA JTD JZCP KF KIO KMF KSM KTF KYN LCRDX LDP LENDX LEO LGI LOR LTAFX MAV MCA MCI MCN MCR MEN MFD MFL MFM MFT MFV MGF MGU MHD MHE MHF MHI MHN MIE MILC MIN MIY MMD MMT MMU MNE MNP MPA MPV MQT MQY MSD MSFDX MTT MUA MUC MUE MUH MUI MUJ MUS MVF MVT MXE MXF MYC MYD MYF MYI MYJ MYN MZA NAC NAD NAN NAZ NBB NBH NBO NBW NCA NCB NCV NCZ NDP NEA NEV NFJ NHF NHS NICHX NID NIE NIM NIQ NJV NKG NKX NMI NML NMS NMT NMY NMZ NNC NNY NOM NPN NPV NQP NRK NRO NRSZX NSL NTC NTG NTX NUM NUO NUV NUW NVG NXC NXHAX NXJ NXN NXP NXQ NXR NYV NZF OCPAX OIA OPP OWSCX OXLC PAI PCF PCI PCK PCM PCN PCQ PDI PDT PEO PFD PFL PFLEX PFN PFO PGP PGZ PHD PHK PHT PHYS PIM PKO PMF PMFLX PML PMM PMO PMX PNF PNI PPR PPT PRDEX PRIVX PSF PSLV PSOIX PTY PYN PZC QQQX RCG RCIAX RCS RFI RGT RMPLX RMT RNP RQI RREDX RVT SBI SCD SMM SOR SPE SPEYX SPXX SRF SRNTX SRRIX SRV STK SWZ SZC TDF TEI THQ THW TIPRX TLI TPZ TSI TSIFX TSLF TTP TWN TY TYG USA USQIX UTF UTG VBF VCAPX VCF VCRRX VCV VFL VFLEX VGI VGM VKI VKQ VLT VMM VMO VPV VSLAX VTA VTN VVR WEA WESFX WIA WIW XCAPX XCBFX XCLIX XDSCX XFEAX XGEIX XILSX XMSOX XNAFX XPNNX XPTFX XSICX XWAMX XWMFX ZF ZTR

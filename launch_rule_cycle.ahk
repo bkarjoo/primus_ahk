@@ -2,9 +2,11 @@
 #include inform.ahk
 #include window_launcher.ahk
 #include window_black_box_design.ahk
+#include logger.ahk
 
 create_15_day_launch_rule(year, month, half)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (month < 10)
     month := "0" . month
 
@@ -35,10 +37,18 @@ create_15_day_launch_rule(year, month, half)
   return s
 }
 
-
-break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, start_half, end_year, end_month, end_half)
+create_cycle_name(y, m, h)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  mo := m
+  if (m < 10)
+    mo := "0" . mo
+  return y . mo . "h" . h
+}
 
+break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, start_half, end_year, end_month, end_half, cycle_names)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   y := start_year
   m := start_month
   h := start_half
@@ -46,6 +56,7 @@ break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, sta
     {
       s := create_15_day_launch_rule(y,m,h)
       schedule_cycles.Push(s)
+      cycle_names.Push(create_cycle_name(y,m,h))
 
       if (y = end_year and m = end_month and h = end_half)
         break
@@ -69,59 +80,7 @@ break_down_launch_rule_into_cycles(schedule_cycles, start_year, start_month, sta
 
 cyclify_launch_rule(cycle, launch_rule)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   return "(" . cycle . ")" . " AND " . "(" . launch_rule . ")"
 
 }
-
-
-
-run_launch_rule_cycles(schedule_cycles, launch_rules)
-{
-  quick_inform("run_launch_rule_cycles: # of cycles: " . schedule_cycles.MaxIndex())
-
-  i := 1
-  j := 0
-  loop
-  {
-    if (i != j)
-    {
-      cycle_launch_rule := cyclify_launch_rule(schedule_cycles[i], launch_rules)
-      if (!WinExist("PRIMU$ - Black"))
-        launcher_click_edit_box()
-      change_just_the_launch_rule(cycle_launch_rule)
-      click_validate_and_close()
-      j := i
-    }
-
-    if (number_of_free_slots() > 1)
-    {
-      launcher_click_play()
-      succeeded := is_success()
-      quick_inform("succeeded: " . succeeded)
-      if (succeeded)
-      {
-        btq_action_press_ok()
-        Sleep, 1000
-        i := i + 1
-        if (i > schedule_cycles.MaxIndex())
-          break
-        continue
-      }
-      else
-      {
-        btq_action_press_ok()
-      }
-    }
-    wait_until_with_message(60, "waiting for free slots...")
-  }
-}
-
-;launch_rule := "(CurrentDate = #2011-09-09#)"
-;
-;schedule_cycles := []
-;break_down_launch_rule_into_cycles(schedule_cycles, 2011, 9, 2, 2012, 2, 2)
-;
-;for index, element in schedule_cycles
-;{
-;  msgbox % cyclify_launch_rule(element, launch_rule)
-;}

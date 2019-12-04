@@ -4,47 +4,63 @@
 #include window_operation_completed.ahk
 #include email.ahk
 #include window_pnl_analysis_charting.ahk
+#include logger.ahk
 
 activate_blotter()
 {
-   WinActivate, D:\Users\
-   WinWaitActive, D:\Users\
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  WinActivate, D:\Users\
+  WinWaitActive, D:\Users\
+}
+
+click_refresh()
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  activate_blotter()
+  MouseClick, Left, 186, 32
+  hour_glass_sleep(5000)
 }
 
 click_custom_blotter_tab()
 {
-   activate_blotter()
-   MouseClick, Left, 114, 85
-   hour_glass_sleep(2000)
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  activate_blotter()
+  MouseClick, Left, 114, 85
+  hour_glass_sleep(2000)
 }
 
 click_primus_blotter_tab()
 {
-   activate_blotter()
-   MouseClick, Left, 190, 85
-   hour_glass_sleep(2000)
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  activate_blotter()
+  MouseClick, Left, 190, 85
+  hour_glass_sleep(2000)
 }
 
 click_all_records()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 220, 110
 }
 
 click_live()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 270, 110
 }
 
 click_backtesting()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 325, 110
 }
 
 is_off_all_records()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseMove, 0, 0
   return image_search_simple(500, 150, "images/all_records.PNG")
@@ -52,6 +68,7 @@ is_off_all_records()
 
 is_off_live()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseMove, 0, 0
   return image_search_simple(500, 150, "images/live.PNG")
@@ -59,6 +76,7 @@ is_off_live()
 
 is_off_backtesting()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseMove, 0, 0
   return image_search_simple(500, 150, "images/backtesting.PNG")
@@ -66,6 +84,7 @@ is_off_backtesting()
 
 turn_all_records_on()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (is_off_all_records())
   {
     click_all_records()
@@ -75,6 +94,7 @@ turn_all_records_on()
 
 turn_backtesting_on()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (is_off_backtesting())
   {
     click_backtesting()
@@ -84,6 +104,7 @@ turn_backtesting_on()
 
 turn_live_on()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (is_off_live())
   {
     click_live()
@@ -93,6 +114,7 @@ turn_live_on()
 
 click_name_box()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 130, 180
   hour_glass_sleep(200)
@@ -101,6 +123,7 @@ click_name_box()
 
 click_select_all()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 50, 150
   hour_glass_sleep(2000)
@@ -108,12 +131,14 @@ click_select_all()
 
 select_all_checked()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   return !image_search_simple(100,200,"images/select_all_checkbox.PNG")
 }
 
 check_select_all()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (!select_all_checked())
   {
     click_select_all()
@@ -122,6 +147,7 @@ check_select_all()
 
 enter_box_name_filter(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   if (select_all_checked())
     click_select_all()
   hour_glass_sleep(200)
@@ -140,11 +166,13 @@ enter_box_name_filter(box_name)
 
 custom_blotter_open()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   return image_search_simple(347,216,"images/create_custom_blotter.PNG")
 }
 
 open_create_custom_blotter()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Right, 198, 202
   hour_glass_sleep(200)
@@ -154,7 +182,9 @@ open_create_custom_blotter()
 
 create_custom_blotter(box_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
+  click_refresh()
   click_primus_blotter_tab()
   enter_box_name_filter(box_name)
   hour_glass_sleep(2000)
@@ -167,6 +197,7 @@ create_custom_blotter(box_name)
 
 click_custom_blotter_name_filter_box()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 166, 191
   hour_glass_sleep(200)
@@ -174,6 +205,7 @@ click_custom_blotter_name_filter_box()
 
 click_custom_blotter_name_first_row()
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseClick, Left, 22, 212
   hour_glass_sleep(2000)
@@ -181,6 +213,7 @@ click_custom_blotter_name_first_row()
 
 select_custom_blotter(blotter_name)
 {
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   click_custom_blotter_tab()
   click_custom_blotter_name_filter_box()
@@ -197,10 +230,13 @@ select_custom_blotter(blotter_name)
 
 process_test_results(box_name)
 {
-  create_custom_blotter(box_name)
-  select_custom_blotter(box_name)
-  capture_equity_curve()
-  email_attachment(box_name, box_name, "image.png")
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  ;create_custom_blotter(box_name)
+  ;select_custom_blotter(box_name)
+  ;capture_equity_curve()
+  ;email_attachment(box_name, box_name, "image.png")
+  ; TODO delete image.png
+  email_message(box_name . " completed.", "Time to create a custom blotter!")
 }
 
 ; TODO must check if AllRecords is checked, if not check it
