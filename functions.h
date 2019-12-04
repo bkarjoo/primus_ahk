@@ -102,7 +102,9 @@
 #define day_barP_volume(x, y, z) DayBar_VolumeP(ALL_VENUES, x, YES, y, z)
 #define day_barP_range(x, y, z) (DayBar_HighP(ALL_VENUES, x, YES, y, z) - DayBar_LowP(ALL_VENUES, x, YES, y, z))
 #define day_high DayHigh(ALL_VENUES,1,CURRENT,NO)
+#define day_highest_high(x) DayHigh(ALL_VENUES ,x ,CURRENT, NO)
 #define day_low DayLow(ALL_VENUES,1,CURRENT,NO)
+#define day_lowest_low(x) DayLow(ALL_VENUES, x, CURRENT, NO)
 #define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
 #define day_low_ext DayLow(ALL_VENUES,1,CURRENT,YES)
 #define day_range_ext (day_high_ext - day_low_ext)
@@ -123,7 +125,8 @@
 #define entry_trigs_hr(x) EntryTriggersCount(HOURS, x)
 #define ETF EXCHANGE_TRADED_FUND
 #define ETN EXCHANGE_TRADED_NOTE
-#define etp_prefered_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE) AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define etp_prefered_exclude etp_exclude AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define etp_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE)
 #define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
 #define is_common_stock etp_prefered_exclude
 #define execution ExecutionPrice
@@ -192,6 +195,8 @@
 #define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
 #define vwap VWAP(CURRENT, NO, VWAP, V1, ALL_VENUES)
+#define week_low(x) WeekLow(ALL_VENUES, x, CURRENT, NO)
+#define week_high(x)WeekHigh(ALL_VENUES, x, CURRENT, NO)
 
 // news
 #define mna s3_MNA
