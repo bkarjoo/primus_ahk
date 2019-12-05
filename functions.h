@@ -1,6 +1,7 @@
-// Preprocessor function
-// keep this open at all times for autocomplete
-// Autofill keywords
+#include "launch_rules.h"
+#include "utility_functions.h"
+#include "symbol_lists.h"
+// keywords for atom autofill
 // BUY
 // CSFB
 // LIMIT
@@ -14,39 +15,10 @@
 // SELL
 // SHORT
 // Tif_OPENING
+// CEF_Basket
+// half_day
 
-#define between(x, y, z) y > x AND y < z
-#define between_(x, y, z) y >= x AND y <= z
-#define and2(a,b) a AND b
-#define and3(a,b,c) a AND b AND c
-#define and4(a,b,c,d) a AND b AND c AND d
-#define and5(a,b,c,d,e) a AND b AND c AND d AND e
-#define and6(a,b,c,d,e,f) a AND b AND c AND d AND e AND f
-#define max2(x,y) if(x>y,x,y)
-#define max3(x,y,z) max2(max2(x,y),z)
-#define max4(a,b,c,d) max2(max2(a,b),max2(c,d))
-#define max5(a,b,c,d,e) max2(max4(a,b,c,d),e)
-#define max6(a,b,c,d,e,f) max2(max4(a,b,c,d),max2(e,f))
-#define min2(x,y) if(x<y,x,y)
-#define min3(x,y,z) min2(min2(x,y),z)
-#define min4(a,b,c,d) min2(min2(a,b),min2(c,d))
-#define min5(a,b,c,d,e) min2(min4(a,b,c,d),e)
-#define min6(a,b,c,d,e,f) min2(min4(a,b,c,d),min2(e,f))
-#define or2(a,b) (a OR b)
-#define or3(a,b,c) (a OR b OR c)
-#define or4(a,b,c,d) (a OR b OR c OR d)
-#define or5(a,b,c,d,e) (a OR b OR c OR d OR e)
-#define or6(a,b,c,d,e,f) (a OR b OR c OR d OR e OR f)
-#define sum2(a,b) (a+b)
-#define sum3(a,b,c) (a+b+c)
-#define sum4(a,b,c,d) (a+b+c+d)
-#define sum5(a,b,c,d,e) (a+b+c+d+e)
-#define sum6(a,b,c,d,e,f) (a+b+c+d+e+f)
-#define avg2(a,b) (sum2(a,b)/2)
-#define avg3(a,b,c) (sum3(a,b,c)/3)
-#define avg4(a,b,c,d) (sum4(a,b,c,d)/4)
-#define avg5(a,b,c,d,e) (sum5(a,b,c,d,e)/5)
-#define avg6(a,b,c,d,e,f) (sum6(a,b,c,d,e,f)/6)
+// lower_case
 #define and AND
 #define or OR
 #define not NOT
@@ -55,41 +27,164 @@
 #define p3 P3
 #define p4 P4
 #define p5 P5
-#define close AdjustedClosePrice(P1)
-// takes P1 to P5
-#define close_prv(x) AdjustedClosePrice(x)
+
+// SAFETY
+#define server_crash_fail_safe entry_trigs_sec(10) = 0
+
+// INSTRUMENT and EXCHANGE
+#define exchange(x) PrimaryExchange(x)
+#define etp_prefered_exclude etp_exclude AND NOT IsInstrumentType(PREFERRED_STOCK)
+#define etp_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE)
+#define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
+#define is_common_stock etp_prefered_exclude
+#define ETF EXCHANGE_TRADED_FUND
+#define ETN EXCHANGE_TRADED_NOTE
+#define instrument_type(x) IsInstrumentType(x)
+#define is_halted IsHalt
+#define is_hard_to_borrow IsHardToBorrow
+#define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
+#define ipo_price IPOPrice
+#define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
+#define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
+
+// EXECUTION
+#define change_from_entry PositionDelta(ALL_VENUES, NO)
+#define entries EntriesCount(HOURS, 8)
+#define entry_time_sec PositionEntryTime
+#define entry_trigs_day EntryTriggersCount(HOURS, 8)
+#define entry_trigs_sec(x) EntryTriggersCount(SECONDS, x)
+#define entry_trigs_min(x) EntryTriggersCount(MINUTES, x)
+#define entry_trigs_hr(x) EntryTriggersCount(HOURS, x)
+#define execution ExecutionPrice
+#define position_count_open PositionCount(OPEN)
+
+// BLACKBOX
+// DATE
+// TIME
+#define time_minute TickTime
+#define time_sec TickTimeSeconds
+#define time_in_position_sec time_sec - entry_time_sec
+#define time_from_open TimeFromStockOpenSeconds // use with MINUTES
+#define time_from_open_sec TimeFromStockOpenSeconds
+#define time_from_open_minutes (TimeFromStockOpenSeconds/60)
+// IMBALANCE
+// BID
+#define bid Bid(INSIDE, CURRENT, NO)
+#define bid_pre_mkt Bid(INSIDE, CURRENT, YES)
+// ASK
 #define ask Ask(INSIDE, CURRENT, NO)
 #define ask_pre_mkt Ask(INSIDE, CURRENT, YES)
+// LAST
+#define last Last(ALL_VENUES,CURRENT,NO)
+#define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
+#define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_last day_bar_close( 1, '04:00-09:27')
+#define pre_mkt_perc_chg ((day_bar_close(1, '08:00-09:27') - close)/close)
+#define price_delta(x) PriceDelta(ALL_VENUES, x, NO)
+#define position_delta PositionDelta(ALL_VENUES, NO)
+// CLOSE
+#define close AdjustedClosePrice(P1)
+#define close_prv(x) AdjustedClosePrice(x)
+#define unadjusted_close ClosePrice(PRIMARY, P1, NO)
+#define unadjusted_close_prv(x) ClosePrice(PRIMARY, x, NO)
+#define post_mkt_close DayBar_CloseP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+// OPEN
+#define open OpenPrice(PRIMARY, CURRENT, NO)
+#define open_prv(x) OpenPrice(PRIMARY, x, NO)
+// HIGH
+#define day_high DayHigh(ALL_VENUES,1,CURRENT,NO)
+#define day_highest_high(x) DayHigh(ALL_VENUES ,x ,CURRENT, NO)
+#define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
+#define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
+#define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
+#define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
+#define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+#define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
+#define minute_high_prv(x, y) MinuteHigh(ALL_VENUES, x, y, NO, True)
+#define minute_high_I_prv(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
+#define minute_high_I_prv_dis(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
+#define minute_high_ext_dv(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, True)
+#define minute_high_ext(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, False)
+#define new_high NewDayHigh(1, NO)
+#define new_high_days(x) NewDayHigh(x, NO)
+#define new_high_ext NewDayHigh(1, YES)
+#define new_high_ext_days(x) NewDayHigh(x, YES)
+#define week_high(x) WeekHigh(ALL_VENUES, x, CURRENT, NO)
+#define new_week_high(x) NewWeekHigh(x, NO)
+// LOW
+#define day_low DayLow(ALL_VENUES,1,CURRENT,NO)
+#define day_lowest_low(x) DayLow(ALL_VENUES, x, CURRENT, NO)
+#define day_low_ext DayLow(ALL_VENUES,1,CURRENT,YES)
+#define day_low_prv(x) DayLow(ALL_VENUES,1,x,NO)
+#define day_low_ext_prv(x) DayLow(ALL_VENUES,1,x,YES)
+#define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
+#define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+#define minute_low(x) MinuteLow(ALL_VENUES, x, CURRENT, NO, True)
+#define minute_low_prv(x, y) MinuteLow(ALL_VENUES, x, y, NO, True)
+#define minute_low_I_prv(x, y) MinuteLow_I(ALL_VENUES, x, y, NO, True)
+#define minute_low_I_prv_dis(x, y) MinuteLow_I(ALL_VENUES, x, y, NO, True)
+#define minute_low_ext_dv(x) MinuteLow(ALL_VENUES, x, CURRENT, YES, True)
+#define minute_low_ext(x) MinuteLow(ALL_VENUES, x, CURRENT, YES, False)
+#define new_low NewDayLow(1, NO)
+#define new_low_days(x) NewDayLow(x, NO)
+#define new_low_ext NewDayLow(1, YES)
+#define new_low_ext_days(x) NewDayLow(x, YES)
+#define week_low(x) WeekLow(ALL_VENUES, x, CURRENT, NO)
+#define new_week_low(x) NewWeekLow(x, NO)
+// RANGE
+#define day_range (DayHigh(ALL_VENUES,1,CURRENT,NO) - DayLow(ALL_VENUES,1,CURRENT,NO))
+#define day_range_prv(x) (DayHigh(ALL_VENUES,1,x,NO) - DayLow(ALL_VENUES,1,x,NO))
+#define day_range_ext_prv(x) (DayHigh(ALL_VENUES,1,x,YES)-DayLow(ALL_VENUES,1,x,YES))
+#define day_range_ext (day_high_ext - day_low_ext)
+#define pre_mkt_range pre_mkt_high - pre_mkt_low
+#define post_mkt_range (post_mkt_high - post_mkt_low)
+#define spread Spread(INSIDE, NO)
+#define minute_range(x) (minute_high(x) - minute_low(x))
+#define minute_range_ext_dv(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, True) - MinuteLow(ALL_VENUES, x, CURRENT, YES, True))
+#define minute_range_ext(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, False) - MinuteLow(ALL_VENUES, x, CURRENT, YES, False))
+#define min_range_p1_p5(x) day_range_prv(P1) > x and day_range_prv(P2) > x and day_range_prv(P3) > x and day_range_prv(P4) > x and day_range_prv(P5) > x
+// BARS
 #define adr(x) AvgDailyRange(ALL_VENUES, x, NO)
 #define adrs adr(20)
-#define adv(x) AvgDayVolume(ALL_VENUES, x, NO)
-#define advs adv(20)
 #define atr(x) ATRStock(ALL_VENUES, NO, DAILY, x, CURRENT)
 #define atrs atr(20)
 #define atr_ext(x) ATRStock(ALL_VENUES, YES, DAILY, x, CURRENT)
 #define atr_5(x) ATRStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
-#define avg(x,y) ((x+y)/2)
+// VOLUME
+#define adv(x) AvgDayVolume(ALL_VENUES, x, NO)
+#define advs adv(20)
 #define avg_open_size(x) AvgOpenPrintSize(x)
 #define avg_opg_vol avg_open_size(10)
-#define avg_volume_till_now(x) (AvgDayVolume(ALL_VENUES, x, NO)/390) * (TimeFromStockOpenSeconds/60)
-#define bid Bid(INSIDE, CURRENT, NO)
-#define bid_pre_mkt Bid(INSIDE, CURRENT, YES)
-#define cd CurrentDate
-#define change_from_entry PositionDelta(ALL_VENUES, NO)
-#define unadjusted_close ClosePrice(PRIMARY, P1, NO)
-#define unadjusted_close_prv(x) ClosePrice(PRIMARY, x, NO)
-
-// studies
-// takes PERIOD_7 14 20 50 100 200
+#define avg_volume_till_now(x) (adv(x)/390) * (TimeFromStockOpenSeconds/60)
+#define day_volume DayVolume(ALL_VENUES,1,CURRENT,NO)
+#define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
+#define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
+#define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
+#define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
+#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
+#define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
+#define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
+#define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
+// IMBALANCES
+#define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
+#define imbalance_sell_vol(x) ImbalanceSellVolume(x)
+#define imbalance_paired_vol ImbPair
+#define imbalance_at(x) ImbalanceAt(x)
+// STUDIES
+#define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))/3
+#define higher_lows_P1_P5(x) MinuteLow_I(ALL_VENUES, x, P4, NO, True) > MinuteLow_I(ALL_VENUES, x, P5, NO, True) AND MinuteLow_I(ALL_VENUES, x, P3, NO, True) > MinuteLow_I(ALL_VENUES, x, P4, NO, True) AND MinuteLow_I(ALL_VENUES, x, P2, NO, True) > MinuteLow_I(ALL_VENUES, x, P3, NO, True) AND MinuteLow_I(ALL_VENUES, x, P1, NO, True) > MinuteLow_I(ALL_VENUES, x, P2, NO, True)
+#define lower_highs_P1_P5(x) MinuteHigh_I(ALL_VENUES, x, P4, NO, True) < MinuteHigh_I(ALL_VENUES, x, P5, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P3, NO, True) < MinuteHigh_I(ALL_VENUES, x, P4, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P2, NO, True) < MinuteHigh_I(ALL_VENUES, x, P3, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P1, NO, True) < MinuteHigh_I(ALL_VENUES, x, P2, NO, True)
+// takes PERIOD_7 PERIOD_14 PERIOD_20 PERIOD_50 PERIOD_100 PERIOD_200
 #define SMA_daily(x) SMAStock(ALL_VENUES, NO, DAILY, x, CURRENT)
 #define EMA_5(x) EMAStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
 #define EMA_1_EH(x) EMAStock(ALL_VENUES, YES, MINUTES_1, x, CURRENT)
 #define RSI_1(x) RSIStock(ALL_VENUES, NO, MINUTES_1, x, CURRENT)
-
 #define donchian_long_stop_5 DonchianChannels(CURRENT, MINUTES_5, 20, NO, Donchian_LowerChannel)
 #define donchian_long_stop_1 DonchianChannels(CURRENT, MINUTES_1, 20, NO, Donchian_LowerChannel)
-
-// day bars
+// formula, period 0tick else minute, top x, validity margin
+#define rank(a,b,c,d) IsInRanking(a,b,c,d)
+// DAY BARS
 #define day_bar_open(x, y) DayBar_Open(ALL_VENUES, x, NO, y)
 #define day_bar_close(x, y) DayBar_Close(ALL_VENUES, x, YES, y)
 #define day_bar_low(x, y) DayBar_Low(ALL_VENUES, x, YES, y)
@@ -101,104 +196,43 @@
 #define day_barP_high(x, y, z) DayBar_HighP(ALL_VENUES, x, YES, y, z)
 #define day_barP_volume(x, y, z) DayBar_VolumeP(ALL_VENUES, x, YES, y, z)
 #define day_barP_range(x, y, z) (DayBar_HighP(ALL_VENUES, x, YES, y, z) - DayBar_LowP(ALL_VENUES, x, YES, y, z))
-#define day_high DayHigh(ALL_VENUES,1,CURRENT,NO)
-#define day_highest_high(x) DayHigh(ALL_VENUES ,x ,CURRENT, NO)
-#define day_low DayLow(ALL_VENUES,1,CURRENT,NO)
-#define day_lowest_low(x) DayLow(ALL_VENUES, x, CURRENT, NO)
-#define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
-#define day_low_ext DayLow(ALL_VENUES,1,CURRENT,YES)
-#define day_range_ext (day_high_ext - day_low_ext)
-#define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
-#define day_low_prv(x) DayLow(ALL_VENUES,1,x,NO)
-#define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
-#define day_low_ext_prv(x) DayLow(ALL_VENUES,1,x,YES)
-#define day_range (DayHigh(ALL_VENUES,1,CURRENT,NO) - DayLow(ALL_VENUES,1,CURRENT,NO)) 
-#define day_range_prv(x) (DayHigh(ALL_VENUES,1,x,NO) - DayLow(ALL_VENUES,1,x,NO))
-#define day_range_ext_prv(x) (DayHigh(ALL_VENUES,1,x,YES)-DayLow(ALL_VENUES,1,x,YES))
-#define day_volume DayVolume(ALL_VENUES,1,CURRENT,NO)
-#define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
-#define entries EntriesCount(HOURS, 8)
-#define entry_time_sec PositionEntryTime
-#define entry_trigs_day EntryTriggersCount(HOURS, 8)
-#define entry_trigs_sec(x) EntryTriggersCount(SECONDS, x)
-#define entry_trigs_min(x) EntryTriggersCount(MINUTES, x)
-#define entry_trigs_hr(x) EntryTriggersCount(HOURS, x)
-#define ETF EXCHANGE_TRADED_FUND
-#define ETN EXCHANGE_TRADED_NOTE
-#define etp_prefered_exclude etp_exclude AND NOT IsInstrumentType(PREFERRED_STOCK)
-#define etp_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE)
-#define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
-#define is_common_stock etp_prefered_exclude
-#define execution ExecutionPrice
-#define exchange(x) PrimaryExchange(x)
-#define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
-#define imbalance_sell_vol(x) ImbalanceSellVolume(x)
-#define imbalance_paired_vol ImbPair
-#define imbalance_at(x) ImbalanceAt(x)
-#define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
-#define instrument_type(x) IsInstrumentType(x)
-#define is_halted IsHalt
-#define is_hard_to_borrow IsHardToBorrow
-#define last Last(ALL_VENUES,CURRENT,NO)
-#define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
-#define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
-#define ipo_price IPOPrice
-#define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
-#define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
-#define minute_low(x) MinuteLow(ALL_VENUES, x, CURRENT, NO, True)
-// take minute and P1-P5
-#define minute_high_prv(x, y) MinuteHigh(ALL_VENUES, x, y, NO, True)
-#define minute_low_prv(x, y) MinuteLow(ALL_VENUES, x, y, NO, True)
-#define minute_range(x) (minute_high(x) - minute_low(x))
-#define minute_high_I_prv(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
-#define minute_low_I_prv(x, y) MinuteLow_I(ALL_VENUES, x, y, NO, True)
-#define minute_high_I_prv_dis(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
-#define minute_low_I_prv_dis(x, y) MinuteLow_I(ALL_VENUES, x, y, NO, True)
-#define higher_lows_P1_P5(x) MinuteLow_I(ALL_VENUES, x, P4, NO, True) > MinuteLow_I(ALL_VENUES, x, P5, NO, True) AND MinuteLow_I(ALL_VENUES, x, P3, NO, True) > MinuteLow_I(ALL_VENUES, x, P4, NO, True) AND MinuteLow_I(ALL_VENUES, x, P2, NO, True) > MinuteLow_I(ALL_VENUES, x, P3, NO, True) AND MinuteLow_I(ALL_VENUES, x, P1, NO, True) > MinuteLow_I(ALL_VENUES, x, P2, NO, True)
-#define lower_highs_P1_P5(x) MinuteHigh_I(ALL_VENUES, x, P4, NO, True) < MinuteHigh_I(ALL_VENUES, x, P5, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P3, NO, True) < MinuteHigh_I(ALL_VENUES, x, P4, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P2, NO, True) < MinuteHigh_I(ALL_VENUES, x, P3, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P1, NO, True) < MinuteHigh_I(ALL_VENUES, x, P2, NO, True)
-#define minute_high_ext_dv(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, True)
-#define minute_low_ext_dv(x) MinuteLow(ALL_VENUES, x, CURRENT, YES, True)
-#define minute_range_ext_dv(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, True) - MinuteLow(ALL_VENUES, x, CURRENT, YES, True))
-#define minute_high_ext(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, False)
-#define minute_low_ext(x) MinuteLow(ALL_VENUES, x, CURRENT, YES, False)
-#define minute_range_ext(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, False) - MinuteLow(ALL_VENUES, x, CURRENT, YES, False))
-#define min_range_p1_p5(x) day_range_prv(P1) > x and day_range_prv(P2) > x and day_range_prv(P3) > x and day_range_prv(P4) > x and day_range_prv(P5) > x
-#define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
-#define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
-#define new_high NewDayHigh(1, NO)
-#define new_low NewDayLow(1, NO)
-#define new_high_days(x) NewDayHigh(x, NO)
-#define new_low_days(x) NewDayLow(x, NO)
-#define new_high_ext NewDayHigh(1, YES)
-#define new_low_ext NewDayLow(1, YES)
-#define new_high_ext_days(x) NewDayHigh(x, YES)
-#define new_low_ext_days(x) NewDayLow(x, YES)
-#define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
-#define open OpenPrice(PRIMARY, CURRENT, NO)
-#define open_prv(x) OpenPrice(PRIMARY, x, NO)
-#define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
-#define position_count_open PositionCount(OPEN)
-#define pre_mkt_perc_chg ((day_bar_close(1, '08:00-09:27') - close)/close)
-#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
-#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
-#define price_delta(x) PriceDelta(ALL_VENUES, x, NO)
-#define position_delta PositionDelta(ALL_VENUES, NO)
-// formula, period 0tick else minute, top x, validity margin
-#define rank(a,b,c,d) IsInRanking(a,b,c,d)
-#define time_minute TickTime
-#define time_sec TickTimeSeconds
-#define time_in_position_sec time_sec - entry_time_sec
-#define time_from_open TimeFromStockOpenSeconds // use with MINUTES
-#define time_from_open_sec TimeFromStockOpenSeconds
-#define time_from_open_minutes (TimeFromStockOpenSeconds/60)
-#define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
-#define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
-#define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
 #define vwap VWAP(CURRENT, NO, VWAP, V1, ALL_VENUES)
-#define week_low(x) WeekLow(ALL_VENUES, x, CURRENT, NO)
-#define week_high(x)WeekHigh(ALL_VENUES, x, CURRENT, NO)
 
-// news
+// RefStock
+#define ref_stock_n(x, y) RefStockNumericValue(x, y)
+#define ref_stock_l(x, y) RefStockLogicalValue(x, y)
+#define r_adr(x, y) ref_stock_n(x, adr(y))
+#define r_briefing_news(x) ref_stock_l(x, briefing_news)
+#define r_close(x) ref_stock_n(x, close)
+#define r_fly_news(x) ref_stock_l(x, fly_news)
+#define r_has_news(x) (r_source3_news(x) or r_fly_news(x) or r_briefing_news(x))
+#define r_has_no_news(x) (NOT r_has_news(x))
+#define r_is_halted(x) ref_stock_l(x, is_halted)
+#define r_is_hard_to_borrow(x) ref_stock_l(x, is_hard_to_borrow)
+#define r_last(x) ref_stock_n(x, last)
+#define r_open(x) ref_stock_n(x, open)
+#define r_pre_mkt_price(x) ref_stock_n(x, pre_mkt_price)
+#define r_source3_news(x) ref_stock_l(x, source3_news)
+// REF SPY
+#define SPY_n(x) RefStockNumericValue('SPY', x)
+#define USO_n(x) RefStockNumericValue('USO', x)
+#define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))-SPY_n(close))/SPY_n(close))
+#define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
+#define spy_day_high SPY_n(day_high)
+#define spy_day_low SPY_n(day_low)
+#define spy_day_range (spy_day_high - spy_day_low )
+#define spy_last SPY_n(last)
+
+
+
+
+// SIZING
+#define adr_shares (shares_per_adr/adrs)
+#define opg_size_shares (perc_open_size * avg_opg_vol)
+#define ps_opg min3(adr_shares, opg_size_shares, max_shares)
+
+
+// NEWS
 #define mna s3_MNA
 #define fda s3_FDA_News
 #define spinoff s3_Spinoff_News
@@ -206,7 +240,7 @@
 #define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
 #define guidance s3_Guidance
-
+#define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
 #define general_news GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType)
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
@@ -304,527 +338,7 @@
 #define source3_news Source3(News_Current, ACBO, AnySentiment, AnyNewsType)
 // takes ACBO ...
 #define fly_news(x) StockNews(News_Current, x, AnySentiment, AnyNewsType)
-#define has_news (source3_news or fly_news or briefing_news)
+#define has_news (source3_news or fly_news(ACBO) or briefing_news(True))
 #define has_no_news (not general_news and briefing_news(False) and horizon_earnings(ACBO, False) and not trade_news(ACBO) and not fly_news(ACBO) and not conference_call(ACBO))
 // trade_news was discontinued OCT 2018, so just use for back testing
 #define trade_news(x) TradeNews(News_Current, x, AnySentiment, AnyNewsType)
-
-// functions of functions
-#define ref_stock_n(x, y) RefStockNumericValue(x, y)
-#define ref_stock_l(x, y) RefStockLogicalValue(x, y)
-#define r_adr(x, y) ref_stock_n(x, adr(y))
-#define r_briefing_news(x) ref_stock_l(x, briefing_news)
-#define r_close(x) ref_stock_n(x, close)
-#define r_fly_news(x) ref_stock_l(x, fly_news)
-#define r_has_news(x) (r_source3_news(x) or r_fly_news(x) or r_briefing_news(x))
-#define r_has_no_news(x) (NOT r_has_news(x))
-#define r_is_halted(x) ref_stock_l(x, is_halted)
-#define r_is_hard_to_borrow(x) ref_stock_l(x, is_hard_to_borrow)
-#define r_last(x) ref_stock_n(x, last)
-#define r_open(x) ref_stock_n(x, open)
-#define r_pre_mkt_price(x) ref_stock_n(x, pre_mkt_price)
-#define r_source3_news(x) ref_stock_l(x, source3_news)
-#define SPY_n(x) RefStockNumericValue('SPY', x)
-#define USO_n(x) RefStockNumericValue('USO', x)
-
-#define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
-#define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
-#define pre_mkt_range pre_mkt_high - pre_mkt_low
-#define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27')
-#define pre_mkt_last day_bar_close( 1, '04:00-09:27')
-#define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))/3
-#define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
-#define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
-#define post_mkt_range (post_mkt_high - post_mkt_low)
-#define post_mkt_close DayBar_CloseP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
-#define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))-SPY_n(close))/SPY_n(close))
-#define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
-#define spy_day_high SPY_n(day_high)
-#define spy_day_low SPY_n(day_low)
-#define spy_day_range (spy_day_high - spy_day_low )
-#define spy_last SPY_n(last)
-#define spread Spread(INSIDE, NO)
-// nested ifs
-#define if IF
-#define if2(x, y, x2, y2, z) if(x, y, if(x2, y2, z))
-#define if3(x, y, x2, y2, x3, y3, z) if(x, y, if(x2, y2, if(x3, y3, z)))
-#define if4(x, y, x2, y2, x3, y3, x4, y4, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, z))))
-#define if5(x, y, x2, y2, x3, y3, x4, y4, x5, y5, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, z)))))
-#define if6(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, z))))))
-#define if7(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, if(x7, y7, z)))))))
-#define if8(x, y, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8, z) if(x, y, if(x2, y2, if(x3, y3, if(x4, y4, if(x5, y5, if(x6, y6, if(x7, y7, if(x8, y8, z))))))))
-// position sizing
-#define adr_shares (shares_per_adr/adrs)
-#define opg_size_shares (perc_open_size * avg_opg_vol)
-#define ps_opg min3(adr_shares, opg_size_shares, max_shares)
-
-
-// fail safes
-#define server_crash_fail_safe entry_trigs_sec(10) = 0
-
-// Launch Rules
-#define half_day (cd = .2011-11-25. or cd = .2012-07-03. or cd = .2012-11-23. or cd = .2012-12-24. or cd = .2013-07-03. or cd = .2013-11-29. or cd = .2013-12-24. or cd = .2014-07-03. or cd = .2014-11-28. or cd = .2014-12-24. or cd = .2014-12-25. or cd = .2015-11-27. or cd = .2015-12-24. or cd = .2016-11-25. or cd = .2017-07-03. or cd = .2017-11-24. or cd = .2018-07-03. or cd = .2018-11-23. or cd = .2018-12-24. or cd = .2019-07-03. or cd = .2015-08-24. or cd = .2016-06-30. or cd = .2017-06-29. or cd = .2018-06-29. or cd = .2019-06-28.)
-#define fed_day (cd = .2013-03-20. or cd = .2013-05-01. or cd = .2013-06-19. or cd = .2013-07-31. or cd = .2013-09-18. or cd = .2013-10-30. or cd = .2013-12-18. or cd = .2014-01-29. or cd = .2014-03-19. or cd = .2014-04-30. or cd = .2014-06-18. or cd = .2014-07-30. or cd = .2014-09-17. or cd = .2014-10-29. or cd = .2014-12-17. or cd = .2015-01-28. or cd = .2015-03-18. or cd = .2015-04-29. or cd = .2015-06-17. or cd = .2015-07-29. or cd = .2015-09-17. or cd = .2015-10-28. or cd = .2015-12-16. or cd = .2016-01-27. or cd = .2016-03-16. or cd = .2016-04-27. or cd = .2016-06-15. or cd = .2016-07-27. or cd = .2016-09-21. or cd = .2016-11-02. or cd = .2016-12-14. or cd = .2017-02-01. or cd = .2017-03-15. or cd = .2017-05-03. or cd = .2017-06-14. or cd = .2017-07-26. or cd = .2017-09-20. or cd = .2017-11-01. or cd = .2017-12-13. or cd = .2018-01-31. or cd = .2018-03-21. or cd = .2018-05-02. or cd = .2018-06-13. or cd = .2018-08-01. or cd = .2018-09-26. or cd = .2018-11-08. or cd = .2018-12-19. or cd = .2019-01-30. or cd = .2019-03-20. or cd = .2019-05-01. or cd = .2019-06-19. or cd = .2019-07-31. or cd = .2019-09-18. or cd = .2019-10-30.)
-
-#define y11 (cd >= .2011-01-01. and cd <= .2011-12-31.)
-#define y12 (cd >= .2012-01-01. and cd <= .2012-12-31.)
-#define y13 (cd >= .2013-01-01. and cd <= .2013-12-31.)
-#define y14 (cd >= .2014-01-01. and cd <= .2014-12-31.)
-#define y15 (cd >= .2015-01-01. and cd <= .2015-12-31.)
-#define y16 (cd >= .2016-01-01. and cd <= .2016-12-31.)
-#define y17 (cd >= .2017-01-01. and cd <= .2017-12-31.)
-#define y18 (cd >= .2018-01-01. and cd <= .2018-12-31.)
-
-#define m1101 (cd >= .2011-01-01. and cd <= .2011-01-31.)
-#define m1102 (cd >= .2011-02-01. and cd <= .2011-02-28.)
-#define m1103 (cd >= .2011-03-01. and cd <= .2011-03-31.)
-#define m1104 (cd >= .2011-04-01. and cd <= .2011-04-30.)
-#define m1105 (cd >= .2011-05-01. and cd <= .2011-05-31.)
-#define m1106 (cd >= .2011-06-01. and cd <= .2011-06-30.)
-#define m1107 (cd >= .2011-07-01. and cd <= .2011-07-31.)
-#define m1108 (cd >= .2011-08-01. and cd <= .2011-08-31.)
-#define m1109 (cd >= .2011-09-01. and cd <= .2011-09-30.)
-#define m1110 (cd >= .2011-10-01. and cd <= .2011-10-31.)
-#define m1111 (cd >= .2011-11-01. and cd <= .2011-11-30.)
-#define m1112 (cd >= .2011-12-01. and cd <= .2011-12-31.)
-
-#define m1201 (cd >= .2012-01-01. and cd <= .2012-01-31.)
-#define m1202 (cd >= .2012-02-01. and cd <= .2012-02-29.)
-#define m1203 (cd >= .2012-03-01. and cd <= .2012-03-31.)
-#define m1204 (cd >= .2012-04-01. and cd <= .2012-04-30.)
-#define m1205 (cd >= .2012-05-01. and cd <= .2012-05-31.)
-#define m1206 (cd >= .2012-06-01. and cd <= .2012-06-30.)
-#define m1207 (cd >= .2012-07-01. and cd <= .2012-07-31.)
-#define m1208 (cd >= .2012-08-01. and cd <= .2012-08-31.)
-#define m1209 (cd >= .2012-09-01. and cd <= .2012-09-30.)
-#define m1210 (cd >= .2012-10-01. and cd <= .2012-10-31.)
-#define m1211 (cd >= .2012-11-01. and cd <= .2012-11-30.)
-#define m1212 (cd >= .2012-12-01. and cd <= .2012-12-31.)
-
-#define m1301 (cd >= .2013-01-01. and cd <= .2013-01-31.)
-#define m1302 (cd >= .2013-02-01. and cd <= .2013-02-28.)
-#define m1303 (cd >= .2013-03-01. and cd <= .2013-03-31.)
-#define m1304 (cd >= .2013-04-01. and cd <= .2013-04-30.)
-#define m1305 (cd >= .2013-05-01. and cd <= .2013-05-31.)
-#define m1306 (cd >= .2013-06-01. and cd <= .2013-06-30.)
-#define m1307 (cd >= .2013-07-01. and cd <= .2013-07-31.)
-#define m1308 (cd >= .2013-08-01. and cd <= .2013-08-31.)
-#define m1309 (cd >= .2013-09-01. and cd <= .2013-09-30.)
-#define m1310 (cd >= .2013-10-01. and cd <= .2013-10-31.)
-#define m1311 (cd >= .2013-11-01. and cd <= .2013-11-30.)
-#define m1312 (cd >= .2013-12-01. and cd <= .2013-12-31.)
-
-#define m1401 (cd >= .2014-01-01. and cd <= .2014-01-31.)
-#define m1402 (cd >= .2014-02-01. and cd <= .2014-02-28.)
-#define m1403 (cd >= .2014-03-01. and cd <= .2014-03-31.)
-#define m1404 (cd >= .2014-04-01. and cd <= .2014-04-30.)
-#define m1405 (cd >= .2014-05-01. and cd <= .2014-05-31.)
-#define m1406 (cd >= .2014-06-01. and cd <= .2014-06-30.)
-#define m1407 (cd >= .2014-07-01. and cd <= .2014-07-31.)
-#define m1408 (cd >= .2014-08-01. and cd <= .2014-08-31.)
-#define m1409 (cd >= .2014-09-01. and cd <= .2014-09-30.)
-#define m1410 (cd >= .2014-10-01. and cd <= .2014-10-31.)
-#define m1411 (cd >= .2014-11-01. and cd <= .2014-11-30.)
-#define m1412 (cd >= .2014-12-01. and cd <= .2014-12-31.)
-
-#define m1501 (cd >= .2015-01-01. and cd <= .2015-01-31.)
-#define m1502 (cd >= .2015-02-01. and cd <= .2015-02-28.)
-#define m1503 (cd >= .2015-03-01. and cd <= .2015-03-31.)
-#define m1504 (cd >= .2015-04-01. and cd <= .2015-04-30.)
-#define m1505 (cd >= .2015-05-01. and cd <= .2015-05-31.)
-#define m1506 (cd >= .2015-06-01. and cd <= .2015-06-30.)
-#define m1507 (cd >= .2015-07-01. and cd <= .2015-07-31.)
-#define m1508 (cd >= .2015-08-01. and cd <= .2015-08-31.)
-#define m1509 (cd >= .2015-09-01. and cd <= .2015-09-30.)
-#define m1510 (cd >= .2015-10-01. and cd <= .2015-10-31.)
-#define m1511 (cd >= .2015-11-01. and cd <= .2015-11-30.)
-#define m1512 (cd >= .2015-12-01. and cd <= .2015-12-31.)
-
-#define m1601 (cd >= .2016-01-01. and cd <= .2016-01-31.)
-#define m1602 (cd >= .2016-02-01. and cd <= .2016-02-29.)
-#define m1603 (cd >= .2016-03-01. and cd <= .2016-03-31.)
-#define m1604 (cd >= .2016-04-01. and cd <= .2016-04-30.)
-#define m1605 (cd >= .2016-05-01. and cd <= .2016-05-31.)
-#define m1606 (cd >= .2016-06-01. and cd <= .2016-06-30.)
-#define m1607 (cd >= .2016-07-01. and cd <= .2016-07-31.)
-#define m1608 (cd >= .2016-08-01. and cd <= .2016-08-31.)
-#define m1609 (cd >= .2016-09-01. and cd <= .2016-09-30.)
-#define m1610 (cd >= .2016-10-01. and cd <= .2016-10-31.)
-#define m1611 (cd >= .2016-11-01. and cd <= .2016-11-30.)
-#define m1612 (cd >= .2016-12-01. and cd <= .2016-12-31.)
-
-#define m1701 (cd >= .2017-01-01. and cd <= .2017-01-31.)
-#define m1702 (cd >= .2017-02-01. and cd <= .2017-02-28.)
-#define m1703 (cd >= .2017-03-01. and cd <= .2017-03-31.)
-#define m1704 (cd >= .2017-04-01. and cd <= .2017-04-30.)
-#define m1705 (cd >= .2017-05-01. and cd <= .2017-05-31.)
-#define m1706 (cd >= .2017-06-01. and cd <= .2017-06-30.)
-#define m1707 (cd >= .2017-07-01. and cd <= .2017-07-31.)
-#define m1708 (cd >= .2017-08-01. and cd <= .2017-08-31.)
-#define m1709 (cd >= .2017-09-01. and cd <= .2017-09-30.)
-#define m1710 (cd >= .2017-10-01. and cd <= .2017-10-31.)
-#define m1711 (cd >= .2017-11-01. and cd <= .2017-11-30.)
-#define m1712 (cd >= .2017-12-01. and cd <= .2017-12-31.)
-
-#define m1801 (cd >= .2018-01-01. and cd <= .2018-01-31.)
-#define m1802 (cd >= .2018-02-01. and cd <= .2018-02-28.)
-#define m1803 (cd >= .2018-03-01. and cd <= .2018-03-31.)
-#define m1804 (cd >= .2018-04-01. and cd <= .2018-04-30.)
-#define m1805 (cd >= .2018-05-01. and cd <= .2018-05-31.)
-#define m1806 (cd >= .2018-06-01. and cd <= .2018-06-30.)
-#define m1807 (cd >= .2018-07-01. and cd <= .2018-07-31.)
-#define m1808 (cd >= .2018-08-01. and cd <= .2018-08-31.)
-#define m1809 (cd >= .2018-09-01. and cd <= .2018-09-30.)
-#define m1810 (cd >= .2018-10-01. and cd <= .2018-10-31.)
-#define m1811 (cd >= .2018-11-01. and cd <= .2018-11-30.)
-#define m1812 (cd >= .2018-12-01. and cd <= .2018-12-31.)
-
-#define m1901 (cd >= .2019-01-01. and cd <= .2019-01-31.)
-#define m1902 (cd >= .2019-02-01. and cd <= .2019-02-28.)
-#define m1903 (cd >= .2019-03-01. and cd <= .2019-03-31.)
-#define m1904 (cd >= .2019-04-01. and cd <= .2019-04-30.)
-#define m1905 (cd >= .2019-05-01. and cd <= .2019-05-31.)
-#define m1906 (cd >= .2019-06-01. and cd <= .2019-06-30.)
-#define m1907 (cd >= .2019-07-01. and cd <= .2019-07-31.)
-#define m1908 (cd >= .2019-08-01. and cd <= .2019-08-31.)
-#define m1909 (cd >= .2019-09-01. and cd <= .2019-09-30.)
-#define m1910 (cd >= .2019-10-01. and cd <= .2019-10-31.)
-#define m1911 (cd >= .2019-11-01. and cd <= .2019-11-30.)
-#define m1912 (cd >= .2019-12-01. and cd <= .2019-12-31.)
-
-#define m1101a (cd >= .2011-01-01. and cd <= .2011-01-14.)
-#define m1102a (cd >= .2011-02-01. and cd <= .2011-02-14.)
-#define m1103a (cd >= .2011-03-01. and cd <= .2011-03-14.)
-#define m1104a (cd >= .2011-04-01. and cd <= .2011-04-14.)
-#define m1105a (cd >= .2011-05-01. and cd <= .2011-05-14.)
-#define m1106a (cd >= .2011-06-01. and cd <= .2011-06-14.)
-#define m1107a (cd >= .2011-07-01. and cd <= .2011-07-14.)
-#define m1108a (cd >= .2011-08-01. and cd <= .2011-08-14.)
-#define m1109a (cd >= .2011-09-01. and cd <= .2011-09-14.)
-#define m1110a (cd >= .2011-10-01. and cd <= .2011-10-14.)
-#define m1111a (cd >= .2011-11-01. and cd <= .2011-11-14.)
-#define m1112a (cd >= .2011-12-01. and cd <= .2011-12-14.)
-
-#define m1201a (cd >= .2012-01-01. and cd <= .2012-01-14.)
-#define m1202a (cd >= .2012-02-01. and cd <= .2012-02-14.)
-#define m1203a (cd >= .2012-03-01. and cd <= .2012-03-14.)
-#define m1204a (cd >= .2012-04-01. and cd <= .2012-04-14.)
-#define m1205a (cd >= .2012-05-01. and cd <= .2012-05-14.)
-#define m1206a (cd >= .2012-06-01. and cd <= .2012-06-14.)
-#define m1207a (cd >= .2012-07-01. and cd <= .2012-07-14.)
-#define m1208a (cd >= .2012-08-01. and cd <= .2012-08-14.)
-#define m1209a (cd >= .2012-09-01. and cd <= .2012-09-14.)
-#define m1210a (cd >= .2012-10-01. and cd <= .2012-10-14.)
-#define m1211a (cd >= .2012-11-01. and cd <= .2012-11-14.)
-#define m1212a (cd >= .2012-12-01. and cd <= .2012-12-14.)
-
-#define m1301a (cd >= .2013-01-01. and cd <= .2013-01-14.)
-#define m1302a (cd >= .2013-02-01. and cd <= .2013-02-14.)
-#define m1303a (cd >= .2013-03-01. and cd <= .2013-03-14.)
-#define m1304a (cd >= .2013-04-01. and cd <= .2013-04-14.)
-#define m1305a (cd >= .2013-05-01. and cd <= .2013-05-14.)
-#define m1306a (cd >= .2013-06-01. and cd <= .2013-06-14.)
-#define m1307a (cd >= .2013-07-01. and cd <= .2013-07-14.)
-#define m1308a (cd >= .2013-08-01. and cd <= .2013-08-14.)
-#define m1309a (cd >= .2013-09-01. and cd <= .2013-09-14.)
-#define m1310a (cd >= .2013-10-01. and cd <= .2013-10-14.)
-#define m1311a (cd >= .2013-11-01. and cd <= .2013-11-14.)
-#define m1312a (cd >= .2013-12-01. and cd <= .2013-12-14.)
-
-#define m1401a (cd >= .2014-01-01. and cd <= .2014-01-14.)
-#define m1402a (cd >= .2014-02-01. and cd <= .2014-02-14.)
-#define m1403a (cd >= .2014-03-01. and cd <= .2014-03-14.)
-#define m1404a (cd >= .2014-04-01. and cd <= .2014-04-14.)
-#define m1405a (cd >= .2014-05-01. and cd <= .2014-05-14.)
-#define m1406a (cd >= .2014-06-01. and cd <= .2014-06-14.)
-#define m1407a (cd >= .2014-07-01. and cd <= .2014-07-14.)
-#define m1408a (cd >= .2014-08-01. and cd <= .2014-08-14.)
-#define m1409a (cd >= .2014-09-01. and cd <= .2014-09-14.)
-#define m1410a (cd >= .2014-10-01. and cd <= .2014-10-14.)
-#define m1411a (cd >= .2014-11-01. and cd <= .2014-11-14.)
-#define m1412a (cd >= .2014-12-01. and cd <= .2014-12-14.)
-
-#define m1501a (cd >= .2015-01-01. and cd <= .2015-01-14.)
-#define m1502a (cd >= .2015-02-01. and cd <= .2015-02-14.)
-#define m1503a (cd >= .2015-03-01. and cd <= .2015-03-14.)
-#define m1504a (cd >= .2015-04-01. and cd <= .2015-04-14.)
-#define m1505a (cd >= .2015-05-01. and cd <= .2015-05-14.)
-#define m1506a (cd >= .2015-06-01. and cd <= .2015-06-14.)
-#define m1507a (cd >= .2015-07-01. and cd <= .2015-07-14.)
-#define m1508a (cd >= .2015-08-01. and cd <= .2015-08-14.)
-#define m1509a (cd >= .2015-09-01. and cd <= .2015-09-14.)
-#define m1510a (cd >= .2015-10-01. and cd <= .2015-10-14.)
-#define m1511a (cd >= .2015-11-01. and cd <= .2015-11-14.)
-#define m1512a (cd >= .2015-12-01. and cd <= .2015-12-14.)
-
-#define m1601a (cd >= .2016-01-01. and cd <= .2016-01-14.)
-#define m1602a (cd >= .2016-02-01. and cd <= .2016-02-14.)
-#define m1603a (cd >= .2016-03-01. and cd <= .2016-03-14.)
-#define m1604a (cd >= .2016-04-01. and cd <= .2016-04-14.)
-#define m1605a (cd >= .2016-05-01. and cd <= .2016-05-14.)
-#define m1606a (cd >= .2016-06-01. and cd <= .2016-06-14.)
-#define m1607a (cd >= .2016-07-01. and cd <= .2016-07-14.)
-#define m1608a (cd >= .2016-08-01. and cd <= .2016-08-14.)
-#define m1609a (cd >= .2016-09-01. and cd <= .2016-09-14.)
-#define m1610a (cd >= .2016-10-01. and cd <= .2016-10-14.)
-#define m1611a (cd >= .2016-11-01. and cd <= .2016-11-14.)
-#define m1612a (cd >= .2016-12-01. and cd <= .2016-12-14.)
-
-#define m1701a (cd >= .2017-01-01. and cd <= .2017-01-14.)
-#define m1702a (cd >= .2017-02-01. and cd <= .2017-02-14.)
-#define m1703a (cd >= .2017-03-01. and cd <= .2017-03-14.)
-#define m1704a (cd >= .2017-04-01. and cd <= .2017-04-14.)
-#define m1705a (cd >= .2017-05-01. and cd <= .2017-05-14.)
-#define m1706a (cd >= .2017-06-01. and cd <= .2017-06-14.)
-#define m1707a (cd >= .2017-07-01. and cd <= .2017-07-14.)
-#define m1708a (cd >= .2017-08-01. and cd <= .2017-08-14.)
-#define m1709a (cd >= .2017-09-01. and cd <= .2017-09-14.)
-#define m1710a (cd >= .2017-10-01. and cd <= .2017-10-14.)
-#define m1711a (cd >= .2017-11-01. and cd <= .2017-11-14.)
-#define m1712a (cd >= .2017-12-01. and cd <= .2017-12-14.)
-
-#define m1801a (cd >= .2018-01-01. and cd <= .2018-01-14.)
-#define m1802a (cd >= .2018-02-01. and cd <= .2018-02-14.)
-#define m1803a (cd >= .2018-03-01. and cd <= .2018-03-14.)
-#define m1804a (cd >= .2018-04-01. and cd <= .2018-04-14.)
-#define m1805a (cd >= .2018-05-01. and cd <= .2018-05-14.)
-#define m1806a (cd >= .2018-06-01. and cd <= .2018-06-14.)
-#define m1807a (cd >= .2018-07-01. and cd <= .2018-07-14.)
-#define m1808a (cd >= .2018-08-01. and cd <= .2018-08-14.)
-#define m1809a (cd >= .2018-09-01. and cd <= .2018-09-14.)
-#define m1810a (cd >= .2018-10-01. and cd <= .2018-10-14.)
-#define m1811a (cd >= .2018-11-01. and cd <= .2018-11-14.)
-#define m1812a (cd >= .2018-12-01. and cd <= .2018-12-14.)
-
-#define m1901a (cd >= .2019-01-01. and cd <= .2019-01-14.)
-#define m1902a (cd >= .2019-02-01. and cd <= .2019-02-14.)
-#define m1903a (cd >= .2019-03-01. and cd <= .2019-03-14.)
-#define m1904a (cd >= .2019-04-01. and cd <= .2019-04-14.)
-#define m1905a (cd >= .2019-05-01. and cd <= .2019-05-14.)
-#define m1906a (cd >= .2019-06-01. and cd <= .2019-06-14.)
-#define m1907a (cd >= .2019-07-01. and cd <= .2019-07-14.)
-#define m1908a (cd >= .2019-08-01. and cd <= .2019-08-14.)
-#define m1909a (cd >= .2019-09-01. and cd <= .2019-09-14.)
-#define m1910a (cd >= .2019-10-01. and cd <= .2019-10-14.)
-#define m1911a (cd >= .2019-11-01. and cd <= .2019-11-14.)
-#define m1912a (cd >= .2019-12-01. and cd <= .2019-12-14.)
-
-#define m1101b (cd >= .2011-01-15. and cd <= .2011-01-31.)
-#define m1102b (cd >= .2011-02-15. and cd <= .2011-02-28.)
-#define m1103b (cd >= .2011-03-15. and cd <= .2011-03-31.)
-#define m1104b (cd >= .2011-04-15. and cd <= .2011-04-30.)
-#define m1105b (cd >= .2011-05-15. and cd <= .2011-05-31.)
-#define m1106b (cd >= .2011-06-15. and cd <= .2011-06-30.)
-#define m1107b (cd >= .2011-07-15. and cd <= .2011-07-31.)
-#define m1108b (cd >= .2011-08-15. and cd <= .2011-08-31.)
-#define m1109b (cd >= .2011-09-15. and cd <= .2011-09-30.)
-#define m1110b (cd >= .2011-10-15. and cd <= .2011-10-31.)
-#define m1111b (cd >= .2011-11-15. and cd <= .2011-11-30.)
-#define m1112b (cd >= .2011-12-15. and cd <= .2011-12-31.)
-
-#define m1201b (cd >= .2012-01-15. and cd <= .2012-01-31.)
-#define m1202b (cd >= .2012-02-15. and cd <= .2012-02-29.)
-#define m1203b (cd >= .2012-03-15. and cd <= .2012-03-31.)
-#define m1204b (cd >= .2012-04-15. and cd <= .2012-04-30.)
-#define m1205b (cd >= .2012-05-15. and cd <= .2012-05-31.)
-#define m1206b (cd >= .2012-06-15. and cd <= .2012-06-30.)
-#define m1207b (cd >= .2012-07-15. and cd <= .2012-07-31.)
-#define m1208b (cd >= .2012-08-15. and cd <= .2012-08-31.)
-#define m1209b (cd >= .2012-09-15. and cd <= .2012-09-30.)
-#define m1210b (cd >= .2012-10-15. and cd <= .2012-10-31.)
-#define m1211b (cd >= .2012-11-15. and cd <= .2012-11-30.)
-#define m1212b (cd >= .2012-12-15. and cd <= .2012-12-31.)
-
-#define m1301b (cd >= .2013-01-15. and cd <= .2013-01-31.)
-#define m1302b (cd >= .2013-02-15. and cd <= .2013-02-28.)
-#define m1303b (cd >= .2013-03-15. and cd <= .2013-03-31.)
-#define m1304b (cd >= .2013-04-15. and cd <= .2013-04-30.)
-#define m1305b (cd >= .2013-05-15. and cd <= .2013-05-31.)
-#define m1306b (cd >= .2013-06-15. and cd <= .2013-06-30.)
-#define m1307b (cd >= .2013-07-15. and cd <= .2013-07-31.)
-#define m1308b (cd >= .2013-08-15. and cd <= .2013-08-31.)
-#define m1309b (cd >= .2013-09-15. and cd <= .2013-09-30.)
-#define m1310b (cd >= .2013-10-15. and cd <= .2013-10-31.)
-#define m1311b (cd >= .2013-11-15. and cd <= .2013-11-30.)
-#define m1312b (cd >= .2013-12-15. and cd <= .2013-12-31.)
-
-#define m1401b (cd >= .2014-01-15. and cd <= .2014-01-31.)
-#define m1402b (cd >= .2014-02-15. and cd <= .2014-02-28.)
-#define m1403b (cd >= .2014-03-15. and cd <= .2014-03-31.)
-#define m1404b (cd >= .2014-04-15. and cd <= .2014-04-30.)
-#define m1405b (cd >= .2014-05-15. and cd <= .2014-05-31.)
-#define m1406b (cd >= .2014-06-15. and cd <= .2014-06-30.)
-#define m1407b (cd >= .2014-07-15. and cd <= .2014-07-31.)
-#define m1408b (cd >= .2014-08-15. and cd <= .2014-08-31.)
-#define m1409b (cd >= .2014-09-15. and cd <= .2014-09-30.)
-#define m1410b (cd >= .2014-10-15. and cd <= .2014-10-31.)
-#define m1411b (cd >= .2014-11-15. and cd <= .2014-11-30.)
-#define m1412b (cd >= .2014-12-15. and cd <= .2014-12-31.)
-
-#define m1501b (cd >= .2015-01-15. and cd <= .2015-01-31.)
-#define m1502b (cd >= .2015-02-15. and cd <= .2015-02-28.)
-#define m1503b (cd >= .2015-03-15. and cd <= .2015-03-31.)
-#define m1504b (cd >= .2015-04-15. and cd <= .2015-04-30.)
-#define m1505b (cd >= .2015-05-15. and cd <= .2015-05-31.)
-#define m1506b (cd >= .2015-06-15. and cd <= .2015-06-30.)
-#define m1507b (cd >= .2015-07-15. and cd <= .2015-07-31.)
-#define m1508b (cd >= .2015-08-15. and cd <= .2015-08-31.)
-#define m1509b (cd >= .2015-09-15. and cd <= .2015-09-30.)
-#define m1510b (cd >= .2015-10-15. and cd <= .2015-10-31.)
-#define m1511b (cd >= .2015-11-15. and cd <= .2015-11-30.)
-#define m1512b (cd >= .2015-12-15. and cd <= .2015-12-31.)
-
-#define m1601b (cd >= .2016-01-15. and cd <= .2016-01-31.)
-#define m1602b (cd >= .2016-02-15. and cd <= .2016-02-29.)
-#define m1603b (cd >= .2016-03-15. and cd <= .2016-03-31.)
-#define m1604b (cd >= .2016-04-15. and cd <= .2016-04-30.)
-#define m1605b (cd >= .2016-05-15. and cd <= .2016-05-31.)
-#define m1606b (cd >= .2016-06-15. and cd <= .2016-06-30.)
-#define m1607b (cd >= .2016-07-15. and cd <= .2016-07-31.)
-#define m1608b (cd >= .2016-08-15. and cd <= .2016-08-31.)
-#define m1609b (cd >= .2016-09-15. and cd <= .2016-09-30.)
-#define m1610b (cd >= .2016-10-15. and cd <= .2016-10-31.)
-#define m1611b (cd >= .2016-11-15. and cd <= .2016-11-30.)
-#define m1612b (cd >= .2016-12-15. and cd <= .2016-12-31.)
-
-#define m1701b (cd >= .2017-01-15. and cd <= .2017-01-31.)
-#define m1702b (cd >= .2017-02-15. and cd <= .2017-02-28.)
-#define m1703b (cd >= .2017-03-15. and cd <= .2017-03-31.)
-#define m1704b (cd >= .2017-04-15. and cd <= .2017-04-30.)
-#define m1705b (cd >= .2017-05-15. and cd <= .2017-05-31.)
-#define m1706b (cd >= .2017-06-15. and cd <= .2017-06-30.)
-#define m1707b (cd >= .2017-07-15. and cd <= .2017-07-31.)
-#define m1708b (cd >= .2017-08-15. and cd <= .2017-08-31.)
-#define m1709b (cd >= .2017-09-15. and cd <= .2017-09-30.)
-#define m1710b (cd >= .2017-10-15. and cd <= .2017-10-31.)
-#define m1711b (cd >= .2017-11-15. and cd <= .2017-11-30.)
-#define m1712b (cd >= .2017-12-15. and cd <= .2017-12-31.)
-
-#define m1801b (cd >= .2018-01-15. and cd <= .2018-01-31.)
-#define m1802b (cd >= .2018-02-15. and cd <= .2018-02-28.)
-#define m1803b (cd >= .2018-03-15. and cd <= .2018-03-31.)
-#define m1804b (cd >= .2018-04-15. and cd <= .2018-04-30.)
-#define m1805b (cd >= .2018-05-15. and cd <= .2018-05-31.)
-#define m1806b (cd >= .2018-06-15. and cd <= .2018-06-30.)
-#define m1807b (cd >= .2018-07-15. and cd <= .2018-07-31.)
-#define m1808b (cd >= .2018-08-15. and cd <= .2018-08-31.)
-#define m1809b (cd >= .2018-09-15. and cd <= .2018-09-30.)
-#define m1810b (cd >= .2018-10-15. and cd <= .2018-10-31.)
-#define m1811b (cd >= .2018-11-15. and cd <= .2018-11-30.)
-#define m1812b (cd >= .2018-12-15. and cd <= .2018-12-31.)
-
-#define m1901b (cd >= .2019-01-15. and cd <= .2019-01-31.)
-#define m1902b (cd >= .2019-02-15. and cd <= .2019-02-28.)
-#define m1903b (cd >= .2019-03-15. and cd <= .2019-03-31.)
-#define m1904b (cd >= .2019-04-15. and cd <= .2019-04-30.)
-#define m1905b (cd >= .2019-05-15. and cd <= .2019-05-31.)
-#define m1906b (cd >= .2019-06-15. and cd <= .2019-06-30.)
-#define m1907b (cd >= .2019-07-15. and cd <= .2019-07-31.)
-#define m1908b (cd >= .2019-08-15. and cd <= .2019-08-31.)
-#define m1909b (cd >= .2019-09-15. and cd <= .2019-09-30.)
-#define m1910b (cd >= .2019-10-15. and cd <= .2019-10-31.)
-#define m1911b (cd >= .2019-11-15. and cd <= .2019-11-30.)
-#define m1912b (cd >= .2019-12-15. and cd <= .2019-12-31.)
-
-#define is111 (m1101b or m1102a or m1102b)
-#define os111 (m1103a or m1103b or m1104a)
-#define is112 (m1104b or m1105a)
-#define os112 (m1105b or m1106a or m1106b or m1107a)
-#define is113 (m1107b or m1108a)
-#define os113 (m1108b or m1109a or m1109b or m1110a)
-#define is114 (m1110b or m1111a)
-#define os114 (m1111b or m1112a or m1112b or m1201a)
-
-#define is121 (m1201b or m1202a or m1202b)
-#define os121 (m1203a or m1203b or m1204a)
-#define is122 (m1204b or m1205a)
-#define os122 (m1205b or m1206a or m1206b or m1207a)
-#define is123 (m1207b or m1208a)
-#define os123 (m1208b or m1209a or m1209b or m1210a)
-#define is124 (m1210b or m1211a)
-#define os124 (m1211b or m1212a or m1212b or m1301a)
-
-#define is131 (m1301b or m1302a or m1302b)
-#define os131 (m1303a or m1303b or m1304a)
-#define is132 (m1304b or m1305a)
-#define os132 (m1305b or m1306a or m1306b or m1307a)
-#define is133 (m1307b or m1308a)
-#define os133 (m1308b or m1309a or m1309b or m1310a)
-#define is134 (m1310b or m1311a)
-#define os134 (m1311b or m1312a or m1312b or m1401a)
-
-#define is141 (m1401b or m1402a or m1402b)
-#define os141 (m1403a or m1403b or m1404a)
-#define is142 (m1404b or m1405a)
-#define os142 (m1405b or m1406a or m1406b or m1407a)
-#define is143 (m1407b or m1408a)
-#define os143 (m1408b or m1409a or m1409b or m1410a)
-#define is144 (m1410b or m1411a)
-#define os144 (m1411b or m1412a or m1412b or m1501a)
-
-#define is151 (m1501b or m1502a or m1502b)
-#define os151 (m1503a or m1503b or m1504a)
-#define is152 (m1504b or m1505a)
-#define os152 (m1505b or m1506a or m1506b or m1507a)
-#define is153 (m1507b or m1508a)
-#define os153 (m1508b or m1509a or m1509b or m1510a)
-#define is154 (m1510b or m1511a)
-#define os154 (m1511b or m1512a or m1512b or m1601a)
-
-#define is161 (m1601b or m1602a or m1602b)
-#define os161 (m1603a or m1603b or m1604a)
-#define is162 (m1604b or m1605a)
-#define os162 (m1605b or m1606a or m1606b or m1607a)
-#define is163 (m1607b or m1608a)
-#define os163 (m1608b or m1609a or m1609b or m1610a)
-#define is164 (m1610b or m1611a)
-#define os164 (m1611b or m1612a or m1612b or m1701a)
-
-#define is171 (m1701b or m1702a or m1702b)
-#define os171 (m1703a or m1703b or m1704a)
-#define is172 (m1704b or m1705a)
-#define os172 (m1705b or m1706a or m1706b or m1707a)
-#define is173 (m1707b or m1708a)
-#define os173 (m1708b or m1709a or m1709b or m1710a)
-#define is174 (m1710b or m1711a)
-#define os174 (m1711b or m1712a or m1712b or m1801a)
-
-#define is181 (m1801b or m1802a or m1802b)
-#define os181 (m1803a or m1803b or m1804a)
-#define is182 (m1804b or m1805a)
-#define os182 (m1805b or m1806a or m1806b or m1807a)
-#define is183 (m1807b or m1808a)
-#define os183 (m1808b or m1809a or m1809b or m1810a)
-#define is184 (m1810b or m1811a)
-#define os184 (m1811b or m1812a or m1812b or m1901a)
-
-#define is191 (m1901b or m1902a or m1902b)
-#define os191 (m1903a or m1903b or m1904a)
-#define is192 (m1904b or m1905a)
-#define os192 (m1905b or m1906a or m1906b or m1907a)
-#define is193 (m1907b or m1908a)
-#define os193 (m1908b or m1909a or m1909b or m1910a)
-#define is194 (m1910b or m1911a)
-#define os194 (m1911b or m1912a or m1912b or m2001a)
-
-#define is2011 is111 or is112 or is113 or is114
-#define os2011 os111 or os112 or os113 or os114
-#define is2012 is121 or is122 or is123 or is124
-#define os2012 os121 or os122 or os123 or os124
-#define is2013 is131 or is132 or is133 or is134
-#define os2013 os131 or os132 or os133 or os134
-#define is2014 is141 or is142 or is143 or is144
-#define os2014 os141 or os142 or os143 or os144
-#define is2015 is151 or is152 or is153 or is154
-#define os2015 os151 or os152 or os153 or os154
-#define is2016 is161 or is162 or is163 or is164
-#define os2016 os161 or os162 or os163 or os164
-#define is2017 is171 or is172 or is173 or is174
-#define os2017 os171 or os172 or os173 or os174
-#define is2018 is181 or is182 or is183 or is184
-#define os2018 os181 or os182 or os183 or os184
-#define is2019 is191 or is192 or is193 or is194
-#define os2019 os191 or os192 or os193 or os194
-
-// symbol baskets
-#define CEF_Basket AAIDX ACP ACV ADX AEF AFB AFT AGD AIF AKP AOD APF ARDC ASA ASG ATRYX AVK AWF AWP BAF BBF BBK BBN BCV BCX BDJ BDREX BFITX BFK BFO BFY BFZ BGB BGFLX BGH BGR BGT BGX BGY BHK BHV BIF BIT BKK BKN BKT BLE BLGFX BLW BME BNY BOE BQH BSD BSE BSL BST BTA BTO BTT BTZ BUI BWG BXMX BYM BZM CADEX CAF CCA CCD CCLFX CEDIX CEE CEM CEN CET CEV CGO CHI CHN CHW CHY CIF CII CIK CLM CMU CNRLX CNROX CRDTX CREDX CRF CSQ CTR CUBA CXE CXH DBL DDF DEX DFP DHF DHY DIAX DMB DMF DMO DNI DNP DPG DSE DSL DSM DSU DTF DUC EAD ECC ECF EDD EDF EDI EEA EFF EFR EFT EGF EGIF EHI EIM EMD EMF EMO ENX EOD EOI EOS EOT ERC ERH ETB ETG ETJ ETO ETV ETW ETX ETY EVF EVG EVM EVN EVT EVV EVY EXD EXG FAM FAX FCO FCREX FCT FDEU FEI FEN FEO FFA FFC FGB FIF FLC FMN FMO FMY FOF FPF FPL FRA FSD FT FTF FUND FXBY GAB GAM GBAB GCV GDL GDO GDV GER GF GFY GGM GGN GGT GGZ GHY GIM GIREX GLBFX GLO GLQ GLU GLV GMZ GNT GOF GPM GRF GRX GUT HEQ HFRO HIE HIO HIX HNW HPF HPI HPS HQH HQL HTD HTY HYB HYI HYT IAE IAF IDE IFN IGA IGD IGI IGR IHD IID IIF IIM INB INF INSI IQI IRL IRR ISD IVH JCE JDD JEQ JFR JGH JHI JHS JHY JLS JMF JMLP JMM JMT JOF JPC JPI JPS JQC JRI JRO JRS JSD JTA JTD JZCP KF KIO KMF KSM KTF KYN LCRDX LDP LENDX LEO LGI LOR LTAFX MAV MCA MCI MCN MCR MEN MFD MFL MFM MFT MFV MGF MGU MHD MHE MHF MHI MHN MIE MILC MIN MIY MMD MMT MMU MNE MNP MPA MPV MQT MQY MSD MSFDX MTT MUA MUC MUE MUH MUI MUJ MUS MVF MVT MXE MXF MYC MYD MYF MYI MYJ MYN MZA NAC NAD NAN NAZ NBB NBH NBO NBW NCA NCB NCV NCZ NDP NEA NEV NFJ NHF NHS NICHX NID NIE NIM NIQ NJV NKG NKX NMI NML NMS NMT NMY NMZ NNC NNY NOM NPN NPV NQP NRK NRO NRSZX NSL NTC NTG NTX NUM NUO NUV NUW NVG NXC NXHAX NXJ NXN NXP NXQ NXR NYV NZF OCPAX OIA OPP OWSCX OXLC PAI PCF PCI PCK PCM PCN PCQ PDI PDT PEO PFD PFL PFLEX PFN PFO PGP PGZ PHD PHK PHT PHYS PIM PKO PMF PMFLX PML PMM PMO PMX PNF PNI PPR PPT PRDEX PRIVX PSF PSLV PSOIX PTY PYN PZC QQQX RCG RCIAX RCS RFI RGT RMPLX RMT RNP RQI RREDX RVT SBI SCD SMM SOR SPE SPEYX SPXX SRF SRNTX SRRIX SRV STK SWZ SZC TDF TEI THQ THW TIPRX TLI TPZ TSI TSIFX TSLF TTP TWN TY TYG USA USQIX UTF UTG VBF VCAPX VCF VCRRX VCV VFL VFLEX VGI VGM VKI VKQ VLT VMM VMO VPV VSLAX VTA VTN VVR WEA WESFX WIA WIW XCAPX XCBFX XCLIX XDSCX XFEAX XGEIX XILSX XMSOX XNAFX XPNNX XPTFX XSICX XWAMX XWMFX ZF ZTR
