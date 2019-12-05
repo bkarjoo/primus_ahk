@@ -69,6 +69,7 @@ run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names, boxes_in_queu
       if (!WinExist("PRIMU$ - Black"))
         launcher_click_edit_box()
       change_just_the_launch_rule(cycle_launch_rule)
+      Clipboard := ""
       change_just_the_description(cycle_names[i])
       click_validate_and_close()
       j := i
