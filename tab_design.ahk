@@ -52,6 +52,7 @@ append_to_front_of_box_description(append_txt)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   click_design_tab()
+  sleep, 200
   MouseClick, Left, 325, 125
   Send, ^a
   sleep, 200
