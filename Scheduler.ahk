@@ -203,7 +203,11 @@ Loop
     get_jobs()
 
     ; wait before going to the next job
-    inform_timeout_pause_option("Done with job file " . box . " " . version, 2)
+    if A_TimeIdle < 10000
+      wait_time := 5
+    else
+      wait_time := 2
+    inform_timeout_pause_option("Done with job file " . box . " " . version, %wait_time%)
   }
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 
