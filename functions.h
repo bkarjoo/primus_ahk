@@ -267,7 +267,7 @@
 #define s3_Corp_News Source3(News_Current, ACBO, AnySentiment, Corp_News)
 #define s3_Credit_Ratings Source3(News_Current, ACBO, AnySentiment, Credit_Ratings)
 #define s3_Dividend_Reduction Source3(News_Current, ACBO, AnySentiment, Dividend_Reduction)
-#define s3_Dividendjncrease Source3(News_Current, ACBO, AnySentiment, Dividend_Increase)
+#define s3_Dividend_Increase Source3(News_Current, ACBO, AnySentiment, Dividend_Increase)
 #define s3_Dividends Source3(News_Current, ACBO, AnySentiment, Dividends)
 #define s3_Downgrades Source3(News_Current, ACBO, AnySentiment, Downgrades)
 #define s3_Earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
