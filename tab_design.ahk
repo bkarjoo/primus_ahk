@@ -217,6 +217,29 @@ get_design_tab_checkboxes(checkbox_array)
   checkbox_array["verify_code_during_validate_procedure_trigger_point"] := [533,919]
 }
 
+set_general_settings_helper_version(i_vars, version)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  checkboxes := {}
+  get_design_tab_checkboxes(checkboxes)
+  bname := build_box_name(i_vars["box_name"], version)
+  update_box_name(bname)
+  desc := build_box_description(i_vars["launch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
+  update_box_description(desc)
+  set_black_box_side(i_vars["black_box_side"])
+  set_black_box_scheme(i_vars["black_box_scheme"])
+  set_check_box_confirm("PRIMU$ - Black", 1,"TRUE", checkboxes["permit_backtesting_check_box"], checkboxes["permit_backtesting_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_last"], checkboxes["enter_on_last_check_box"], checkboxes["enter_on_last_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_bid"], checkboxes["enter_on_bid_check_box"], checkboxes["enter_on_bid_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_ask"], checkboxes["enter_on_ask_check_box"], checkboxes["enter_on_ask_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_pmi"], checkboxes["enter_on_pmi_check_box"], checkboxes["enter_on_pmi_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_imbalance"], checkboxes["enter_on_imbalance_check_box"], checkboxes["enter_on_imbalance_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_snapshot"], checkboxes["enter_on_snapshot_check_box"], checkboxes["enter_on_snapshot_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_new_minute"], checkboxes["enter_on_new_minute_check_box"], checkboxes["enter_on_new_minute_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_stock_event"], checkboxes["enter_on_stock_event_check_box"], checkboxes["enter_on_stock_event_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
+}
+
 set_general_settings_helper(i_vars)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
