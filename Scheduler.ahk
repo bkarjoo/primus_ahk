@@ -113,7 +113,7 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 
   ; if not found build it, if found update it
   if (found)
-    update_box(box_name, box_version)
+    update_box_dynamic_version(box_name, box_version)
   else
     build_local_box(box_name)
 

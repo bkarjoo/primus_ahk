@@ -254,6 +254,43 @@ change_just_the_description(cycle_name)
   append_to_front_of_box_description(cycle_name)
 }
 
+update_general_setting_helper_version(i_vars, bu_vars, version)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  checkboxes := {}
+  get_design_tab_checkboxes(checkboxes)
+
+  bname := build_box_name(i_vars["box_name"], version)
+  update_box_name(bname)
+  desc := build_box_description(i_vars["launch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
+  if(i_vars["launch_rule_name"] != bu_vars["launch_rule_name"] or i_vars["black_box_description"] != bu_vars["black_box_description"] or i_vars["basket_description"] != bu_vars["basket_description"])
+    update_box_description(desc)
+  if(i_vars["black_box_side"] != bu_vars["black_box_side"])
+    set_black_box_side(i_vars["black_box_side"])
+  if(i_vars["black_box_scheme"] != bu_vars["black_box_scheme"])
+    set_black_box_scheme(i_vars["black_box_scheme"])
+  ; make sure it's still true, doesn't hurt
+  set_check_box_confirm("PRIMU$ - Black", 1,"TRUE", checkboxes["permit_backtesting_check_box"], checkboxes["permit_backtesting_trigger_point"])
+  ;if(i_vars["enter_on_last" != bu_vars["enter_on_last")
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_last"], checkboxes["enter_on_last_check_box"], checkboxes["enter_on_last_trigger_point"])
+  ;if(i_vars["enter_on_bid"] != bu_vars["enter_on_bid"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_bid"], checkboxes["enter_on_bid_check_box"], checkboxes["enter_on_bid_trigger_point"])
+  ;if(i_vars["enter_on_ask"] != bu_vars["enter_on_ask"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_ask"], checkboxes["enter_on_ask_check_box"], checkboxes["enter_on_ask_trigger_point"])
+  ;if(i_vars["enter_on_pmi"] != bu_vars["enter_on_pmi"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_pmi"], checkboxes["enter_on_pmi_check_box"], checkboxes["enter_on_pmi_trigger_point"])
+  ;if(i_vars["enter_on_imbalance"] != bu_vars["enter_on_imbalance"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_imbalance"], checkboxes["enter_on_imbalance_check_box"], checkboxes["enter_on_imbalance_trigger_point"])
+  ;if(i_vars["enter_on_snapshot"] != bu_vars["enter_on_snapshot"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_snapshot"], checkboxes["enter_on_snapshot_check_box"], checkboxes["enter_on_snapshot_trigger_point"])
+  ;if(i_vars["enter_on_new_minute"] != bu_vars["enter_on_new_minute"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_new_minute"], checkboxes["enter_on_new_minute_check_box"], checkboxes["enter_on_new_minute_trigger_point"])
+  ;if(i_vars["enter_on_stock_event"] != bu_vars["enter_on_stock_event"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["enter_on_stock_event"], checkboxes["enter_on_stock_event_check_box"], checkboxes["enter_on_stock_event_trigger_point"])
+  ;if(i_vars["use_strict_mode"] != bu_vars["use_strict_mode"])
+  set_check_box_confirm("PRIMU$ - Black", 1, i_vars["use_strict_mode"], checkboxes["use_strict_mode_check_box"], checkboxes["use_strict_mode_trigger_point"])
+}
+
 update_general_setting_helper(i_vars, bu_vars)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
