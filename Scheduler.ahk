@@ -45,6 +45,7 @@ process_completed_runs(queue_array)
   N :=  queue_array.MaxIndex()
   Loop, % N
   {
+    pause_mechanism()
     reverse_i := N - A_Index + 1
     if (number_of_active_runs_for_box(queue_array[reverse_i]) = 0)
     {
@@ -63,6 +64,7 @@ run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names, boxes_in_queu
   j := 0
   loop
   {
+    pause_mechanism()
     if (i != j)
     {
       cycle_launch_rule := cyclify_launch_rule(schedule_cycles[i], launch_rules)
@@ -158,6 +160,7 @@ boxes_in_queue := []
 ; loop load files
 Loop
 {
+  pause_mechanism()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; atempt to fetch file from jobs folder
   get_jobs()
@@ -175,6 +178,7 @@ Loop
   ; loop over jobs
   Loop, % jobs.MaxIndex()
   {
+    pause_mechanism()
     log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
     ; processing a job state
     line := jobs[A_Index]

@@ -105,3 +105,14 @@ hour_glass_sleep(millis)
     sleep, 200
   }
 }
+
+pause_mechanism()
+{
+  FileRead, out, run_state.txt
+  if (out = "False")
+    InputBox, response, paused..., "Press enter to continue. (q to exit app)"
+  FileDelete, run_state.txt
+  FileAppend, True, run_state.txt
+  if (response = "q")
+    ExitApp
+}
