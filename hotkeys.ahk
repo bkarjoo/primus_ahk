@@ -41,6 +41,12 @@ return
 WinActivate, ahk_exe atom.exe
 return
 
++#p::
++!p::
+FileDelete, run_state.txt
+FileAppend, False, run_state.txt
+return
+
 +#q::
 +!q::
 WinActivate, Task Queue Manager
