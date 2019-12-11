@@ -32,9 +32,9 @@ launcher_click_save_box()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   launcher_activate()
   Click 133, 49
-  err := wait_only("Information", 1)
+  err := wait_only("Information", 5)
   if (err != 0)
-    err := wait_only("Save BlackBox", 1)
+    err := wait_only("Save BlackBox", 5)
   if (err != 0)
     inform("Save button didn't click.")
 }
