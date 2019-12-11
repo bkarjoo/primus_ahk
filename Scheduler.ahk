@@ -69,6 +69,7 @@ run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names, boxes_in_queu
       if (!WinExist("PRIMU$ - Black"))
         launcher_click_edit_box()
       change_just_the_launch_rule(cycle_launch_rule)
+      Clipboard := ""
       change_just_the_description(cycle_names[i])
       click_validate_and_close()
       j := i
@@ -112,9 +113,9 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 
   ; if not found build it, if found update it
   if (found)
-    update_box(box_name, box_version)
+    update_box_dynamic_version(box_name, box_version)
   else
-    build_local_box(box_name)
+    build_local_box_version(box_name, box_version)
 
   trace("backup " . box_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
   backup_compiled_files_helper(box_name, "")
@@ -202,7 +203,7 @@ Loop
     get_jobs()
 
     ; wait before going to the next job
-    inform_timeout_pause_option("Done with job file " . box . " " . version, 2)
+    inform_timeout_pause_option("Done with job file " . box . " " . version, 5)
   }
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 
