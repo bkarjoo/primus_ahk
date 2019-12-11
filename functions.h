@@ -17,6 +17,7 @@
 // Tif_OPENING
 // CEF_Basket
 // half_day
+// NYSE
 
 // lower_case
 #define and AND
@@ -39,6 +40,7 @@
 #define is_common_stock etp_prefered_exclude
 #define ETF EXCHANGE_TRADED_FUND
 #define ETN EXCHANGE_TRADED_NOTE
+#define PRFRD PREFERRED_STOCK
 #define instrument_type(x) IsInstrumentType(x)
 #define is_halted IsHalt
 #define is_hard_to_borrow IsHardToBorrow
@@ -79,6 +81,7 @@
 #define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
 #define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_last day_bar_close( 1, '04:00-09:27')
+#define pre_mkt_NYSE_last day_bar_close( 1, '04:00-09:29')
 #define pre_mkt_perc_chg ((day_bar_close(1, '08:00-09:27') - close)/close)
 #define price_delta(x) PriceDelta(ALL_VENUES, x, NO)
 #define position_delta PositionDelta(ALL_VENUES, NO)
@@ -161,7 +164,7 @@
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
-#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 120, YES, '04:00-09:29')
 #define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
 #define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
