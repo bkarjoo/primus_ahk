@@ -69,7 +69,7 @@ return
 +#s::
 +!s::
 InputBox, out, q, Enter box name version
-select_custom_blotter()
+select_custom_blotter(out)
 return
 
 +#t::
