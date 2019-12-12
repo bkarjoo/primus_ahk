@@ -66,6 +66,12 @@ return
 WinActivate, Black Box Report
 return
 
++#s::
++!s::
+InputBox, out, q, Enter box name version
+select_custom_blotter()
+return
+
 +#t::
 +!t::
 WinActivate, BlackBox Tree
