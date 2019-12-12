@@ -1,5 +1,7 @@
 ; hotkeys for activating primus analysis windows
 ; Analysis
+#include window_blotter.ahk
+
 +!a::
 WinActivate, Multi-Day Analysis
 sleep, 100
@@ -29,6 +31,13 @@ return
 
 +!g::
 WinActivate, Primu$ 7.
+return
+
++!l::
+InputBox, out, q, Enter box name version
+create_custom_blotter(out)
+; click primus blotter tab
+
 return
 
 +#n::
