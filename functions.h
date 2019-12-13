@@ -299,7 +299,7 @@
 #define s3_Important_Mgmt_Changes Source3(News_Current, ACBO, AnySentiment, Important_Mgmt_Changes)
 #define s3_Important_Initiations Source3(News_Current, ACBO, AnySentiment, Important_Initiations)
 #define s3_Important_Upgrades Source3(News_Current, ACBO, AnySentiment, Important_Upgrades)
-#define s3_lndex_Changes Source3(News_Current, ACBO, AnySentiment, lndex_Changes)
+#define s3_Index_Changes Source3(News_Current, ACBO, AnySentiment, Index_Changes)
 #define s3_Insider_Trades Source3(News_Current, ACBO, AnySentiment, Insider_Trades)
 #define s3_Foreign_Ratings_Actions Source3(News_Current, ACBO, AnySentiment, Foreign_Ratings_Actions)
 #define s3_IPOs Source3(News_Current, ACBO, AnySentiment, IPOs)
