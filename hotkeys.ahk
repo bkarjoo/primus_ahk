@@ -43,9 +43,8 @@ click_name_box()
 hour_glass_sleep(200)
 send, ^a
 hour_glass_sleep(200)
-send, %out%
-hour_glass_sleep(200)
-send, {Enter}
+Clipboard := out
+send, ^v
 return
 
 +#n::
