@@ -38,7 +38,14 @@ InputBox, out, q, Enter box name version
 activate_blotter()
 click_refresh()
 click_primus_blotter_tab()
-enter_box_name_filter(box_name)
+hour_glass_sleep(200)
+click_name_box()
+hour_glass_sleep(200)
+send, ^a
+hour_glass_sleep(200)
+send, %out%
+hour_glass_sleep(200)
+send, {Enter}
 return
 
 +#n::
