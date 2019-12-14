@@ -35,9 +35,10 @@ return
 
 +!l::
 InputBox, out, q, Enter box name version
-create_custom_blotter(out)
-; click primus blotter tab
-
+activate_blotter()
+click_refresh()
+click_primus_blotter_tab()
+enter_box_name_filter(box_name)
 return
 
 +#n::
@@ -75,6 +76,10 @@ return
 +#t::
 +!t::
 WinActivate, BlackBox Tree
+return
+
++#v::
++!v::
 return
 
 +!x::
