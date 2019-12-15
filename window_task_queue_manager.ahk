@@ -81,6 +81,8 @@ number_of_active_runs_for_box(box_name)
   hour_glass_sleep(200)
   s := Clipboard
   lines := StrSplit(s, "`n")
+	if (maintenance_count(s) > 0)
+		return 1
   count := 0
   Loop % lines.MaxIndex()
   {
