@@ -10,8 +10,8 @@ find_box(box_name)
   launcher_activate()
   launcher_click_open_box()
   sleep, 1000
-  ;open_blackbox_folder_search_mode_toggle()
-  ;sleep 1000
+  open_blackbox_folder_search_mode_toggle()
+  sleep 1000
   open_blackbox_search_field_focus()
   sleep 200
   clipboard_simple_paste(box_name)
