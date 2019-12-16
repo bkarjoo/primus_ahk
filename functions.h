@@ -255,7 +255,9 @@
 #define option_news Option_News
 #define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
 #define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
-
+#define is_secondary SyndicateType(News_Current, ACBO, Secondary)
+#define is_spot_secondary SyndicateType(News_Current, ACBO, SpotSecondary)
+#define syndicate_size SyndicateSize(News_Current, ACBO)
 
 #define s3(x) Source3(News_Current, ACBO, AnySentiment, x)
 #define s3_Form_13_D Source3(News_Current, ACBO, AnySentiment, Form_13_D)
