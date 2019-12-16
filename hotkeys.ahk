@@ -25,13 +25,25 @@ sleep, 100
 WinActivate, Trade Analysis Charting
 return
 
++!e::
+WinActivate, Primu$ 7.
+return
+
 +!f::
 WinActivate, D:\Users\
 return
 
-+!g::
-WinActivate, Primu$ 7.
-return
+; git hub cloner
++!g:: ; github
+  InputBox, out, question, enter box name
+  send, git clone https://github.com/bkarjoo/%out%
+  return
+
+; job name generator for saving job files
++!j:: ; job
+  random, n, 1000000, 9999999
+  send, job%n%.csv
+  return
 
 +!l::
 InputBox, out, q, Enter box name version
@@ -83,6 +95,11 @@ return
 +!t::
 WinActivate, BlackBox Tree
 return
+
+; git upstream
++!u::
+  send, git push --set-upstream origin
+  return
 
 +#v::
 +!v::
