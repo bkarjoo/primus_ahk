@@ -16,7 +16,7 @@ launcher_click_new_box()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   launcher_activate()
   Click 32,41
-  wait_only("PRIMU$ - Black", 5)
+  wait_only("PRIMU$ - Black", 30)
 }
 
 launcher_click_open_box()
@@ -24,7 +24,7 @@ launcher_click_open_box()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   launcher_activate()
   Click 83, 54
-  wait_only("Open BlackBox", 5)
+  wait_only("Open BlackBox", 30)
 }
 
 launcher_click_save_box()
@@ -32,9 +32,9 @@ launcher_click_save_box()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   launcher_activate()
   Click 133, 49
-  err := wait_only("Information", 5)
+  err := wait_only("Information", 30)
   if (err != 0)
-    err := wait_only("Save BlackBox", 5)
+    err := wait_only("Save BlackBox", 30)
   if (err != 0)
     inform("Save button didn't click.")
 }
@@ -44,7 +44,7 @@ launcher_click_save_as()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   launcher_activate()
   Click 189, 49
-  wait_only("Save BlackBox", 5)
+  wait_only("Save BlackBox", 30)
 }
 
 launcher_click_edit_box()
@@ -52,7 +52,7 @@ launcher_click_edit_box()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   launcher_activate()
   Click 243, 49
-  wait_only("PRIMU$ - Black Box Design", 5)
+  wait_only("PRIMU$ - Black Box Design", 30)
 }
 
 
@@ -78,7 +78,7 @@ launcher_click_wrench()
 log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 launcher_activate()
 Click 515, 49
-wait_only("PRIMU$ -- Configuration", 5)
+wait_only("PRIMU$ -- Configuration", 30)
 }
 
 
@@ -87,7 +87,7 @@ launcher_click_queue_manager()
 log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 launcher_activate()
 Click 576, 49
-wait_only("PRIMU$ -- Backtesting Queue Manage", 5)
+wait_only("PRIMU$ -- Backtesting Queue Manage", 30)
 }
 
 
@@ -97,7 +97,7 @@ log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 launcher_activate()
 Click 634, 49
 ; diagnostic window isn't detected
-wait_only("PRIMU$ -- Diagnostics Window", 5)
+wait_only("PRIMU$ -- Diagnostics Window", 30)
 }
 
 open_new_bb_design()
@@ -105,5 +105,5 @@ open_new_bb_design()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; click new box
   launcher_click_new_box()
-  wait_only("PRIMU$ - Black", 5)
+  wait_only("PRIMU$ - Black", 30)
 }
