@@ -109,6 +109,7 @@ open_existing_basket(name)
   ; search for the basket
   click_basket_manager_filter_text_box()
   Clipboard := name
+  Sleep, 200
   Send, ^v
   Sleep, 200
   click_basket_manager_run_filter()
