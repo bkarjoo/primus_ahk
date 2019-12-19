@@ -92,5 +92,9 @@ number_of_active_runs_for_box(box_name)
         count := count + 1
     }
   }
+	; TODO if lines max index > 1000 send email to clear, but only once
+	; TODO write to a file that it needs to be cleared
+	; TODO if max index < 1000 the file is automatically set to false
+	; TODO if there is no active or pending or maintenence runs delete the task queue 
   return count
 }
