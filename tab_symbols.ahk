@@ -61,7 +61,7 @@ basket_vars_changed(i_vars, bu_vars)
     return 1
   if (i_vars["basket_symbols"] != bu_vars["basket_symbols"])
     return 1
-  if (i_vars["basket_exclude "] != bu_vars["basket_exclude"])
+  if (i_vars["basket_exclude"] != bu_vars["basket_exclude"])
     return 1
   if (i_vars["basket_htb"] != bu_vars["basket_htb"])
     return 1
@@ -71,8 +71,8 @@ basket_vars_changed(i_vars, bu_vars)
 update_basket_helper(i_vars, bu_vars)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  if (!basket_vars_changed(i_vars, bu_vars))
-    return
+  ;if (!basket_vars_changed(i_vars, bu_vars))
+  ;  return
   checkboxes := {}
   get_edit_basket_checkboxes(checkboxes)
 
