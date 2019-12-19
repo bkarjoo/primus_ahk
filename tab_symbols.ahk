@@ -71,8 +71,8 @@ basket_vars_changed(i_vars, bu_vars)
 update_basket_helper(i_vars, bu_vars)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  ;if (!basket_vars_changed(i_vars, bu_vars))
-  ;  return
+  if (!basket_vars_changed(i_vars, bu_vars))
+    return
   checkboxes := {}
   get_edit_basket_checkboxes(checkboxes)
 
