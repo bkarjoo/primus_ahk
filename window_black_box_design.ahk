@@ -76,6 +76,18 @@ click_risk_management_tab()
     inform("Failed to select risk management tab.")
 }
 
+click_launch_rule_tab_no_confirm()
+{
+  x := 287
+  y := 32
+
+  res := activate_and_wait_only("PRIMU$ - B", 5)
+  if (res != 1)
+    inform("Cannot activate black box design.")
+
+  MouseClick, Left, %x%, %y%
+}
+
 click_launch_rule_tab()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
