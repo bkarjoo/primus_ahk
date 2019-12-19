@@ -97,7 +97,8 @@ run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names, boxes_in_queu
       }
     }
     process_completed_runs(boxes_in_queue)
-    wait_until_with_message(60, "waiting for free slots...")
+    pause_mechanism()
+    wait_until_with_message(5, "waiting for free slots...")
   }
 }
 
@@ -172,7 +173,7 @@ Loop
   if (file_name = "")
   {
     process_completed_runs(boxes_in_queue)
-    wait_until_with_message(60, "Found no files in jobs folder. Will check again in a minute")
+    wait_until_with_message(5, "Found no files in jobs folder. Will check again in a minute")
     continue
   }
 
