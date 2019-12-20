@@ -44,6 +44,19 @@ click_and_confirm_bbd_tab(x, y, index)
   return 0
 }
 
+click_design_tab_no_confirm()
+{
+  x := 26
+  y := 32
+
+  res := activate_and_wait_only("PRIMU$ - B", 5)
+  if (res != 1)
+    inform("Cannot activate black box design.")
+
+  MouseClick, Left, %x%, %y%
+}
+
+
 click_design_tab()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
