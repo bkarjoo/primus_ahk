@@ -45,6 +45,7 @@
 #define is_halted IsHalt
 #define is_hard_to_borrow IsHardToBorrow
 #define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
+#define maximum_days_from_ipo(x) (DaysFromIPO > -1 AND DaysFromIPO < x)
 #define ipo_price IPOPrice
 #define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
