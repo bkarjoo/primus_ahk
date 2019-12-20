@@ -51,8 +51,8 @@ strip_existing_launch_rule_name_in_description(desc)
 append_to_front_of_box_description(append_txt)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  click_design_tab()
-  sleep, 200
+  click_design_tab_no_confirm()
+  sleep, 1000
   MouseClick, Left, 325, 125
   Send, ^a
   sleep, 200
