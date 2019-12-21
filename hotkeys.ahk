@@ -75,6 +75,8 @@ FileDelete, run_state.txt
 FileAppend, False, run_state.txt
 return
 
++#w::
++!w::
 +#q::
 +!q::
 WinActivate, Task Queue Manager
