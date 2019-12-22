@@ -6,7 +6,10 @@ is_checked(checkbox_point)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   sleep, 100
-  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, images/checked.PNG
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"] . "checked.PNG"
+  ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, %image_path%
   return (ErrorLevel = 0)
 }
 

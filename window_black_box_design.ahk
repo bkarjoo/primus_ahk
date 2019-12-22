@@ -8,19 +8,26 @@ selected_bbdesign_tab()
   res := activate_and_wait_only("PRIMU$ - B", 5)
   if (res = 0)
     inform("selected_bbdesign_tab can't activate blackbox design")
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/design.PNG
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"] . "design.PNG"
+  ImageSearch, ox, oy, 0, 0, 500, 500, %image_path%
   if (ErrorLevel = 0)
     return 1
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/symbols.PNG
+  image_path := creds["image_path"] . "symbols.PNG"
+  ImageSearch, ox, oy, 0, 0, 500, 500, %image_path%
   if (ErrorLevel = 0)
     return 2
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/options.PNG
+  image_path := creds["image_path"] . "options.PNG"
+  ImageSearch, ox, oy, 0, 0, 500, 500, %image_path%
   if (ErrorLevel = 0)
     return 3
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/risk_management.PNG
+  image_path := creds["image_path"] . "risk_management.PNG"
+  ImageSearch, ox, oy, 0, 0, 500, 500, %image_path%
   if (ErrorLevel = 0)
     return 4
-  ImageSearch, ox, oy, 0, 0, 500, 500, images/launch_rule.PNG
+  image_path := creds["image_path"] . "launch_rule.PNG"
+  ImageSearch, ox, oy, 0, 0, 500, 500, %image_path%
   if (ErrorLevel = 0)
     return 5
 }

@@ -62,7 +62,10 @@ open_blackbox_click_close()
 open_black_box_search_results_empty()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  ImageSearch, x, y, 0, 0, 600, 100, images/box_search.PNG
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"] . "box_search.PNG"
+  ImageSearch, x, y, 0, 0, 600, 100, %image_path%
   if (ErrorLevel = 0)
     return 1
   return 0
