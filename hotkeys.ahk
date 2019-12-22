@@ -3,14 +3,18 @@
 #include window_blotter.ahk
 
 +!a::
+WinActivate, Statistic Report
+sleep, 100
 WinActivate, Multi-Day Analysis
 sleep, 100
-WinActivate, Statistic Report
+WinActivate, PnL Analysis Charting
 return
 
 ; breakdown
 +!b::
 WinActivate, Breakdown
+sleep, 100
+WinActivate, PnL Analysis Charting
 return
 
 +!c::
@@ -57,6 +61,11 @@ send, ^a
 hour_glass_sleep(200)
 Clipboard := out
 send, ^v
+return
+
++#m::
++!m::
+WinActivate, Basket Matrix
 return
 
 +#n::
