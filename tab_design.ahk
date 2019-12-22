@@ -528,34 +528,34 @@ set_target()
 
 target_vars_changed(i_vars, bu_vars)
 {
-log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-if (i_vars["target_order_type"] != bu_vars["target_order_type"])
-  return 1
-if (i_vars["target_order_side"] != bu_vars["target_order_side"])
-  return 1
-if (i_vars["target_destination"] != bu_vars["target_destination"])
-  return 1
-if (i_vars["target_size"] != bu_vars["target_size"])
-  return 1
-if (i_vars["target_limit"] != bu_vars["target_limit"])
-  return 1
-if (i_vars["ael_on_last"] != bu_vars["ael_on_last"])
-  return 1
-if (i_vars["ael_on_second"] != bu_vars["ael_on_second"])
-  return 1
-if (i_vars["ael_on_bid_ask"] != bu_vars["ael_on_bid_ask"])
-  return 1
-if (i_vars["ael_convert_to_stop"] != bu_vars["ael_convert_to_stop"])
-  return 1
-if (i_vars["ael_trigger"] != bu_vars["ael_trigger"])
-  return 1
-if (i_vars["ael_price"] != bu_vars["ael_price"])
-  return 1
-if (i_vars["ael_time_increment"] != bu_vars["ael_time_increment"])
-  return 1
-if (i_vars["ael_price_increment"] != bu_vars["ael_price_increment"])
-  return 1
-return 0
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  if (i_vars["target_order_type"] != bu_vars["target_order_type"])
+    return 1
+  if (i_vars["target_order_side"] != bu_vars["target_order_side"])
+    return 1
+  if (i_vars["target_destination"] != bu_vars["target_destination"])
+    return 1
+  if (i_vars["target_size"] != bu_vars["target_size"])
+    return 1
+  if (i_vars["target_limit"] != bu_vars["target_limit"])
+    return 1
+  if (i_vars["ael_on_last"] != bu_vars["ael_on_last"])
+    return 1
+  if (i_vars["ael_on_second"] != bu_vars["ael_on_second"])
+    return 1
+  if (i_vars["ael_on_bid_ask"] != bu_vars["ael_on_bid_ask"])
+    return 1
+  if (i_vars["ael_convert_to_stop"] != bu_vars["ael_convert_to_stop"])
+    return 1
+  if (i_vars["ael_trigger"] != bu_vars["ael_trigger"])
+    return 1
+  if (i_vars["ael_price"] != bu_vars["ael_price"])
+    return 1
+  if (i_vars["ael_time_increment"] != bu_vars["ael_time_increment"])
+    return 1
+  if (i_vars["ael_price_increment"] != bu_vars["ael_price_increment"])
+    return 1
+  return 0
 }
 
 
@@ -674,28 +674,28 @@ set_stop()
 
 stop_vars_changed(i_vars, bu_vars)
 {
-log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-if (i_vars["stop_order_type"] != bu_vars["stop_order_type"])
-  return 1
-if (i_vars["stop_order_side"] != bu_vars["stop_order_side"])
-  return 1
-if (i_vars["stop_size"] != bu_vars["stop_size"])
-  return 1
-if (i_vars["stop_price"] != bu_vars["stop_price"])
-  return 1
-if (i_vars["enable_trailing"] != bu_vars["enable_trailing"])
-  return 1
-if (i_vars["trail_after_entry_complete"] != bu_vars["trail_after_entry_complete"])
-  return 1
-if (i_vars["trail_once"] != bu_vars["trail_once"])
-  return 1
-if (i_vars["trail_trigger"] != bu_vars["trail_trigger"])
-  return 1
-if (i_vars["trail_how"] != bu_vars["trail_how"])
-  return 1
-if (i_vars["trail_increment"] != bu_vars["trail_increment"])
-  return 1
-return 0
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  if (i_vars["stop_order_type"] != bu_vars["stop_order_type"])
+    return 1
+  if (i_vars["stop_order_side"] != bu_vars["stop_order_side"])
+    return 1
+  if (i_vars["stop_size"] != bu_vars["stop_size"])
+    return 1
+  if (i_vars["stop_price"] != bu_vars["stop_price"])
+    return 1
+  if (i_vars["enable_trailing"] != bu_vars["enable_trailing"])
+    return 1
+  if (i_vars["trail_after_entry_complete"] != bu_vars["trail_after_entry_complete"])
+    return 1
+  if (i_vars["trail_once"] != bu_vars["trail_once"])
+    return 1
+  if (i_vars["trail_trigger"] != bu_vars["trail_trigger"])
+    return 1
+  if (i_vars["trail_how"] != bu_vars["trail_how"])
+    return 1
+  if (i_vars["trail_increment"] != bu_vars["trail_increment"])
+    return 1
+  return 0
 }
 
 update_stop_helper(i_vars, bu_vars)

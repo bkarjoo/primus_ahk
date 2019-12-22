@@ -63,7 +63,10 @@ is_off_all_records()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseMove, 0, 0
-  return image_search_simple(500, 150, "images/all_records.PNG")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"]
+  return image_search_simple(500, 150, image_path . "all_records.PNG")
 }
 
 is_off_live()
@@ -71,7 +74,10 @@ is_off_live()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseMove, 0, 0
-  return image_search_simple(500, 150, "images/live.PNG")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"]
+  return image_search_simple(500, 150, image_path . "live.PNG")
 }
 
 is_off_backtesting()
@@ -79,7 +85,10 @@ is_off_backtesting()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
   MouseMove, 0, 0
-  return image_search_simple(500, 150, "images/backtesting.PNG")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"]
+  return image_search_simple(500, 150, image_path + "backtesting.PNG")
 }
 
 turn_all_records_on()
@@ -133,7 +142,10 @@ select_all_checked()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_blotter()
-  return !image_search_simple(100,200,"images/select_all_checkbox.PNG")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"]
+  return !image_search_simple(100,200, image_path . "select_all_checkbox.PNG")
 }
 
 check_select_all()
@@ -167,7 +179,10 @@ enter_box_name_filter(box_name)
 custom_blotter_open()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  return image_search_simple(347,216,"images/create_custom_blotter.PNG")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"]
+  return image_search_simple(347,216, image_path . "create_custom_blotter.PNG")
 }
 
 open_create_custom_blotter()

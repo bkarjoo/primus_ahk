@@ -5,7 +5,10 @@ is_success()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   activate_and_wait_only("BTQ Action", 5)
-  ImageSearch, imgLocA, imgLocB, 0, 0, 315, 107, images/Success.PNG
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"] . "Success.PNG"
+  ImageSearch, imgLocA, imgLocB, 0, 0, 315, 107, %image_path%
   return (ErrorLevel = 0)
 }
 
