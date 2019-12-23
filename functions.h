@@ -42,6 +42,7 @@
 #define ETN EXCHANGE_TRADED_NOTE
 #define PRFRD PREFERRED_STOCK
 #define instrument_type(x) IsInstrumentType(x)
+#define warrant IsInstrumentType(WARRANT)
 #define is_halted IsHalt
 #define is_hard_to_borrow IsHardToBorrow
 #define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
