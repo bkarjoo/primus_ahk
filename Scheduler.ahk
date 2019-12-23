@@ -156,6 +156,11 @@ process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   remove_git_dir(box)
 }
 
+process_tracking()
+{
+
+}
+
 ; this array keeps track of boxes that are queued up
 boxes_in_queue := []
 
@@ -174,6 +179,12 @@ Loop
   {
     process_completed_runs(boxes_in_queue)
     wait_until_with_message(5, "Found no files in jobs folder. Will check again in a minute")
+    continue
+  }
+
+  if (file_name = "tracking.csv")
+  {
+    process_tracking()
     continue
   }
 
