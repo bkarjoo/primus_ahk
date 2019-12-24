@@ -238,10 +238,12 @@
 
 
 // NEWS
+
 #define mna s3_MNA
 #define fda s3_FDA_News
 #define spinoff s3_Spinoff_News
 #define managment_change s3_Mgmt_Changes
+#define ratings (StockNews(News_Current, ACBO, AnySentiment, Recommendations) OR StockNews(News_Current, ACBO, AnySentiment, Upgrade) OR StockNews(News_Current, ACBO, AnySentiment, Downgrade) OR StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Analyst_Research) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Revision) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Reiteration) OR Source3(News_Current, ACBO, AnySentiment, Analyst_PT_Change) OR Source3(News_Current, ACBO, AnySentiment, Downgrades) OR Source3(News_Current, ACBO, AnySentiment, Initiations) OR Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Analyst_News))
 #define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
 #define guidance s3_Guidance
@@ -255,6 +257,7 @@
 #define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
 #define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
 #define option_news Option_News
+
 #define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
 #define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
 #define is_secondary SyndicateType(News_Current, ACBO, Secondary)
