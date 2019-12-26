@@ -234,6 +234,7 @@
 // SIZING // vars to define : shares_per_adr, adr_def, max_shares, dollar_per_position, ref_price_def
 #define perc_open_size .1
 #define perc_pre_mkt_vol .001
+#define perc_volume .25 // used for sweeps
 #define adr_shares (shares_per_adr / adrs)
 #define opg_size_shares (perc_open_size * avg_opg_vol)
 #define pre_mkt_vol_shares (perc_pre_mkt_vol * pre_mkt_volume)
@@ -241,6 +242,7 @@
 #define ps_opg min3(adr_shares, opg_size_shares, max_shares)
 #define position_size_opg min4(max_shares, shares_per_adr / adr_def, dollar_per_position / ref_price_def, max2(opg_size_shares, pre_mkt_vol_shares))
 #define position_size_pv min3(max_shares, shares_per_adr / adr_def, dollar_per_position / ref_price_def)
+#define position_size_sweep min3(max_shares, dollar_per_position / ref_price_def, perc_volume * advs)
 
 
 // NEWS
