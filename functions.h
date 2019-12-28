@@ -223,7 +223,7 @@
 // REF SPY
 #define SPY_n(x) RefStockNumericValue('SPY', x)
 #define USO_n(x) RefStockNumericValue('USO', x)
-#define spy_premkt_perc_chg ((SPY_premkt_last - spy_close) / spy_close)
+#define spy_premkt_perc_chg ((spy_premkt_last - spy_close) / spy_close)
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
 #define spy_day_high SPY_n(day_high)
 #define spy_day_low SPY_n(day_low)
