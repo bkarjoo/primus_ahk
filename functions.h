@@ -223,12 +223,14 @@
 // REF SPY
 #define SPY_n(x) RefStockNumericValue('SPY', x)
 #define USO_n(x) RefStockNumericValue('USO', x)
-#define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))-SPY_n(close))/SPY_n(close))
+#define spy_premkt_perc_chg ((SPY_premkt_last - spy_close) / spy_close)
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
 #define spy_day_high SPY_n(day_high)
 #define spy_day_low SPY_n(day_low)
 #define spy_day_range (spy_day_high - spy_day_low )
 #define spy_last SPY_n(last)
+#define spy_premkt_last SPY_n(pre_mkt_last)
+#define spy_close SPY_n(close)
 
 
 // SIZING // vars to define : shares_per_adr, adr_def, max_shares, dollar_per_position, ref_price_def
