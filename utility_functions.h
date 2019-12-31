@@ -1,4 +1,3 @@
-#define abs(x) if(x < 0, (x) * -1, x)
 #define between(x, y, z) y > x AND y < z
 #define between_(x, y, z) y >= x AND y <= z
 #define and2(a,b) a AND b
