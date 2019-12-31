@@ -209,6 +209,7 @@
 
 // RefStock
 #define ref_stock_n(x, y) RefStockNumericValue(x, y)
+#define rsn(x,y) RefStockNumericValue(x, y)
 #define ref_stock_l(x, y) RefStockLogicalValue(x, y)
 #define r_adr(x, y) ref_stock_n(x, adr(y))
 #define r_briefing_news(x) ref_stock_l(x, briefing_news)
