@@ -168,8 +168,10 @@
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
-#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 120, YES, '04:00-09:29')
-#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
+#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 120, YES, '04:00-09:27')
+#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '08:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '08:00-08:29', CURRENT) > z
+#define pre_mkt_volume_last_30(x) (DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:09', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '09:10-09:19', CURRENT) > x AND DayBar_VolumeP(ALL_VENUES, 1, YES, '9:20-09:27', CURRENT) > x)
+#define avg_premkt_disbursed_volume (DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:09', CURRENT) +  DayBar_VolumeP(ALL_VENUES, 1, YES, '09:10-09:19', CURRENT) + DayBar_VolumeP(ALL_VENUES, 1, YES, '9:20-09:27', CURRENT))/3
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
 #define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
