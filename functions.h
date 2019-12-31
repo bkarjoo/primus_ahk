@@ -75,9 +75,11 @@
 // BID
 #define bid Bid(INSIDE, CURRENT, NO)
 #define bid_pre_mkt Bid(INSIDE, CURRENT, YES)
+#define bid_pre_mkt_perc_chg ((bid_pre_mkt - close) / close)
 // ASK
 #define ask Ask(INSIDE, CURRENT, NO)
 #define ask_pre_mkt Ask(INSIDE, CURRENT, YES)
+#define ask_pre_mkt_perc_chg ((ask_pre_mkt - close) / close)
 // LAST
 #define last Last(ALL_VENUES,CURRENT,NO)
 #define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
