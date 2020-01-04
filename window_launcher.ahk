@@ -78,7 +78,7 @@ launcher_click_wrench()
 log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
 launcher_activate()
 Click 515, 49
-wait_only("PRIMU$ -- Configuration", 30)
+wait_only("PRIMU$ -- Configuration", 60)
 }
 
 

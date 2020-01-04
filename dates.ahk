@@ -1,4 +1,10 @@
 #include logger.ahk
+#include window_launcher.ahk
+#include window_configuration.ahk
+#include launch_rule_cycle.ahk
+#include window_btq_action.ahk
+#include window_task_queue_manager.ahk
+#include inform.ahk
 
 date_convert_to_ahk(d)
 {
@@ -37,4 +43,64 @@ subtract_day(d)
   ahk_date := date_convert_to_ahk(d)
   ahk_date += -1, Days
   return date_convert_from_ahk(ahk_date)
+}
+
+set_backtesting_date_intervals(start_month, start_day, start_year, end_month, end_day, end_year)
+{
+  launcher_activate()
+  launcher_click_wrench()
+  click_backtesting_time_interval_tab()
+  click_multi_day_radio_button()
+  click_start_date()
+  enter_date(start_month,start_day,start_year)
+  click_end_date()
+  enter_date(end_month,end_day,end_year)
+  click_configuration_box_save()
+}
+
+
+run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_half)
+{
+  start_cycles := []
+  end_cycles := []
+  break_down_launch_rule_into_slash_cycles(start_year, start_month, start_half, end_year, end_month, end_half, start_cycles, end_cycles)
+
+  Loop % start_cycles.MaxIndex()
+  {
+    if (number_of_free_slots() = 0)
+    {
+      inform("No more free slots. " . start_cycles[A_Index])
+    }
+    pause_mechanism()
+    launcher_activate()
+    launcher_click_wrench()
+    click_backtesting_time_interval_tab()
+    click_multi_day_radio_button()
+    click_start_date()
+    ; MsgBox % start_cycles[A_Index]
+    Send % start_cycles[A_Index]
+    ; MsgBox % end_cycles[A_Index]
+    click_end_date()
+    Send % end_cycles[A_Index]
+    click_configuration_box_save()
+
+    launcher_click_play()
+    succeeded := is_success()
+    ; quick_inform("succeeded: " . succeeded)
+    if (succeeded)
+    {
+      btq_action_press_ok()
+      Sleep, 1000
+      i := i + 1
+      if (i > schedule_cycles.MaxIndex())
+        break
+      continue
+    }
+    else
+    {
+      inform("Problem with run.")
+    }
+  }
+
+  MsgBox % "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
 }

@@ -246,6 +246,12 @@
 // ref_price_def (either last price, or day high for breakout or order price for sweep)
 // max_risk_mgt_shares (as per risk management tab settings)
 // size factor (simple size will be multiplied by this )
+// #define shares_per_adr
+// #define dollar_per_position
+// #define adr_def
+// #define ref_price_def
+// #define size_factor
+// #define max_risk_mgt_shares
 
 #define position_size_simple (min2(shares_per_adr / adr_def, dollar_per_position / ref_price_def) * size_factor)
 

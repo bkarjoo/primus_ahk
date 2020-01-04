@@ -1,6 +1,39 @@
-; hotkeys for activating primus analysis windows
-; Analysis
+; windows
+#include window_launcher.ahk
 #include window_blotter.ahk
+#include window_black_box_design.ahk
+#include window_order_form.ahk
+#include window_expression_builder.ahk
+#include window_basket_manager.ahk
+#include window_edit_basket.ahk
+#include window_save_blackbox.ahk
+#include window_information.ahk
+#include window_btq_action.ahk
+; tabs
+#include tab_design.ahk
+#include tab_symbols.ahk
+#include tab_options.ahk
+#include tab_risk_management.ahk
+#include tab_launch_rule.ahk
+; utilities
+#include box_name_builder.ahk
+#include files.ahk
+#include gcc_compile.ahk
+#include check_boxes.ahk
+#include box_finder.ahk
+#include wait_policy.ahk
+#include inform.ahk
+#include code_parser.ahk
+#include box_builder.ahk
+#include box_updater.ahk
+#include launch_rule_cycle.ahk
+#include receiver.ahk
+#include logger.ahk
+#include dates.ahk
+
+; job name generator for saving job files
+
+
 
 +!a::
 WinActivate, Statistic Report
@@ -43,10 +76,45 @@ return
   send, git clone https://github.com/bkarjoo/%out%
   return
 
-; job name generator for saving job files
++!h::
+  InputBox, box, q, box name
+  InputBox, ver, q, version
+  git_clone(box, ver)
+  msgbox, verify clone of %box% %ver%
+  compile_code_folder(box)
+  msgbox, verify compile of %box%
+  f := find_box(box)
+  if (f)
+    update_box_dynamic_version(box, ver)
+  else
+    build_local_box_version(box, ver)
+  msgbox, backing up %box%
+  backup_compiled_files_helper(box, "")
+  git_commit_bu()
+  git_push_bu()
+  msgbox, removing %box%
+  remove_git_dir(box)
+  msgbox, done
+  return
+
++!i::
+  FormatTime, n,, MM/d/yy HH:mm
+  send, %n%:
+  return
+
 +!j:: ; job
-  random, n, 1000000, 9999999
+  FormatTime, n,, yyMMdHHmm
   send, job%n%.csv
+  return
+
++!k::
+  InputBox, sy, q, start year
+  InputBox, sm, q, start month
+  InputBox, sh, q, start half
+  InputBox, ey, q, end year
+  InputBox, em, q, end month
+  InputBox, eh, q, end half
+  run_date_cycle(sy, sm, sh, ey, em, eh)
   return
 
 +!l::
@@ -114,6 +182,7 @@ return
 
 +#v::
 +!v::
+WinActivate, Google Chrome
 return
 
 +!x::
