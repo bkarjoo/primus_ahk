@@ -5,6 +5,7 @@
 #include window_btq_action.ahk
 #include window_task_queue_manager.ahk
 #include inform.ahk
+#include wait_policy.ahk
 
 date_convert_to_ahk(d)
 {
@@ -67,9 +68,10 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
 
   Loop % start_cycles.MaxIndex()
   {
-    if (number_of_free_slots() = 0)
+    n := A_Index
+    while (number_of_free_slots() = 0)
     {
-      inform("No more free slots. " . start_cycles[A_Index])
+      wait_until_with_message(5, "No more free slots. " . start_cycles[n])
     }
     pause_mechanism()
     launcher_activate()
