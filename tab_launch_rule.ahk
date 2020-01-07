@@ -24,7 +24,8 @@ set_launch_rule(rule)
 change_just_the_launch_rule(lr)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  click_launch_rule_tab()
+  click_launch_rule_tab_no_confirm()
+  sleep, 1000
   set_launch_rule(lr)
 }
 

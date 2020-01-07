@@ -1,5 +1,6 @@
 #include wait_policy.ahk
 #include logger.ahk
+#include inform.ahk
 
 Count(H, N)
 {
@@ -81,6 +82,8 @@ number_of_active_runs_for_box(box_name)
   hour_glass_sleep(200)
   s := Clipboard
   lines := StrSplit(s, "`n")
+	if (maintenance_count(s) > 0)
+		return 1
   count := 0
   Loop % lines.MaxIndex()
   {
@@ -90,5 +93,7 @@ number_of_active_runs_for_box(box_name)
         count := count + 1
     }
   }
+	msg_txt := "There are " . lines.MaxIndex() . " lines in task queue manager."
+	inform_timeout(msg_txt, 2)
   return count
 }

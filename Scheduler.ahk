@@ -97,7 +97,8 @@ run_launch_rule_cycles(schedule_cycles, launch_rules, cycle_names, boxes_in_queu
       }
     }
     process_completed_runs(boxes_in_queue)
-    wait_until_with_message(60, "waiting for free slots...")
+    pause_mechanism()
+    wait_until_with_message(5, "waiting for free slots...")
   }
 }
 
@@ -133,7 +134,6 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   break_down_launch_rule_into_cycles(cycles, y1, m1, h1, y2, m2, h2, cycle_names)
 
   run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names, boxes_in_queue)
-
 }
 
 process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
@@ -141,10 +141,13 @@ process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; pull the code for the box
   trace("git_clone " . box . " " . version, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+
+  pause_mechanism()
   git_clone(box, version)
   ; TODO confirm new box folder created
   ; TODO confirm folder has all the requisite files
 
+  pause_mechanism()
   process_code(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
 
   ; delete the code for the box
@@ -152,7 +155,10 @@ process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   remove_git_dir(box)
 }
 
+process_tracking()
+{
 
+}
 
 ; this array keeps track of boxes that are queued up
 boxes_in_queue := []
@@ -166,10 +172,18 @@ Loop
   get_jobs()
   file_name := get_top_file("jobs")
   trace("scheduler processing " . file_name, A_ThisFunc, A_ScriptName, A_LineNumber, 3)
+
+  pause_mechanism()
   if (file_name = "")
   {
     process_completed_runs(boxes_in_queue)
-    wait_until_with_message(60, "Found no files in jobs folder. Will check again in a minute")
+    wait_until_with_message(5, "Found no files in jobs folder. Will check again in a minute")
+    continue
+  }
+
+  if (file_name = "tracking.csv")
+  {
+    process_tracking()
     continue
   }
 

@@ -62,12 +62,15 @@ backup(file_name, name, i_folder)
 confirm_image_search_files_exist()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  confirm_file_exists("images/checked.PNG")
-  confirm_file_exists("images/design.PNG")
-  confirm_file_exists("images/launch_rule.PNG")
-  confirm_file_exists("images/options.PNG")
-  confirm_file_exists("images/risk_management.PNG")
-  confirm_file_exists("images/symbols.PNG")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"]
+  confirm_file_exists(image_path . "checked.PNG")
+  confirm_file_exists(image_path . "design.PNG")
+  confirm_file_exists(image_path . "launch_rule.PNG")
+  confirm_file_exists(image_path . "options.PNG")
+  confirm_file_exists(image_path . "risk_management.PNG")
+  confirm_file_exists(image_path . "symbols.PNG")
 }
 
 confirm_code_files_exist()

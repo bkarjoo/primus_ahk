@@ -12,14 +12,17 @@ confirm_basket_manager_is_open()
 
 basket_manager_private_tab_selected()
 {
-log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-res := activate_and_wait_only("Basket Manager", 5)
-if (res = 0)
-  inform("basket_manager_private_tab_selected can't activate basket manager")
-ImageSearch, ox, oy, 0, 0, 500, 500, images/private.PNG
-if (ErrorLevel = 0)
-  return 1
-return 0
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  res := activate_and_wait_only("Basket Manager", 5)
+  if (res = 0)
+    inform("basket_manager_private_tab_selected can't activate basket manager")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"] . "private.PNG"
+  ImageSearch, ox, oy, 0, 0, 500, 500, %image_path%
+  if (ErrorLevel = 0)
+    return 1
+  return 0
 }
 
 click_basket_manager_private_tab()
@@ -41,14 +44,17 @@ click_basket_manager_private_tab()
 
 basket_manager_sub_folder_selected()
 {
-log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-res := activate_and_wait_only("Basket Manager", 5)
-if (res = 0)
-  inform("basket_manager_sub_folder_selected can't activate basket manager")
-ImageSearch, ox, oy, 27, 89, 168, 125, images/sub_folder.PNG
-if (ErrorLevel = 0)
-  return 1
-return 0
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  res := activate_and_wait_only("Basket Manager", 5)
+  if (res = 0)
+    inform("basket_manager_sub_folder_selected can't activate basket manager")
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  image_path := creds["image_path"] . "sub_folder.PNG"
+  ImageSearch, ox, oy, 27, 89, 168, 125, %image_path%
+  if (ErrorLevel = 0)
+    return 1
+  return 0
 }
 
 click_basket_manager_sub_folder()
@@ -74,7 +80,10 @@ basket_manager_new_basket()
   Loop, 50
   {
     sleep, 100
-    ImageSearch, ox, oy, 0, 0, 700, 500, images/new_basket_menu.PNG
+    creds := {}
+    load_csv_dictionary("secret.csv", creds)
+    image_path := creds["image_path"] . "new_basket_menu.PNG"
+    ImageSearch, ox, oy, 0, 0, 700, 500, %image_path%
     if (ErrorLevel = 0)
       break
   }
@@ -109,6 +118,7 @@ open_existing_basket(name)
   ; search for the basket
   click_basket_manager_filter_text_box()
   Clipboard := name
+  Sleep, 200
   Send, ^v
   Sleep, 200
   click_basket_manager_run_filter()

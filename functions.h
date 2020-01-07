@@ -42,9 +42,11 @@
 #define ETN EXCHANGE_TRADED_NOTE
 #define PRFRD PREFERRED_STOCK
 #define instrument_type(x) IsInstrumentType(x)
+#define warrant IsInstrumentType(WARRANT)
 #define is_halted IsHalt
 #define is_hard_to_borrow IsHardToBorrow
 #define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
+#define maximum_days_from_ipo(x) (DaysFromIPO > -1 AND DaysFromIPO < x)
 #define ipo_price IPOPrice
 #define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
@@ -73,9 +75,11 @@
 // BID
 #define bid Bid(INSIDE, CURRENT, NO)
 #define bid_pre_mkt Bid(INSIDE, CURRENT, YES)
+#define bid_pre_mkt_perc_chg ((bid_pre_mkt - close) / close)
 // ASK
 #define ask Ask(INSIDE, CURRENT, NO)
 #define ask_pre_mkt Ask(INSIDE, CURRENT, YES)
+#define ask_pre_mkt_perc_chg ((ask_pre_mkt - close) / close)
 // LAST
 #define last Last(ALL_VENUES,CURRENT,NO)
 #define last_pre_mkt Last(ALL_VENUES,CURRENT,YES)
@@ -102,6 +106,7 @@
 #define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
 #define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
 #define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+#define acbo_high max2(pre_mkt_high, post_mkt_high)
 #define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
 #define minute_high_prv(x, y) MinuteHigh(ALL_VENUES, x, y, NO, True)
 #define minute_high_I_prv(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
@@ -122,6 +127,7 @@
 #define day_low_ext_prv(x) DayLow(ALL_VENUES,1,x,YES)
 #define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
 #define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
+#define acbo_low min2(pre_mkt_low, post_mkt_low) // must check for volume in both to use this function
 #define minute_low(x) MinuteLow(ALL_VENUES, x, CURRENT, NO, True)
 #define minute_low_prv(x, y) MinuteLow(ALL_VENUES, x, y, NO, True)
 #define minute_low_I_prv(x, y) MinuteLow_I(ALL_VENUES, x, y, NO, True)
@@ -139,7 +145,7 @@
 #define day_range_prv(x) (DayHigh(ALL_VENUES,1,x,NO) - DayLow(ALL_VENUES,1,x,NO))
 #define day_range_ext_prv(x) (DayHigh(ALL_VENUES,1,x,YES)-DayLow(ALL_VENUES,1,x,YES))
 #define day_range_ext (day_high_ext - day_low_ext)
-#define pre_mkt_range pre_mkt_high - pre_mkt_low
+#define pre_mkt_range (pre_mkt_high - pre_mkt_low)
 #define post_mkt_range (post_mkt_high - post_mkt_low)
 #define spread Spread(INSIDE, NO)
 #define minute_range(x) (minute_high(x) - minute_low(x))
@@ -164,8 +170,10 @@
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
-#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 120, YES, '04:00-09:29')
-#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '8:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '8:00-08:29', CURRENT) > z
+#define pre_mkt_volume DayBar_Volume(ALL_VENUES, 120, YES, '04:00-09:27')
+#define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '08:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '08:00-08:29', CURRENT) > z
+#define pre_mkt_volume_last_30(x) (DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:09', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '09:10-09:19', CURRENT) > x AND DayBar_VolumeP(ALL_VENUES, 1, YES, '9:20-09:27', CURRENT) > x)
+#define avg_premkt_disbursed_volume (DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:09', CURRENT) +  DayBar_VolumeP(ALL_VENUES, 1, YES, '09:10-09:19', CURRENT) + DayBar_VolumeP(ALL_VENUES, 1, YES, '9:20-09:27', CURRENT))/3
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
 #define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
@@ -203,6 +211,7 @@
 
 // RefStock
 #define ref_stock_n(x, y) RefStockNumericValue(x, y)
+#define rsn(x,y) RefStockNumericValue(x, y)
 #define ref_stock_l(x, y) RefStockLogicalValue(x, y)
 #define r_adr(x, y) ref_stock_n(x, adr(y))
 #define r_briefing_news(x) ref_stock_l(x, briefing_news)
@@ -219,30 +228,61 @@
 // REF SPY
 #define SPY_n(x) RefStockNumericValue('SPY', x)
 #define USO_n(x) RefStockNumericValue('USO', x)
-#define spy_premkt_perc_chg ((SPY_n(DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))-SPY_n(close))/SPY_n(close))
+#define spy_premkt_perc_chg ((spy_premkt_last - spy_close) / spy_close)
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
 #define spy_day_high SPY_n(day_high)
 #define spy_day_low SPY_n(day_low)
 #define spy_day_range (spy_day_high - spy_day_low )
 #define spy_last SPY_n(last)
-
-
+#define spy_premkt_last SPY_n(pre_mkt_last)
+#define spy_close SPY_n(close)
 
 
 // SIZING
-#define adr_shares (shares_per_adr/adrs)
-#define opg_size_shares (perc_open_size * avg_opg_vol)
-#define ps_opg min3(adr_shares, opg_size_shares, max_shares)
+// per strategy definitions
+// shares_per_adr
+// dollar_per_position
+// adr_def (either adr(20) or day_range or pre_mkt_range if higher than adr(20))
+// ref_price_def (either last price, or day high for breakout or order price for sweep)
+// max_risk_mgt_shares (as per risk management tab settings)
+// size factor (simple size will be multiplied by this )
+// #define shares_per_adr
+// #define dollar_per_position
+// #define adr_def
+// #define ref_price_def
+// #define size_factor
+// #define max_risk_mgt_shares
+
+#define position_size_simple (min2(shares_per_adr / adr_def, dollar_per_position / ref_price_def) * size_factor)
+
+// OPG
+#define average_opg_size_restriction .1 * avg_opg_vol
+#define huge_pre_mkt_volume_override .001 * pre_mkt_volume
+#define max_allowable_opg_size max2(average_opg_size_restriction, huge_pre_mkt_volume_override)
+
+#define position_size_opg min3(position_size_simple, max_allowable_opg_size, max_risk_mgt_shares)
+
+ // plain vanilla
+#define position_size_pv min2(position_size_simple, max_risk_mgt_shares)
+
+// sweeps
+#define max_allowable_sweep_order .25 * advs
+#define position_size_sweep min3(position_size_simple, max_risk_mgt_shares, max_allowable_sweep_order)
+
 
 
 // NEWS
+
 #define mna s3_MNA
 #define fda s3_FDA_News
 #define spinoff s3_Spinoff_News
 #define managment_change s3_Mgmt_Changes
+#define ratings (StockNews(News_Current, ACBO, AnySentiment, Recommendations) OR StockNews(News_Current, ACBO, AnySentiment, Upgrade) OR StockNews(News_Current, ACBO, AnySentiment, Downgrade) OR StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Analyst_Research) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Revision) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Reiteration) OR Source3(News_Current, ACBO, AnySentiment, Analyst_PT_Change) OR Source3(News_Current, ACBO, AnySentiment, Downgrades) OR Source3(News_Current, ACBO, AnySentiment, Initiations) OR Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Analyst_News))
+#define upgrade (StockNews(News_Current, ACBO, AnySentiment, Upgrade) or RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Upgrades))
 #define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
 #define guidance s3_Guidance
+#define has_dividend_news (s3_Dividend_Reduction or s3_Dividend_Increase or s3_Dividends or s3_Special_Dividends)
 #define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
 #define general_news GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType)
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
@@ -253,8 +293,13 @@
 #define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
 #define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
 #define option_news Option_News
+
 #define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
 #define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+#define is_secondary SyndicateType(News_Current, ACBO, Secondary)
+#define is_spot_secondary SyndicateType(News_Current, ACBO, SpotSecondary)
+#define syndicate_size SyndicateSize(News_Current, ACBO)
+#define has_syndicate_news (is_secondary or is_spot_secondary or StockNews(News_Current, ACBO, AnySentiment, Syndicate))
 
 
 #define s3(x) Source3(News_Current, ACBO, AnySentiment, x)
@@ -275,7 +320,7 @@
 #define s3_Downgrades Source3(News_Current, ACBO, AnySentiment, Downgrades)
 #define s3_Earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
 #define s3_Economic_Events Source3(News_Current, ACBO, AnySentiment, Economic_Events)
-#define s3_Equity _Offerings Source3(News_Current, ACBO, AnySentiment, Equity_Offerings)
+#define s3_Equity_Offerings Source3(News_Current, ACBO, AnySentiment, Equity_Offerings)
 #define s3_ETF_News Source3(News_Current, ACBO, AnySentiment, ETF_News)
 #define s3_FDA_News Source3(News_Current, ACBO, AnySentiment, FDA_News)
 #define s3_FOMC_News Source3(News_Current, ACBO, AnySentiment, FOMC_News)
@@ -283,31 +328,30 @@
 #define s3_General_News Source3(News_Current, ACBO, AnySentiment, General_News)
 #define s3_Guidance Source3(News_Current, ACBO, AnySentiment, Guidance)
 #define s3_Hedge_Fund_News Source3(News_Current, ACBO, AnySentiment, Hedge_Fund_News)
-#define s3_lmportant_Buybacks Source3(News_Current, ACBO, AnySentiment, lmportant_Buybacks)
+#define s3_Important_Buybacks Source3(News_Current, ACBO, AnySentiment, Important_Buybacks)
 #define s3_Important Source3(News_Current, ACBO, AnySentiment, Important)
-#define s3_lmportant_Research Source3(News_Current, ACBO, AnySentiment, lmportant_Research)
-#define s3_lmportant_Corp_News Source3(News_Current, ACBO, AnySentiment, lmportant_Corp_News)
-#define s3_lmportant_Dividends Source3(News_Current, ACBO, AnySentiment, lmportant_Dividends)
-#define s3_lmportant_Downgrades Source3(News_Current, ACBO, AnySentiment, lmportant_Downgrades)
-#define s3_lmportant_Eamings Source3(News_Current, ACBO, AnySentiment, lmportant_Eamings)
-#define s3_lmportant_FDA_News Source3(News_Current, ACBO, AnySentiment, lmportant_FDA_News)
-#define s3_lmportant_Guidance Source3(News_Current, ACBO, AnySentiment, lmportant_Guidance)
-#define s3_lmpoitant_Hedge_Fund_News Source3(News_Current, ACBO, AnySentiment, lmpoitant_Hedge_Fund_News)
-#define s3_lmportant_lnsider_Trades Source3(News_Current, ACBO, AnySentiment, lmportant_lnsider_Trades)
-#define s3_Important_IPOs Source3(News_Current, ACBO, AnySentiment, Important _IPOs)
-#define s3_lmportant_MNA Source3(News_Current, ACBO, AnySentiment, lmportant_MNA)
-#define s3_lmportant_Mgmt_Changes Source3(News_Current, ACBO, AnySentiment, lmportant_Mgmt_Changes)
+#define s3_Important_Research Source3(News_Current, ACBO, AnySentiment, Important_Research)
+#define s3_Important_Corp_News Source3(News_Current, ACBO, AnySentiment, Important_Corp_News)
+#define s3_Important_Dividends Source3(News_Current, ACBO, AnySentiment, Important_Dividends)
+#define s3_Important_Downgrades Source3(News_Current, ACBO, AnySentiment, Important_Downgrades)
+#define s3_Important_Earnings Source3(News_Current, ACBO, AnySentiment, Important_Earnings)
+#define s3_Important_FDA_News Source3(News_Current, ACBO, AnySentiment, Important_FDA_News)
+#define s3_Important_Guidance Source3(News_Current, ACBO, AnySentiment, Important_Guidance)
+#define s3_Important_Hedge_Fund_News Source3(News_Current, ACBO, AnySentiment, Important_Hedge_Fund_News)
+#define s3_Important_Insider_Trades Source3(News_Current, ACBO, AnySentiment, Important_Insider_Trades)
+#define s3_Important_IPOs Source3(News_Current, ACBO, AnySentiment, Important_IPOs)
+#define s3_Important_MNA Source3(News_Current, ACBO, AnySentiment, Important_MNA)
+#define s3_Important_Mgmt_Changes Source3(News_Current, ACBO, AnySentiment, Important_Mgmt_Changes)
 #define s3_Important_Initiations Source3(News_Current, ACBO, AnySentiment, Important_Initiations)
-#define s3_lmportant_Upgrades Source3(News_Current, ACBO, AnySentiment, lmportant_Upgrades)
-#define s3_lndex_Changes Source3(News_Current, ACBO, AnySentiment, lndex_Changes)
-#define s3_lnsider_Trades Source3(News_Current, ACBO, AnySentiment, lnsider_Trades)
+#define s3_Important_Upgrades Source3(News_Current, ACBO, AnySentiment, Important_Upgrades)
+#define s3_Index_Changes Source3(News_Current, ACBO, AnySentiment, Index_Changes)
+#define s3_Insider_Trades Source3(News_Current, ACBO, AnySentiment, Insider_Trades)
 #define s3_Foreign_Ratings_Actions Source3(News_Current, ACBO, AnySentiment, Foreign_Ratings_Actions)
 #define s3_IPOs Source3(News_Current, ACBO, AnySentiment, IPOs)
 #define s3_Legal_News Source3(News_Current, ACBO, AnySentiment, Legal_News)
 #define s3_Mgmt_Changes Source3(News_Current, ACBO, AnySentiment, Mgmt_Changes)
 #define s3_Mgmt_Comments Source3(News_Current, ACBO, AnySentiment, Mgmt_Comments)
 #define s3_MNA Source3(News_Current, ACBO, AnySentiment, MNA)
-
 #define s3_Initiations Source3(News_Current, ACBO, AnySentiment, Initiations)
 #define s3_Option_News Source3(News_Current, ACBO, AnySentiment, Option_News)
 #define s3_Political_News Source3(News_Current, ACBO, AnySentiment, Political_News)
@@ -318,7 +362,6 @@
 #define s3_Short Source3(News_Current, ACBO, AnySentiment, Short)
 #define s3_Special_Dividends Source3(News_Current, ACBO, AnySentiment, Special_Dividends)
 #define s3_Spinoff_News Source3(News_Current, ACBO, AnySentiment, Spinoff_News)
-
 #define s3_Buybacks Source3(News_Current, ACBO, AnySentiment, Buybacks)
 #define s3_Stock_Splits Source3(News_Current, ACBO, AnySentiment, Stock_Splits)
 #define s3_Popular_News Source3(News_Current, ACBO, AnySentiment, Popular_News)
