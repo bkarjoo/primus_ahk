@@ -1,46 +1,9 @@
-; windows
-#include window_launcher.ahk
-#include window_blotter.ahk
-#include window_black_box_design.ahk
-#include window_order_form.ahk
-#include window_expression_builder.ahk
-#include window_basket_manager.ahk
-#include window_edit_basket.ahk
-#include window_save_blackbox.ahk
-#include window_information.ahk
-#include window_btq_action.ahk
-; tabs
-#include tab_design.ahk
-#include tab_symbols.ahk
-#include tab_options.ahk
-#include tab_risk_management.ahk
-#include tab_launch_rule.ahk
-; utilities
-#include box_name_builder.ahk
-#include files.ahk
-#include gcc_compile.ahk
-#include check_boxes.ahk
-#include box_finder.ahk
-#include wait_policy.ahk
-#include inform.ahk
-#include code_parser.ahk
-#include box_builder.ahk
-#include box_updater.ahk
-#include launch_rule_cycle.ahk
-#include receiver.ahk
-#include logger.ahk
-#include dates.ahk
-
-; job name generator for saving job files
-
-
-
+; hotkeys for activating primus analysis windows
+; Analysis
 +!a::
-WinActivate, Statistic Report
-sleep, 100
 WinActivate, Multi-Day Analysis
 sleep, 100
-WinActivate, PnL Analysis Charting
+WinActivate, Statistic Report
 return
 
 ; breakdown

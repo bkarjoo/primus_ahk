@@ -134,7 +134,6 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   break_down_launch_rule_into_cycles(cycles, y1, m1, h1, y2, m2, h2, cycle_names)
 
   run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names, boxes_in_queue)
-
 }
 
 process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
