@@ -45,7 +45,7 @@ set_basket()
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   basket := {}
   generic_code_parser("pp/basket.i", basket)
-  set_basket_helper(basket)
+  set_basket_helper(basket, "0.0")
 }
 
 basket_vars_changed(i_vars, bu_vars)
