@@ -270,7 +270,6 @@
 #define position_size_sweep min3(position_size_simple, max_risk_mgt_shares, max_allowable_sweep_order)
 
 
-
 // NEWS
 
 #define mna s3_MNA
