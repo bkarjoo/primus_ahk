@@ -35,7 +35,7 @@
 
 
 
-+!a::
+!a::
 WinActivate, Statistic Report
 sleep, 100
 WinActivate, Multi-Day Analysis
@@ -44,17 +44,17 @@ WinActivate, PnL Analysis Charting
 return
 
 ; breakdown
-+!b::
+!b::
 WinActivate, Breakdown
 sleep, 100
 WinActivate, PnL Analysis Charting
 return
 
-+!c::
+!c::
 WinActivate, PnL Analysis Charting
 return
 
-+!d::
+!d::
 WinActivate, Execution
 sleep, 100
 WinActivate, Trade -
@@ -62,21 +62,21 @@ sleep, 100
 WinActivate, Trade Analysis Charting
 return
 
-+!e::
+!e::
 WinActivate, Primu$ 7.
 return
 
-+!f::
+!f::
 WinActivate, D:\Users\
 return
 
 ; git hub cloner
-+!g:: ; github
+!g:: ; github
   InputBox, out, question, enter box name
   send, git clone https://github.com/bkarjoo/%out%
   return
 
-+!h::
+!h::
   InputBox, box, q, box name
   InputBox, ver, q, version
   git_clone(box, ver)
@@ -97,17 +97,17 @@ return
   msgbox, done
   return
 
-+!i::
+!i::
   FormatTime, n,, MM/d/yy HH:mm
   send, %n%:
   return
 
-+!j:: ; job
+!j:: ; job
   FormatTime, n,, yyMMdHHmm
   send, job%n%.csv
   return
 
-+!k::
+!k::
   InputBox, sy, q, start year
   InputBox, sm, q, start month
   InputBox, sh, q, start half
@@ -117,7 +117,7 @@ return
   run_date_cycle(sy, sm, sh, ey, em, eh)
   return
 
-+!l::
+!l::
 InputBox, out, q, Enter box name version
 activate_blotter()
 click_refresh()
@@ -132,60 +132,60 @@ send, ^v
 return
 
 +#m::
-+!m::
+!m::
 WinActivate, Basket Matrix
 return
 
 +#n::
-+!n::
+!n::
 WinActivate, News Viewer
 return
 
 +#o::
-+!o::
+!o::
 WinActivate, ahk_exe atom.exe
 return
 
 +#p::
-+!p::
+!p::
 FileDelete, run_state.txt
 FileAppend, False, run_state.txt
 return
 
 +#w::
-+!w::
+!w::
 +#q::
-+!q::
+!q::
 WinActivate, Task Queue Manager
 return
 
 +#r::
-+!r::
+!r::
 WinActivate, Black Box Report
 return
 
 +#s::
-+!s::
+!s::
 InputBox, out, q, Enter box name version
 select_custom_blotter(out)
 return
 
 +#t::
-+!t::
+!t::
 WinActivate, BlackBox Tree
 return
 
 ; git upstream
-+!u::
+!u::
   send, git push --set-upstream origin
   return
 
 +#v::
-+!v::
+!v::
 WinActivate, Google Chrome
 return
 
-+!x::
+!x::
 WinActivate, Trade Analysis Charting
 sleep, 100
 send, !{space}n
