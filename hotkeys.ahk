@@ -38,9 +38,7 @@
 !a::
 WinActivate, Statistic Report
 sleep, 100
-WinActivate, Multi-Day Analysis
-sleep, 100
-WinActivate, PnL Analysis Charting
+WinActivate, Multi-Day Analysis 
 return
 
 ; breakdown

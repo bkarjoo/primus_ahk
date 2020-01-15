@@ -69,7 +69,7 @@ number_of_free_slots()
   task_queue_manager_select_and_copy_all()
   hour_glass_sleep(200)
   s := Clipboard
-  max_runs := 24
+  max_runs := 12
   if (maintenance_count(s) > 0)
     return 0
   return (max_runs - current_queue_size(s))
