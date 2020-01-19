@@ -1,6 +1,7 @@
 #include wait_policy.ahk
 #include logger.ahk
 #include inform.ahk
+#include files.ahk
 
 Count(H, N)
 {
@@ -69,7 +70,10 @@ number_of_free_slots()
   task_queue_manager_select_and_copy_all()
   hour_glass_sleep(200)
   s := Clipboard
-  max_runs := 24
+
+	creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  max_runs := creds["max_queue_size"]
   if (maintenance_count(s) > 0)
     return 0
   return (max_runs - current_queue_size(s))
