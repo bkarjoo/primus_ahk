@@ -58,6 +58,13 @@ waiting_for_run_count(str)
   return word_count(str, "WaitingForRun")
 }
 
+get_max_runs()
+{
+	creds := {}
+	load_csv_dictionary("secret.csv", creds)
+	return creds["max_queue_size"]
+}
+
 current_queue_size(str)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
@@ -73,7 +80,7 @@ number_of_free_slots()
 
 	creds := {}
   load_csv_dictionary("secret.csv", creds)
-  max_runs := creds["max_queue_size"]
+  max_runs := get_max_runs()
   if (maintenance_count(s) > 0)
     return 0
   return (max_runs - current_queue_size(s))
