@@ -78,9 +78,10 @@ git_push_bu()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   creds := {}
+
+  load_csv_dictionary("secret.csv", creds)
   if (creds["backup"] != "TRUE")
     return
-  load_csv_dictionary("secret.csv", creds)
   bu_path := creds["bu_path"]
   ; git -C bu_path push
   cmd := "git -C " . bu_path . " push"
