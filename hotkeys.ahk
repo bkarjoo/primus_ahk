@@ -38,7 +38,7 @@
 !a::
 WinActivate, Statistic Report
 sleep, 100
-WinActivate, Multi-Day Analysis 
+WinActivate, Multi-Day Analysis
 return
 
 ; breakdown

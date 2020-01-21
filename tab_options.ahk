@@ -1,5 +1,7 @@
 #include files.ahk
 #include logger.ahk
+#include window_black_box_design.ahk
+#include check_boxes.ahk
 
 
 get_options_variables(ops)
@@ -13,9 +15,10 @@ get_options_variables(ops)
   ops["cancel_all_pending_orders_trigger_point"] := [180,207]
   ops["close_all_open_positions_trigger_point"] := [180,238]
   ops["place_OPG_orders_trigger_point"] := [180,274]
-  ops["enable_position_sizing_scheme_check_box"] := [19,346]
-  ops["enable_position_sizing_scheme_trigger_point"] := [27,351]
+  ops["enable_position_sizing_scheme_check_box"] := [19,336]
+  ops["enable_position_sizing_scheme_trigger_point"] := [27,341]
 }
+
 
 set_time_option(trigger_point, time)
 {
@@ -135,7 +138,7 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
     set_time_option(ot_vars["close_all_open_positions_trigger_point"], ti_vars["close_all_open_positions"])
   if (ti_vars["place_OPG_orders"] != tbu_vars["place_OPG_orders"])
     set_time_option(ot_vars["place_OPG_orders_trigger_point"], ti_vars["place_OPG_orders"])
-
+  
   set_check_box_confirm("PRIMU$ - Black", 1,pi_vars["enable_position_sizing_scheme"], ot_vars["enable_position_sizing_scheme_check_box"], ot_vars["enable_position_sizing_scheme_trigger_point"])
   if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])
     set_position_sizing_scheme(pi_vars["position_sizing"])

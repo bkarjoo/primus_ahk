@@ -9,9 +9,10 @@
 activate_blotter()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  WinActivate, D:\Users\
-  WinWaitActive, D:\Users\
-}
+  SetTitleMatchMode, 2
+  WinActivate, PrimusBlotter
+  WinWaitActive, PrimusBlotter
+} 
 
 click_refresh()
 {
