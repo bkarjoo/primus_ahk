@@ -118,7 +118,7 @@ return
 !l::
 InputBox, out, q, Enter box name version
 activate_blotter()
-click_refresh()
+;click_refresh()
 click_primus_blotter_tab()
 hour_glass_sleep(200)
 click_name_box()
@@ -127,6 +127,38 @@ send, ^a
 hour_glass_sleep(200)
 Clipboard := out
 send, ^v
+hour_glass_sleep(200)
+click_refresh()
+; double click the check box to select all
+hour_glass_sleep(200)
+Msgbox, Select All Please
+
+MouseClick, Right, 240, 201
+hour_glass_sleep(200)
+MouseClick, Left, 301, 278
+hour_glass_sleep(200)
+send, {Tab}{Tab}
+hour_glass_sleep(200)
+send, ^v
+hour_glass_sleep(200)
+
+send, {Tab}{Tab}
+hour_glass_sleep(200)
+send, {Space}
+hour_glass_sleep(200)
+
+WinWaitActive, Operation completed
+hour_glass_sleep(200)
+send, {Space}
+hour_glass_sleep(200)
+
+activate_blotter()
+hour_glass_sleep(200)
+MouseClick, Left, 112, 85
+hour_glass_sleep(200)
+select_custom_blotter(q)
+
+msgbox done
 return
 
 +#m::
