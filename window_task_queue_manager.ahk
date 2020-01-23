@@ -58,6 +58,11 @@ waiting_for_run_count(str)
   return word_count(str, "WaitingForRun")
 }
 
+online_count(str)
+{
+	return word_count(str, "Online")
+}
+
 get_max_runs()
 {
 	creds := {}

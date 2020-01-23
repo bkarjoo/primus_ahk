@@ -1,3 +1,7 @@
-#include dates.ahk
+#include window_task_queue_manager.ahk
 
-set_backtesting_date_intervals(6,6,2011,6,6,2020)
+task_queue_manager_select_and_copy_all()
+hour_glass_sleep(200)
+s := Clipboard
+msgbox % online_count(s)
+msgbox done
