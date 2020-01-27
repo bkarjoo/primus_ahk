@@ -73,7 +73,6 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     {
       wait_until_with_message(5, "No more free slots. " . start_cycles[n])
     }
-
     pause_mechanism()
     launcher_activate()
     launcher_click_wrench()
