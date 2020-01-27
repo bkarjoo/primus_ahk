@@ -34,6 +34,10 @@
 
 // INSTRUMENT and EXCHANGE
 #define exchange(x) PrimaryExchange(x)
+#define is_nasdaq PrimaryExchange(NASDAQ)
+#define is_nyse PrimaryExchange(NYSE)
+#define is_amex PrimaryExchange(AMEX)
+#define is_arca PrimaryExchange(ARCA)
 #define etp_prefered_exclude etp_exclude AND NOT IsInstrumentType(PREFERRED_STOCK)
 #define etp_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE)
 #define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
