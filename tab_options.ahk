@@ -1,21 +1,24 @@
 #include files.ahk
 #include logger.ahk
+#include window_black_box_design.ahk
+#include check_boxes.ahk
 
 
 get_options_variables(ops)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ops["use_time_options_check_box"] := [17,65]
-  ops["use_time_options_trigger_point"] := [27,75]
-  ops["start_subscription_trigger_point"] := [180,106]
-  ops["start_entering_positions_trigger_point"] := [180,139]
-  ops["stop_entering_positions_trigger_point"] := [180,174]
-  ops["cancel_all_pending_orders_trigger_point"] := [180,207]
-  ops["close_all_open_positions_trigger_point"] := [180,238]
-  ops["place_OPG_orders_trigger_point"] := [180,274]
-  ops["enable_position_sizing_scheme_check_box"] := [19,346]
-  ops["enable_position_sizing_scheme_trigger_point"] := [27,351]
+  ops["use_time_options_trigger_point"] := [25,77]
+  ops["start_subscription_trigger_point"] := [175,93]
+  ops["start_entering_positions_trigger_point"] := [175,118]
+  ops["stop_entering_positions_trigger_point"] := [175,142]
+  ops["cancel_all_pending_orders_trigger_point"] := [175,166]
+  ops["close_all_open_positions_trigger_point"] := [175,189]
+  ops["place_OPG_orders_trigger_point"] := [175,211]
+  ops["enable_position_sizing_scheme_check_box"] := [19,336]
+  ops["enable_position_sizing_scheme_trigger_point"] := [27,341]
 }
+
 
 set_time_option(trigger_point, time)
 {

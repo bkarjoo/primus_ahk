@@ -51,7 +51,7 @@ set_order_form_order_side(side)
   else if (side = "SELL")
     MouseClick, Left, 138,120
   else if (side = "SHORT")
-    MouseClick, Left, 138,130
+    MouseClick, Left, 138,135
   else {
     msg := "Error order side " . side . " not supported"
     inform(msg)
@@ -65,8 +65,16 @@ set_order_form_destination(dest)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
   MouseClick, Left, 374, 63
   sleep, 200
-  if (dest = "CSFB")
-    MouseClick, Left, 322,252
+  if (dest = "CSFB" or dest = "PATHFINDER")
+    MouseClick, Left, 322,121
+  else if (dest = "BLAST")
+    MouseClick, Left, 322,94
+  else if (dest = "CROSSFINDER")
+    MouseClick, Left, 322,107
+  else if (dest = "SNIPER")
+    MouseClick, Left, 322,133
+  else if (dest = "CUSTOM4")
+    MouseClick, Left, 322,146
   else {
     msg := "Error order dest " . dest . " not supported"
     inform(msg)
@@ -86,7 +94,7 @@ open_limit_price_expression_builder()
 open_stop_price_expression_builder()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 240, 2, 2)
+  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Expression Builder", 540, 220, 2, 2)
   if (res = 0)
     inform("open_stop_price_expression_builder failed.")
 }
@@ -96,14 +104,18 @@ set_order_form_TIF(tif)
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: SECONDS, TIF_OPENING, TIF_DAY
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 199, 307
+  MouseClick, Left, 199, 275
   sleep, 200
   if (tif = "SECONDS")
-    MouseClick, Left, 138,338
+    MouseClick, Left, 138,310
   else if (tif = "TIF_OPENING")
-    MouseClick, Left, 138,403
+    MouseClick, Left, 138,321
   else if (tif = "TIF_DAY")
-    MouseClick, Left, 138,456
+    MouseClick, Left, 138,347
+  else if (tif = "TIF_IOC")
+    MouseClick, Left, 138,296
+  else if (tif = "TIF_ON_CLOSE")
+    MouseClick, Left, 138,333
   else {
     msg := "Error order tif " . tif . " not supported"
     inform(msg)
@@ -115,14 +127,18 @@ set_order_form_TIF2(tif)
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ; acceptable types: SECONDS, TIF_IOC, TIF_DAY
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 465, 330
+  MouseClick, Left, 465, 300
   sleep, 200
   if (tif = "SECONDS")
-    MouseClick, Left, 440, 360
+    MouseClick, Left, 440, 333
   else if (tif = "TIF_IOC")
-    MouseClick, Left, 440, 350
+    MouseClick, Left, 440, 320
   else if (tif = "TIF_DAY")
-    MouseClick, Left, 440, 480
+    MouseClick, Left, 440, 373
+  else if (tif = "TIF_ON_CLOSE")
+    MouseClick, Left, 138,359
+  else if (tif = "TIF_OPENING")
+    MouseClick, Left, 138,347
   else {
     msg := "Error order tif " . tif . " not supported"
     inform(msg)
@@ -133,7 +149,7 @@ set_order_form_TIF_seconds(seconds)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 243, 308
+  MouseClick, Left, 243, 276
   sleep, 200
   Send, ^a
   sleep, 200
@@ -144,7 +160,7 @@ set_order_form_TIF2_seconds(seconds)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   wait_activate_if_error("PRIMU$ - Add/Edit Order Form", 2, 2)
-  MouseClick, Left, 507, 332
+  MouseClick, Left, 507, 300
   sleep, 200
   Send, ^a
   sleep, 200
@@ -239,18 +255,21 @@ if (res = 0)
 get_order_form_check_boxes(checkboxes)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  checkboxes["aggregated_tif_check_box"] := [310, 290]
-  checkboxes["calc_lmt_prc_durng_ord_plcmnt_check_box"] := [318, 343]
-  checkboxes["is_proactive_check_box"] := [12, 344]
-  checkboxes["aggregated_tif_trigger_point"] := [330, 308]
-  checkboxes["calc_lmt_prc_durng_ord_plcmnt_trigger_point"] := [330,356]
-  checkboxes["is_proactive_trigger_point"] := [35,357]
+  checkboxes["aggregated_tif_check_box"] := [310, 359]
+  checkboxes["calc_lmt_prc_durng_ord_plcmnt_check_box"] := [12, 288]
+  checkboxes["is_proactive_check_box"] := [12, 311]
+
+  checkboxes["aggregated_tif_trigger_point"] := [330, 277]
+  checkboxes["calc_lmt_prc_durng_ord_plcmnt_trigger_point"] := [35,301]
+  checkboxes["is_proactive_trigger_point"] := [35,324]
+
   checkboxes["enable_trailing_check_box"] := [27,214]
   checkboxes["trail_after_entry_complete_check_box"] := [128,213]
   checkboxes["trail_once_check_box"] := [280, 214]
   checkboxes["enable_trailing_trigger_point"] := [36,221]
   checkboxes["trail_after_entry_complete_trigger_point"] := [138,221]
   checkboxes["trail_once_trigger_point"] := [288,221]
+
   checkboxes["ael_on_last_check_box"] := [370,330]
   checkboxes["ael_on_second_check_box"] := [472,332]
   checkboxes["ael_on_bid_check_box"] := [370,351]

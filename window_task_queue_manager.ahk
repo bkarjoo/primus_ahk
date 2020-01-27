@@ -1,6 +1,7 @@
 #include wait_policy.ahk
 #include logger.ahk
 #include inform.ahk
+#include files.ahk
 
 Count(H, N)
 {
@@ -57,6 +58,18 @@ waiting_for_run_count(str)
   return word_count(str, "WaitingForRun")
 }
 
+online_count(str)
+{
+	return word_count(str, "Online")
+}
+
+get_max_runs()
+{
+	creds := {}
+	load_csv_dictionary("secret.csv", creds)
+	return creds["max_queue_size"]
+}
+
 current_queue_size(str)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
@@ -69,7 +82,10 @@ number_of_free_slots()
   task_queue_manager_select_and_copy_all()
   hour_glass_sleep(200)
   s := Clipboard
-  max_runs := 24
+
+	creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  max_runs := get_max_runs()
   if (maintenance_count(s) > 0)
     return 0
   return (max_runs - current_queue_size(s))
