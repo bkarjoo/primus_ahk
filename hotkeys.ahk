@@ -115,7 +115,7 @@ return
   run_date_cycle(sy, sm, sh, ey, em, eh)
   return
 
-!l::
+!l:: ; types a box name filter in primus blotter
 InputBox, out, q, Enter box name version
 activate_blotter()
 ;click_refresh()
@@ -131,8 +131,25 @@ hour_glass_sleep(200)
 click_refresh()
 ; double click the check box to select all
 hour_glass_sleep(200)
-Msgbox, Select All Please
+ 
+msgbox done
+return
 
+!;:: ; selects all 
+activate_blotter()
+hour_glass_sleep(200)
+MouseClick, Left, 50, 145
+hour_glass_sleep(200)
+MouseClick, Left, 50, 145
+msgbox done
+return
+
+
+!':: ; creates a custom blotter
+InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
+Clipboard := out
+activate_blotter()
+hour_glass_sleep(200)
 MouseClick, Right, 240, 201
 hour_glass_sleep(200)
 MouseClick, Left, 301, 278
@@ -152,14 +169,23 @@ hour_glass_sleep(200)
 send, {Space}
 hour_glass_sleep(200)
 
+msgbox done 
+return 
+
+
+!/:: ; 
+InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
+Clipboard := out
 activate_blotter()
 hour_glass_sleep(200)
 MouseClick, Left, 112, 85
 hour_glass_sleep(200)
-select_custom_blotter(q)
+select_custom_blotter(out)
 
 msgbox done
 return
+
+
 
 +#m::
 !m::

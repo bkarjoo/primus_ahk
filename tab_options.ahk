@@ -8,13 +8,13 @@ get_options_variables(ops)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   ops["use_time_options_check_box"] := [17,65]
-  ops["use_time_options_trigger_point"] := [27,75]
-  ops["start_subscription_trigger_point"] := [180,106]
-  ops["start_entering_positions_trigger_point"] := [180,139]
-  ops["stop_entering_positions_trigger_point"] := [180,174]
-  ops["cancel_all_pending_orders_trigger_point"] := [180,207]
-  ops["close_all_open_positions_trigger_point"] := [180,238]
-  ops["place_OPG_orders_trigger_point"] := [180,274]
+  ops["use_time_options_trigger_point"] := [25,77]
+  ops["start_subscription_trigger_point"] := [175,93]
+  ops["start_entering_positions_trigger_point"] := [175,118]
+  ops["stop_entering_positions_trigger_point"] := [175,142]
+  ops["cancel_all_pending_orders_trigger_point"] := [175,166]
+  ops["close_all_open_positions_trigger_point"] := [175,189]
+  ops["place_OPG_orders_trigger_point"] := [175,211]
   ops["enable_position_sizing_scheme_check_box"] := [19,336]
   ops["enable_position_sizing_scheme_trigger_point"] := [27,341]
 }
@@ -138,7 +138,7 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
     set_time_option(ot_vars["close_all_open_positions_trigger_point"], ti_vars["close_all_open_positions"])
   if (ti_vars["place_OPG_orders"] != tbu_vars["place_OPG_orders"])
     set_time_option(ot_vars["place_OPG_orders_trigger_point"], ti_vars["place_OPG_orders"])
-  
+
   set_check_box_confirm("PRIMU$ - Black", 1,pi_vars["enable_position_sizing_scheme"], ot_vars["enable_position_sizing_scheme_check_box"], ot_vars["enable_position_sizing_scheme_trigger_point"])
   if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])
     set_position_sizing_scheme(pi_vars["position_sizing"])

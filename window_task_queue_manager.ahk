@@ -73,7 +73,7 @@ get_max_runs()
 current_queue_size(str)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  return (online_count(str)/2 + waiting_for_run_count(str) + created_count(str))
+  return (in_progress_count(str) + waiting_for_run_count(str) + created_count(str))
 }
 
 number_of_free_slots()
