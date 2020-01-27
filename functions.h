@@ -177,6 +177,8 @@
 #define volume(x) DayVolume(ALL_VENUES, 1, x, NO)
 #define stock_activity_volume(x) StockActivityVolume(CURRENT, x)
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
+// RESTRICTIONS
+#define ssr_restriction (day_low_prv(P1) <= close_prv(P2) * .9)
 // IMBALANCES
 #define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
 #define imbalance_sell_vol(x) ImbalanceSellVolume(x)
