@@ -260,7 +260,36 @@
 
 #define opening_range_low_5 if(open_time_minute < 60*9+31, opening_range_low_5_930, if(open_time_minute < 60*9+32, opening_range_low_5_931, if(open_time_minute < 60*9+33, opening_range_low_5_932, if(open_time_minute < 60*9+34, opening_range_low_5_933, if(open_time_minute < 60*9+35, opening_range_low_5_934, if(open_time_minute < 60*9+36, opening_range_low_5_935, if(open_time_minute < 60*9+37, opening_range_low_5_936, if(open_time_minute < 60*9+38, opening_range_low_5_937, if(open_time_minute < 60*9+39, opening_range_low_5_938, if(open_time_minute < 60*9+40, opening_range_low_5_939, if(open_time_minute < 60*9+41, opening_range_low_5_940, 0)))))))))))
 
+// 30 min range for CC
+#define range_high_30_1000 DayBar_High(ALL_VENUES, 1, NO, '09:30-09:59')
+#define range_high_30_1030 DayBar_High(ALL_VENUES, 1, NO, '10:00-10:29')
+#define range_high_30_1100 DayBar_High(ALL_VENUES, 1, NO, '10:30-10:59')
+#define range_high_30_1130 DayBar_High(ALL_VENUES, 1, NO, '11:00-11:29')
+#define range_high_30_1200 DayBar_High(ALL_VENUES, 1, NO, '11:30-11:59')
+#define range_high_30_1230 DayBar_High(ALL_VENUES, 1, NO, '12:00-12:29')
+#define range_high_30_1300 DayBar_High(ALL_VENUES, 1, NO, '12:30-12:59')
+#define range_high_30_1330 DayBar_High(ALL_VENUES, 1, NO, '13:00-13:29')
+#define range_high_30_1400 DayBar_High(ALL_VENUES, 1, NO, '13:30-13:59')
+#define range_high_30_1430 DayBar_High(ALL_VENUES, 1, NO, '14:00-14:29')
+#define range_high_30_1500 DayBar_High(ALL_VENUES, 1, NO, '14:30-14:59')
+#define range_high_30_1530 DayBar_High(ALL_VENUES, 1, NO, '15:00-15:29')
 
+#define range_low_30_1000 DayBar_Low(ALL_VENUES, 1, NO, '09:30-09:59')
+#define range_low_30_1030 DayBar_Low(ALL_VENUES, 1, NO, '10:00-10:29')
+#define range_low_30_1100 DayBar_Low(ALL_VENUES, 1, NO, '10:30-10:59')
+#define range_low_30_1130 DayBar_Low(ALL_VENUES, 1, NO, '11:00-11:29')
+#define range_low_30_1200 DayBar_Low(ALL_VENUES, 1, NO, '11:30-11:59')
+#define range_low_30_1230 DayBar_Low(ALL_VENUES, 1, NO, '12:00-12:29')
+#define range_low_30_1300 DayBar_Low(ALL_VENUES, 1, NO, '12:30-12:59')
+#define range_low_30_1330 DayBar_Low(ALL_VENUES, 1, NO, '13:00-13:29')
+#define range_low_30_1400 DayBar_Low(ALL_VENUES, 1, NO, '13:30-13:59')
+#define range_low_30_1430 DayBar_Low(ALL_VENUES, 1, NO, '14:00-14:29')
+#define range_low_30_1500 DayBar_Low(ALL_VENUES, 1, NO, '14:30-14:59')
+#define range_low_30_1530 DayBar_Low(ALL_VENUES, 1, NO, '15:00-15:29')
+
+#define cc_range_high_30 if(conference_call_time < 630, range_high_30_1000, if(conference_call_time < 660, range_high_30_1030, if(conference_call_time < 690, range_high_30_1100, if(conference_call_time < 720, range_high_30_1130, if(conference_call_time < 750, range_high_30_1200, if(conference_call_time < 780, range_high_30_1230, if(conference_call_time < 810, range_high_30_1300, if(conference_call_time < 840, range_high_30_1330, if(conference_call_time < 870, range_high_30_1400, if(conference_call_time < 900, range_high_30_1430, if(conference_call_time < 930, range_high_30_1500, 0)))))))))))
+
+#define cc_range_low_30 if(conference_call_time < 630, range_low_30_1000, if(conference_call_time < 660, range_low_30_1030, if(conference_call_time < 690, range_low_30_1100, if(conference_call_time < 720, range_low_30_1130, if(conference_call_time < 750, range_low_30_1200, if(conference_call_time < 780, range_low_30_1230, if(conference_call_time < 810, range_low_30_1300, if(conference_call_time < 840, range_low_30_1330, if(conference_call_time < 870, range_low_30_1400, if(conference_call_time < 900, range_low_30_1430, if(conference_call_time < 930, range_low_30_1500, 0)))))))))))
 
 // RefStock
 #define ref_stock_n(x, y) RefStockNumericValue(x, y)
