@@ -90,6 +90,8 @@
 #define pre_mkt_price DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_last day_bar_close( 1, '04:00-09:27')
 #define pre_mkt_NYSE_last day_bar_close( 1, '04:00-09:29')
+#define pre_mkt_last_nyse day_bar_close( 1, '04:00-09:29')
+#define pre_mkt_last_nsdq day_bar_close( 1, '04:00-09:27')
 #define pre_mkt_perc_chg ((day_bar_close(1, '08:00-09:27') - close)/close)
 #define price_delta(x) PriceDelta(ALL_VENUES, x, NO)
 #define position_delta PositionDelta(ALL_VENUES, NO)
@@ -109,6 +111,8 @@
 #define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
 #define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
 #define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_high_nsdq DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_high_nyse DayBar_High(ALL_VENUES, 1, YES, '04:00-09:29')
 #define post_mkt_high DayBar_HighP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
 #define acbo_high max2(pre_mkt_high, post_mkt_high)
 #define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
@@ -130,6 +134,8 @@
 #define day_low_prv(x) DayLow(ALL_VENUES,1,x,NO)
 #define day_low_ext_prv(x) DayLow(ALL_VENUES,1,x,YES)
 #define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_low_nsdq DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_low_nyse DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:29')
 #define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
 #define acbo_low min2(pre_mkt_low, post_mkt_low) // must check for volume in both to use this function
 #define minute_low(x) MinuteLow(ALL_VENUES, x, CURRENT, NO, True)
@@ -151,6 +157,8 @@
 #define day_range_ext (day_high_ext - day_low_ext)
 #define pre_mkt_range (pre_mkt_high - pre_mkt_low)
 #define post_mkt_range (post_mkt_high - post_mkt_low)
+#define pre_mkt_range_nsdq (pre_mkt_high_nsdq - pre_mkt_low_nsdq)
+#define pre_mkt_range_nyse (pre_mkt_high_nyse - pre_mkt_low_nyse)
 #define spread Spread(INSIDE, NO)
 #define minute_range(x) (minute_high(x) - minute_low(x))
 #define minute_range_ext_dv(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, True) - MinuteLow(ALL_VENUES, x, CURRENT, YES, True))
@@ -175,6 +183,8 @@
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
 #define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
 #define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_volume_nsdq DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
+#define pre_mkt_volume_nyse DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:29')
 #define pre_mkt_volume_disbursed(x,y,z) DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:29', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '08:30-08:59', CURRENT) > y AND DayBar_VolumeP(ALL_VENUES, 1, YES, '08:00-08:29', CURRENT) > z
 #define pre_mkt_volume_last_30(x) (DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:09', CURRENT) > x AND  DayBar_VolumeP(ALL_VENUES, 1, YES, '09:10-09:19', CURRENT) > x AND DayBar_VolumeP(ALL_VENUES, 1, YES, '9:20-09:27', CURRENT) > x)
 #define avg_premkt_disbursed_volume (DayBar_VolumeP(ALL_VENUES, 1, YES, '09:00-09:09', CURRENT) +  DayBar_VolumeP(ALL_VENUES, 1, YES, '09:10-09:19', CURRENT) + DayBar_VolumeP(ALL_VENUES, 1, YES, '9:20-09:27', CURRENT))/3
@@ -183,7 +193,7 @@
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
 // RESTRICTIONS
 #define ssr_restriction (day_low_prv(P1) <= close_prv(P2) * .9) // it was down 10% at sime point the previous day
-// IMBALANCES
+// IMBALANCES only nyse imbalances are available currently 
 #define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
 #define imbalance_sell_vol(x) ImbalanceSellVolume(x)
 #define imbalance_paired_vol ImbPair
