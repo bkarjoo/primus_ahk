@@ -240,6 +240,18 @@
 #define opening_range_low_5_939 DayBar_Low(ALL_VENUES, 1, NO, '09:39-09:43')
 #define opening_range_low_5_940 DayBar_Low(ALL_VENUES, 1, NO, '09:40-09:44')
 
+#define opening_range_volume_5_930 DayBar_Volume(ALL_VENUES, 1, NO, '09:30-09:34')
+#define opening_range_volume_5_931 DayBar_Volume(ALL_VENUES, 1, NO, '09:31-09:35')
+#define opening_range_volume_5_932 DayBar_Volume(ALL_VENUES, 1, NO, '09:32-09:36')
+#define opening_range_volume_5_933 DayBar_Volume(ALL_VENUES, 1, NO, '09:33-09:37')
+#define opening_range_volume_5_934 DayBar_Volume(ALL_VENUES, 1, NO, '09:34-09:38')
+#define opening_range_volume_5_935 DayBar_Volume(ALL_VENUES, 1, NO, '09:35-09:39')
+#define opening_range_volume_5_936 DayBar_Volume(ALL_VENUES, 1, NO, '09:36-09:40')
+#define opening_range_volume_5_937 DayBar_Volume(ALL_VENUES, 1, NO, '09:37-09:41')
+#define opening_range_volume_5_938 DayBar_Volume(ALL_VENUES, 1, NO, '09:38-09:42')
+#define opening_range_volume_5_939 DayBar_Volume(ALL_VENUES, 1, NO, '09:39-09:43')
+#define opening_range_volume_5_940 DayBar_Volume(ALL_VENUES, 1, NO, '09:40-09:44')
+
 #define opening_range_5_930 (opening_range_high_5_930 - opening_range_high_5_930)
 #define opening_range_5_931 (opening_range_high_5_931 - opening_range_high_5_931)
 #define opening_range_5_932 (opening_range_high_5_932 - opening_range_high_5_932)
@@ -259,6 +271,8 @@
 #define opening_range_high_5 if(open_time_minute < 60*9+31, opening_range_high_5_930, if(open_time_minute < 60*9+32, opening_range_high_5_931, if(open_time_minute < 60*9+33, opening_range_high_5_932, if(open_time_minute < 60*9+34, opening_range_high_5_933, if(open_time_minute < 60*9+35, opening_range_high_5_934, if(open_time_minute < 60*9+36, opening_range_high_5_935, if(open_time_minute < 60*9+37, opening_range_high_5_936, if(open_time_minute < 60*9+38, opening_range_high_5_937, if(open_time_minute < 60*9+39, opening_range_high_5_938, if(open_time_minute < 60*9+40, opening_range_high_5_939, if(open_time_minute < 60*9+41, opening_range_high_5_940, 0)))))))))))
 
 #define opening_range_low_5 if(open_time_minute < 60*9+31, opening_range_low_5_930, if(open_time_minute < 60*9+32, opening_range_low_5_931, if(open_time_minute < 60*9+33, opening_range_low_5_932, if(open_time_minute < 60*9+34, opening_range_low_5_933, if(open_time_minute < 60*9+35, opening_range_low_5_934, if(open_time_minute < 60*9+36, opening_range_low_5_935, if(open_time_minute < 60*9+37, opening_range_low_5_936, if(open_time_minute < 60*9+38, opening_range_low_5_937, if(open_time_minute < 60*9+39, opening_range_low_5_938, if(open_time_minute < 60*9+40, opening_range_low_5_939, if(open_time_minute < 60*9+41, opening_range_low_5_940, 0)))))))))))
+
+#define opening_range_volume_5 if(open_time_minute < 60*9+31, opening_range_volume_5_930, if(open_time_minute < 60*9+32, opening_range_volume_5_931, if(open_time_minute < 60*9+33, opening_range_volume_5_932, if(open_time_minute < 60*9+34, opening_range_volume_5_933, if(open_time_minute < 60*9+35, opening_range_volume_5_934, if(open_time_minute < 60*9+36, opening_range_volume_5_935, if(open_time_minute < 60*9+37, opening_range_volume_5_936, if(open_time_minute < 60*9+38, opening_range_volume_5_937, if(open_time_minute < 60*9+39, opening_range_volume_5_938, if(open_time_minute < 60*9+40, opening_range_volume_5_939, if(open_time_minute < 60*9+41, opening_range_volume_5_940, 0)))))))))))
 
 // 30 min range for CC
 #define range_high_30_1000 DayBar_High(ALL_VENUES, 1, NO, '09:30-09:59')
