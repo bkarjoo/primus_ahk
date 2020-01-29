@@ -272,6 +272,8 @@
 
 #define opening_range_low_5 if(open_time_minute < 60*9+31, opening_range_low_5_930, if(open_time_minute < 60*9+32, opening_range_low_5_931, if(open_time_minute < 60*9+33, opening_range_low_5_932, if(open_time_minute < 60*9+34, opening_range_low_5_933, if(open_time_minute < 60*9+35, opening_range_low_5_934, if(open_time_minute < 60*9+36, opening_range_low_5_935, if(open_time_minute < 60*9+37, opening_range_low_5_936, if(open_time_minute < 60*9+38, opening_range_low_5_937, if(open_time_minute < 60*9+39, opening_range_low_5_938, if(open_time_minute < 60*9+40, opening_range_low_5_939, if(open_time_minute < 60*9+41, opening_range_low_5_940, 0)))))))))))
 
+#define opening_range_5 (opening_range_high_5 - opening_range_low_5)
+
 #define opening_range_volume_5 if(open_time_minute < 60*9+31, opening_range_volume_5_930, if(open_time_minute < 60*9+32, opening_range_volume_5_931, if(open_time_minute < 60*9+33, opening_range_volume_5_932, if(open_time_minute < 60*9+34, opening_range_volume_5_933, if(open_time_minute < 60*9+35, opening_range_volume_5_934, if(open_time_minute < 60*9+36, opening_range_volume_5_935, if(open_time_minute < 60*9+37, opening_range_volume_5_936, if(open_time_minute < 60*9+38, opening_range_volume_5_937, if(open_time_minute < 60*9+39, opening_range_volume_5_938, if(open_time_minute < 60*9+40, opening_range_volume_5_939, if(open_time_minute < 60*9+41, opening_range_volume_5_940, 0)))))))))))
 
 // 30 min range for CC
