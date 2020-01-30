@@ -246,3 +246,67 @@ WinActivate, Trade Analysis Charting
 sleep, 100
 send, !{space}n
 return
+
+OpenAndSave(x, y)
+{
+MouseClick, Left, %x%, %y%
+WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
+sleep 200
+MouseClick, Left, 532, 478
+sleep 200
+}
+
+; open box
+^,::
+msgbox, control comma
+/*
+launcher_click_edit_box()
+*/
+msgbox done
+return 
+
+; pmo fix
+^.::
+sleep 200
+click_options_tab()
+sleep 200
+MouseClick, Left, 680, 540
+WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
+sleep 200
+; change to sell
+MouseClick, Left, 191, 93
+sleep 200
+MouseClick, Left, 191, 122
+sleep 200
+
+
+Loop, 6 
+{
+	OpenAndSave(548, 203 + (A_Index - 1) * 47)
+	WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
+}
+
+MouseClick, Left, 529, 479
+sleep 200
+msgbox, done with pmo
+return 
+
+
+; stop fix
+^/::
+msgbox hello 
+/*
+click_design_tab()
+stop_open_existing_order()
+
+
+MouseClick, Left, 515, 150
+sleep 400
+MouseClick, Left, 533, 480
+sleep 200
+click_validate_and_close()
+sleep 200
+launcher_click_save_box()
+*/
+msgbox done
+return
