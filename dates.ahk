@@ -104,5 +104,5 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     }
   }
 
-  MsgBox % "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
+  ;MsgBox % "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
 }
