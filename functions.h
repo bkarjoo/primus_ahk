@@ -121,6 +121,8 @@
 #define minute_high_I_prv_dis(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
 #define minute_high_ext_dv(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, True)
 #define minute_high_ext(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, False)
+#define completed_1_minute_bars_high(x) MinuteHigh(ALL_VENUES, x, P1, NO, True)
+#define completed_x_minute_bar_high(x) MinuteHigh_I(ALL_VENUES, x, P1, NO, True)
 #define new_high NewDayHigh(1, NO)
 #define new_high_days(x) NewDayHigh(x, NO)
 #define new_high_ext NewDayHigh(1, YES)
@@ -144,6 +146,8 @@
 #define minute_low_I_prv_dis(x, y) MinuteLow_I(ALL_VENUES, x, y, NO, True)
 #define minute_low_ext_dv(x) MinuteLow(ALL_VENUES, x, CURRENT, YES, True)
 #define minute_low_ext(x) MinuteLow(ALL_VENUES, x, CURRENT, YES, False)
+#define completed_1_minute_bars_low(x) MinuteLow(ALL_VENUES, x, P1, NO, True)
+#define completed_x_minute_bar_low(x) MinuteLow_I(ALL_VENUES, x, P1, NO, True)
 #define new_low NewDayLow(1, NO)
 #define new_low_days(x) NewDayLow(x, NO)
 #define new_low_ext NewDayLow(1, YES)
@@ -164,6 +168,8 @@
 #define minute_range_ext_dv(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, True) - MinuteLow(ALL_VENUES, x, CURRENT, YES, True))
 #define minute_range_ext(x) (MinuteHigh(ALL_VENUES, x, CURRENT, YES, False) - MinuteLow(ALL_VENUES, x, CURRENT, YES, False))
 #define min_range_p1_p5(x) day_range_prv(P1) > x and day_range_prv(P2) > x and day_range_prv(P3) > x and day_range_prv(P4) > x and day_range_prv(P5) > x
+#define completed_1_minute_bars_range(x) (MinuteHigh(ALL_VENUES, x, P1, NO, True) - MinuteLow(ALL_VENUES, x, P1, NO, True))
+#define completed_x_minute_bar_range(x) (MinuteHigh_I(ALL_VENUES, x, P1, NO, True) - MinuteLow_I(ALL_VENUES, x, P1, NO, True))
 // BARS
 #define adr(x) AvgDailyRange(ALL_VENUES, x, NO)
 #define adrs adr(20)
@@ -193,7 +199,7 @@
 #define relative_volume_avg RelativeVolume(P5, RelativeVolume_Average, ALL_VENUES)
 // RESTRICTIONS
 #define ssr_restriction (day_low_prv(P1) <= close_prv(P2) * .9) // it was down 10% at sime point the previous day
-// IMBALANCES only nyse imbalances are available currently 
+// IMBALANCES only nyse imbalances are available currently
 #define imbalance_buy_vol(x) ImbalanceBuyVolume(x)
 #define imbalance_sell_vol(x) ImbalanceSellVolume(x)
 #define imbalance_paired_vol ImbPair
