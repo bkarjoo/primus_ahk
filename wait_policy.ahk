@@ -25,6 +25,23 @@ wait_activate_if_error(window_name, wait_seconds, attempts)
     return 0
 }
 
+wait_activate_popup_error(window_name, wait_seconds, attempts)
+{
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  if (wait_only(window_name, wait_seconds) = 0)
+    return 1
+
+  Loop, %attempts%
+  {
+    WinActivate, %window_name%
+    err := wait_only(window_name, wait_seconds)
+    if (err = 0)
+      return 1
+  }
+  if (err = 1)
+    msgbox, was not able to activate %window_name% 
+}
+
 activate_and_wait_only(window_name, wait_seconds)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
