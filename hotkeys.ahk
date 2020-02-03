@@ -36,28 +36,98 @@
 
 
 !a::
-WinActivate, Statistic Report
-sleep, 100
-WinActivate, Multi-Day Analysis
-return
+  WinActivate, Statistic Report
+  sleep, 100
+  WinActivate, Multi-Day Analysis
+  return
 
 ; breakdown
 !b::
-WinActivate, Breakdown
-sleep, 100
-WinActivate, PnL Analysis Charting
-return
+  WinActivate, Breakdown
+  sleep, 100
+  WinActivate, PnL Analysis Charting
+  return
+
+^b::
+
+
+  folderX := 138
+  folderY := 243
+
+
+  boxX := 412
+  box_first_row := 81
+  boxY := box_first_row
+
+  box_count := 10
+
+  increment := 22
+
+  Loop, %box_count%
+  {
+    launcher_activate()
+    launcher_click_open_box()
+    MouseClick, Left, folderX, folderY
+    sleep, 200
+    MouseClick, Left, boxX, boxY
+    sleep, 200
+    open_blackbox_click_open()
+    sleep, 200
+    target_open_existing_order()
+    sleep, 200
+    set_order_form_destination("SNIPER")
+    sleep, 200
+    click_order_form_save_button()
+    sleep, 200
+    click_validate_and_close()
+    launcher_click_save_box()
+    sleep, 200
+    send, {Space}
+
+    boxY := boxY + increment
+  }
+
+  msgbox done
+  return
 
 !c::
 WinActivate, PnL Analysis Charting
 return
 
+; workflow for analyzing trades
 !d::
 WinActivate, Execution
 sleep, 100
 WinActivate, Trade -
 sleep, 100
 WinActivate, Trade Analysis Charting
+return
+
+; workflow for line by line exclude of dnt which is in clipboard, takes out line feeds
+^d::
+Clipboard := StrReplace(Clipboard, "`r", " ")
+Clipboard := StrReplace(Clipboard, "`n", " ")
+SetTitleMatchMode, 2
+WinActivate,  [Shorts 200123]
+first_row := 135
+last_row := 479
+row_count := 18 - 1
+increment := (last_row - first_row) / row_count
+x := 200
+Loop % row_count + 1
+{
+  y := first_row + (A_Index - 1) * increment
+  MouseClick, Right, x, y
+  Sleep, 200
+  MouseClick, Left, 220, y + 95
+  WinWaitActive, Kill Symbol(s)
+  Sleep, 200
+  Send, ^v
+  Sleep, 200
+  MouseClick, Left, 379, 239
+  Sleep, 200
+}
+Msgbox % Clipboard
 return
 
 !e::
@@ -131,11 +201,11 @@ hour_glass_sleep(200)
 click_refresh()
 ; double click the check box to select all
 hour_glass_sleep(200)
- 
+
 msgbox done
 return
 
-!;:: ; selects all 
+!;:: ; selects all
 activate_blotter()
 hour_glass_sleep(200)
 MouseClick, Left, 50, 145
@@ -169,11 +239,11 @@ hour_glass_sleep(200)
 send, {Space}
 hour_glass_sleep(200)
 
-msgbox done 
-return 
+msgbox done
+return
 
 
-!/:: ; 
+!/:: ;
 InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
 Clipboard := out
 activate_blotter()
@@ -220,6 +290,9 @@ return
 WinActivate, Black Box Report
 return
 
+
+
+
 +#s::
 !s::
 InputBox, out, q, Enter box name version
@@ -263,7 +336,7 @@ msgbox, control comma
 launcher_click_edit_box()
 */
 msgbox done
-return 
+return
 
 ; pmo fix
 ^.::
@@ -280,7 +353,7 @@ MouseClick, Left, 191, 122
 sleep 200
 
 
-Loop, 6 
+Loop, 6
 {
 	OpenAndSave(548, 203 + (A_Index - 1) * 47)
 	WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
@@ -289,12 +362,12 @@ Loop, 6
 MouseClick, Left, 529, 479
 sleep 200
 msgbox, done with pmo
-return 
+return
 
 
 ; stop fix
 ^/::
-msgbox hello 
+msgbox hello
 /*
 click_design_tab()
 stop_open_existing_order()
