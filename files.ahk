@@ -3,6 +3,14 @@
 #include cmd.ahk
 #include logger.ahk
 
+; returns an array of rows
+read_csv_file(file_name)
+{
+  FileRead, LoadedText, %file_name%
+  oText := StrSplit(LoadedText, "`n")
+  return oText
+}
+
 file_updated(c_path, i_path)
 {
 log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)

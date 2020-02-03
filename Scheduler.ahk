@@ -29,6 +29,7 @@
 #include launch_rule_cycle.ahk
 #include receiver.ahk
 #include logger.ahk
+#include dates.ahk
 
 process_completed_run(box_name)
 {
@@ -125,15 +126,7 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   git_commit_bu()
   git_push_bu()
 
-  launch_rules := get_local_compiled(box_name, "launch_rules")
-  cycles := []
-  cycle_names := []
-
-  ; break_down_launch_rule_into_cycles(cycles, launch_rules["launch_rule_start_year"], launch_rules["launch_rule_start_month"], launch_rules["launch_rule_start_month_half"], launch_rules["launch_rule_end_year"], launch_rules["launch_rule_end_month"], launch_rules["launch_rule_end_month_half"], cycle_names)
-
-  break_down_launch_rule_into_cycles(cycles, y1, m1, h1, y2, m2, h2, cycle_names)
-
-  run_launch_rule_cycles(cycles, launch_rules["launch_rules"], cycle_names, boxes_in_queue)
+  run_date_cycle(y1, m1, h1, y2, m2, h2)
 }
 
 process_instruction(box, version, y1, m1, h1, y2, m2, h2, boxes_in_queue)

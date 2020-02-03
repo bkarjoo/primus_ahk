@@ -52,5 +52,4 @@ save_black_box_reports()
     inform_timeout(msg, 5)
   }
 }
-
-save_black_box_reports()
+ 

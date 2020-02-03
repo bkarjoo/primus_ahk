@@ -104,5 +104,25 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     }
   }
 
-  MsgBox % "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
+  ;MsgBox % "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
+}
+
+get_previous_trading_date()
+{
+  ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ;	Calculates the prev. working day
+  ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  FormatTime, today, %A_Now%, WDay	; get today's day of week (Sunday is 1)
+
+  prevWorkDay =				; Make it blank so that the below will use the current time instead
+
+  If (today = 1)			; if today is sunday
+  	prevWorkDay += -2, Days	;		prev. working day should be friday (-2 days)
+  Else If (today = 2)		; if today is monday
+  	prevWorkDay += -3, Days	;		prev. working day should also be friday (-3 days)
+  Else
+  	prevWorkDay += -1, Days	; for other days, it's the day before
+
+  return prevWorkDay
 }
