@@ -1,8 +1,8 @@
+#include header.ahk
 
-#include window_task_queue_manager.ahk
-
-task_queue_manager_select_and_copy_all()
-hour_glass_sleep(200)
-s := Clipboard
-msgbox % current_queue_size(s)
-msgbox done
+secrets := {}
+load_csv_dictionary("secret.csv", secrets)
+msgbox % secrets["tos_password"]
+msgbox % secrets["primus_password"]
+msgbox % secrets["redi_password"]
+msgbox % secrets["tos_userid"]

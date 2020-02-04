@@ -1,6 +1,7 @@
 ; windows
 #include window_launcher.ahk
 #include window_black_box_design.ahk
+#include window_black_box_report.ahk
 #include window_order_form.ahk
 #include window_expression_builder.ahk
 #include window_basket_manager.ahk
@@ -24,3 +25,5 @@
 #include code_parser.ahk
 #include logger.ahk
 #include dates.ahk
+#include box_builder.ahk
+#include box_updater.ahk
