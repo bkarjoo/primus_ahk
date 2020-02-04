@@ -48,7 +48,7 @@
   WinActivate, PnL Analysis Charting
   return
 
-^b::
+^b:: ; change all folder boxes to SNIPER
 
 
   folderX := 138
@@ -116,7 +116,10 @@ increment := (last_row - first_row) / row_count
 x := 200
 Loop % row_count + 1
 {
+  pause_mechanism()
   y := first_row + (A_Index - 1) * increment
+  MouseClick, Left, x, y
+  Sleep, 200
   MouseClick, Right, x, y
   Sleep, 200
   MouseClick, Left, 220, y + 95
@@ -262,6 +265,25 @@ return
 WinActivate, Basket Matrix
 return
 
+^m:: ; load multibox
+sleep 1000
+send, {LWin}
+sleep 100
+Send, internet explorer
+sleep, 100
+send, {Enter}
+sleep, 100
+winwait, ahk_class IEFrame
+sleep, 5000
+send, Qu@nt123{!}
+sleep, 100
+send, {Enter}
+sleep, 100
+sleep, 5000
+MouseClick, Left, 250, 340
+MouseClick, Left, 500, 340
+return
+
 +#n::
 !n::
 WinActivate, News Viewer
@@ -285,23 +307,51 @@ return
 WinActivate, Task Queue Manager
 return
 
-+#r::
 !r::
 WinActivate, Black Box Report
 return
 
+^r:: ; start redi
+sleep, 1000
+send, {LWin}
+sleep, 100
+send, rediplus
+sleep, 100
+send, {Enter}
+WinWait, REDIPlus Login
+sleep, 100
+send, BABoeing12571
+sleep, 100
+send, {Enter}
+return
 
 
-
-+#s::
 !s::
 InputBox, out, q, Enter box name version
 select_custom_blotter(out)
 return
 
-+#t::
 !t::
 WinActivate, BlackBox Tree
+return
+
+^t:: ; start tos
+sleep, 1000
+send, {LWin}
+sleep, 100
+send, thinkorswim
+sleep, 100
+send, {Enter}
+WinWaitActive, Logon to thinkorswim
+Click, Left, 60, 90
+sleep, 100
+send, bkarjoorothira
+sleep, 100
+send, {Tab}
+send, Bkr12571t
+sleep, 100
+send, {Tab 3}
+send, {Space}
 return
 
 ; git upstream
