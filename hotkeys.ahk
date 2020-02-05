@@ -111,12 +111,18 @@ convert_to_sniper()
 
 !g:: ; github clone
   InputBox, out, question, enter box name
+  if (out = "q")
+    return
   send, git clone https://github.com/bkarjoo/%out%
   return
 
 !h:: ; build or update box
   InputBox, box, q, box name
+  if (box = "q")
+    return
   InputBox, ver, q, version
+  if (ver = "q")
+    return
   git_clone(box, ver)
   msgbox, verify clone of %box% %ver%
   compile_code_folder(box)
@@ -147,16 +153,30 @@ convert_to_sniper()
 
 !k:: ; run tests on a box
   InputBox, sy, q, start year
+  if (sy = "q")
+    return
   InputBox, sm, q, start month
+  if (sm = "q")
+    return
   InputBox, sh, q, start half
+  if (sh = "q")
+    return
   InputBox, ey, q, end year
+  if (ey = "q")
+    return
   InputBox, em, q, end month
+  if (em = "q")
+    return
   InputBox, eh, q, end half
+  if (eh = "q")
+    return
   run_date_cycle(sy, sm, sh, ey, em, eh)
   return
 
 !l:: ; filter primus blotter with box name
   InputBox, out, q, Enter box name version
+  if (out = "q")
+    return
   activate_blotter()
   ;click_refresh()
   click_primus_blotter_tab()
@@ -186,6 +206,8 @@ convert_to_sniper()
 
 !':: ; creates a custom blotter
   InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
+  if (out = "q")
+    return
   Clipboard := out
   activate_blotter()
   hour_glass_sleep(200)
@@ -213,6 +235,8 @@ convert_to_sniper()
 
 !/:: ; gilter custom blotters
   InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
+  if (out = "q")
+    return
   Clipboard := out
   activate_blotter()
   hour_glass_sleep(200)
