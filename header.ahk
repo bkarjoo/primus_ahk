@@ -31,3 +31,4 @@
 #include launch_rule_cycle.ahk
 #include logger.ahk
 #include wait_policy.ahk
+#include email.ahk
