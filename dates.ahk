@@ -1,11 +1,4 @@
-#include logger.ahk
-#include window_launcher.ahk
-#include window_configuration.ahk
-#include launch_rule_cycle.ahk
-#include window_btq_action.ahk
-#include window_task_queue_manager.ahk
-#include inform.ahk
-#include wait_policy.ahk
+#include header.ahk
 
 date_convert_to_ahk(d)
 {
@@ -104,7 +97,8 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     }
   }
 
-  ;MsgBox % "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
+  done_message := "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
+  email_message(" completed.", done_message)
 }
 
 get_previous_trading_date()

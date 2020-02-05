@@ -139,6 +139,7 @@ convert_to_sniper()
   msgbox, removing %box%
   remove_git_dir(box)
   msgbox, done
+  email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
   return
 
 !i:: ; time stamp

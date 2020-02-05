@@ -126,6 +126,7 @@ process_code(box_name, box_version, y1, m1, h1, y2, m2, h2, boxes_in_queue)
   git_commit_bu()
   git_push_bu()
 
+  email_message("Starting runs on box: " . box_name . " " . box_version, y1 . m1 . h1 . "-" . y2 . m2 . h2)
   run_date_cycle(y1, m1, h1, y2, m2, h2)
 }
 
