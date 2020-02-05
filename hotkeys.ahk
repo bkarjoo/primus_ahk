@@ -72,13 +72,13 @@ convert_to_sniper()
   return
 
 ^d:: ; merger dnt (will have to change when you add new boxes)
-  strategy_count := 18
+  strategy_count := 19
   Clipboard := StrReplace(Clipboard, "`r", " ")
   Clipboard := StrReplace(Clipboard, "`n", " ")
   SetTitleMatchMode, 2
   WinActivate,  [Shorts 200123]
   first_row := 135
-  last_row := 479
+  last_row := 499
   row_count := strategy_count - 1
   increment := (last_row - first_row) / row_count
   x := 200
