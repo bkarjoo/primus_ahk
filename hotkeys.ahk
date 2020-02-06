@@ -136,9 +136,7 @@ convert_to_sniper()
   backup_compiled_files_helper(box, "")
   git_commit_bu()
   git_push_bu()
-  msgbox, removing %box%
   remove_git_dir(box)
-  msgbox, done
   email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
   return
 
@@ -192,8 +190,7 @@ convert_to_sniper()
   click_refresh()
   ; double click the check box to select all
   hour_glass_sleep(200)
-
-  msgbox done
+  MouseMove, 0, 0
   return
 
 !;:: ; selects all boxes in blotter
@@ -202,7 +199,6 @@ convert_to_sniper()
   MouseClick, Left, 50, 145
   hour_glass_sleep(200)
   MouseClick, Left, 50, 145
-  msgbox done
   return
 
 !':: ; creates a custom blotter
@@ -230,8 +226,6 @@ convert_to_sniper()
   hour_glass_sleep(200)
   send, {Space}
   hour_glass_sleep(200)
-
-  msgbox done
   return
 
 !/:: ; gilter custom blotters
@@ -244,8 +238,6 @@ convert_to_sniper()
   MouseClick, Left, 112, 85
   hour_glass_sleep(200)
   select_custom_blotter(out)
-
-  msgbox done
   return
 
 !m:: ; basket matrix
