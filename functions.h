@@ -394,7 +394,7 @@
 
 #define upgrade (StockNews(News_Current, ACBO, AnySentiment, Upgrade) or RatingsAction(News_Current, ACBO, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Upgrades))
 
-#define downgrade (StockNews(News_Current, ACBO, AnySentiment, Downgrade) or RatingsAction(News_Current, ACBO, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Downgrade))
+#define downgrade (StockNews(News_Current, ACBO, AnySentiment, Downgrade) or RatingsAction(News_Current, ACBO, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Downgrades))
 
 #define proper_buyback (s3_Buybacks OR ((ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')))
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
