@@ -391,7 +391,11 @@
 #define spinoff s3_Spinoff_News
 #define managment_change s3_Mgmt_Changes
 #define ratings (StockNews(News_Current, ACBO, AnySentiment, Recommendations) OR StockNews(News_Current, ACBO, AnySentiment, Upgrade) OR StockNews(News_Current, ACBO, AnySentiment, Downgrade) OR StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Analyst_Research) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Revision) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Reiteration) OR Source3(News_Current, ACBO, AnySentiment, Analyst_PT_Change) OR Source3(News_Current, ACBO, AnySentiment, Downgrades) OR Source3(News_Current, ACBO, AnySentiment, Initiations) OR Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Analyst_News))
-#define upgrade (StockNews(News_Current, ACBO, AnySentiment, Upgrade) or RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Upgrades))
+
+#define upgrade (StockNews(News_Current, ACBO, AnySentiment, Upgrade) or RatingsAction(News_Current, ACBO, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Upgrades))
+
+#define downgrade (StockNews(News_Current, ACBO, AnySentiment, Downgrade) or RatingsAction(News_Current, ACBO, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Downgrade))
+
 #define proper_buyback (s3_Buybacks OR ((ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')))
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
 #define guidance s3_Guidance
