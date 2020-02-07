@@ -104,6 +104,9 @@
 // OPEN
 #define open OpenPrice(PRIMARY, CURRENT, NO)
 #define open_prv(x) OpenPrice(PRIMARY, x, NO)
+#define gapping_down (open < close)
+#define gapping_up (open > close)
+#define opening_unch (open = close)
 // HIGH
 #define day_high DayHigh(ALL_VENUES,1,CURRENT,NO)
 #define day_highest_high(x) DayHigh(ALL_VENUES ,x ,CURRENT, NO)
@@ -411,6 +414,7 @@
 #define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
 #define has_earnings_MH (EarningsNewsEvent(News_Current, MarketHours, True, Any) or Source3(News_Current, MarketHours, AnySentiment, Earnings))
 #define option_news Option_News
+#define earnings_exclude (not has_earnings and not has_earnings_MH)
 
 #define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
 #define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
