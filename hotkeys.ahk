@@ -163,6 +163,10 @@ convert_to_sniper()
   send, job%n%.csv
   return
 
+^j:: ; csv
+  send, ,2016,1,1,2019,12,2
+  return
+
 !k:: ; run tests on a box
   InputBox, sy, q, start year
   if (sy = "q")
