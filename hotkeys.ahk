@@ -110,10 +110,14 @@ convert_to_sniper()
   return
 
 !g:: ; github clone
-  InputBox, out, question, enter box name
+  InputBox, out, question, enter box name,,,,,,,,%Clipboard%
   if (out = "q")
     return
-  send, git clone https://github.com/bkarjoo/%out%
+
+  Clipboard := "git clone https://github.com/bkarjoo/" . out
+  send, ^v
+
+  Clipboard := out
   return
 
 !h:: ; build or update box
