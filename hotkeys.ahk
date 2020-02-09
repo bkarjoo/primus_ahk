@@ -12,6 +12,14 @@
   WinActivate, PnL Analysis Charting
   return
 
+^b:: ; type branch message
+  InputBox, out, question, enter branch name
+  if (out = "q")
+    return
+  Clipboard := "git checkout -b " . out
+  send, ^v
+  return
+
 convert_to_sniper()
 {
   ; assumes box is open
@@ -23,7 +31,7 @@ convert_to_sniper()
   sleep, 200
 }
 
-^b:: ; opens all the boxes in a folder and then saves, include a function if you need more changes to the boxes
+^e:: ; opens all the boxes in a folder and then saves, include a function if you need more changes to the boxes
   folderY := 243 ; set this
   box_count := 10 ; set this
 
@@ -62,6 +70,7 @@ convert_to_sniper()
 !c:: ; equity curve
   WinActivate, PnL Analysis Charting
   return
+
 
 !d:: ; trades and charting
   WinActivate, Execution
@@ -248,25 +257,12 @@ convert_to_sniper()
   WinActivate, Basket Matrix
   return
 
-^m:: ; load multibox
-  sleep 1000
-  send, {LWin}
-  sleep 100
-  Send, internet explorer
-  sleep, 100
-  send, {Enter}
-  sleep, 100
-  winwait, ahk_class IEFrame
-  sleep, 5000
-  secrets := {}
-  load_csv_dictionary("secret.csv", secrets)
-  send % secrets["primus_password"]
-  sleep, 100
-  send, {Enter}
-  sleep, 100
-  sleep, 5000
-  MouseClick, Left, 250, 340
-  MouseClick, Left, 500, 340
+^m:: ;
+  InputBox, out, question, enter message
+  if (out = "q")
+    return
+  Clipboard := "git commit -a -m """ . out . """"
+  send, ^v
   return
 
 !n:: ; news viewer
