@@ -32,6 +32,9 @@ convert_to_sniper()
 }
 
 ^e:: ; opens all the boxes in a folder and then saves, include a function if you need more changes to the boxes
+  InputBox, out, question, "this will alter live folders, q to quit"
+  if (out = "q")
+    return
   folderY := 243 ; set this
   box_count := 10 ; set this
 
