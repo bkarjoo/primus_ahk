@@ -408,7 +408,7 @@
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
 #define source3_earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
-#define has_earnings (horizon_earnings(ACBO, True) or source3_earnings)
+#define has_earnings earnings 
 #define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings))
 #define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
 #define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
