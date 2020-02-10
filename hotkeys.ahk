@@ -156,6 +156,17 @@ convert_to_sniper()
   email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
   return
 
+^h:: ; just open a box, no version check
+  InputBox, box, question, Enter the name of the box to open:
+  if (box = "q")
+    return
+  ; find box don't open?
+
+  f := find_box(box)
+
+  click_validate_and_close()
+  return
+
 !i:: ; time stamp
   FormatTime, n,, MM/d/yy HH:mm
   send, %n%:
@@ -354,7 +365,7 @@ convert_to_sniper()
   remove_git_dir(out)
   msgbox done
   return
-  
+
 OpenAndSave(x, y)
 {
   MouseClick, Left, %x%, %y%
