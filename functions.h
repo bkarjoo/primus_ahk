@@ -408,11 +408,11 @@
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
 #define source3_earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
-#define has_earnings earnings 
-#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings))
-#define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
-#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
-#define has_earnings_MH (EarningsNewsEvent(News_Current, MarketHours, True, Any) or Source3(News_Current, MarketHours, AnySentiment, Earnings))
+#define has_earnings earnings
+#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings) or StockNews(News_P1, ACBO, AnySentiment, Earnings))
+#define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings) or StockNews(News_P1, AfterClose, AnySentiment, Earnings))
+#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings) or StockNews(News_Current, BeforeOpen, AnySentiment, Earnings))
+#define has_earnings_MH (EarningsNewsEvent(News_Current, MarketHours, True, Any) or Source3(News_Current, MarketHours, AnySentiment, Earnings) or StockNews(News_Current, MarketHours, AnySentiment, Earnings))
 #define option_news Option_News
 #define earnings_exclude (not has_earnings and not has_earnings_MH)
 
