@@ -347,6 +347,14 @@ convert_to_sniper()
   send, !{space}n
   return
 
+!y:: ; remove dir from primus ahk
+  InputBox, out, question, Please enter box name to remove
+  if (out = "q")
+    return
+  remove_git_dir(out)
+  msgbox done
+  return
+  
 OpenAndSave(x, y)
 {
   MouseClick, Left, %x%, %y%
