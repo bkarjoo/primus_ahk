@@ -2,22 +2,9 @@
 #include "utility_functions.h"
 #include "symbol_lists.h"
 // keywords for atom autofill
-// BUY
-// CSFB
-// LIMIT
-// STOP_LIMIT
-// OPG
-// PERIOD_7
-// PERIOD_20
-// PlainVanilla
-// PRIMUS_AEL
-// SECONDS
-// SELL
-// SHORT
-// Tif_OPENING
-// CEF_Basket
-// half_day
-// NYSE
+// BUY CSFB LIMIT STOP_LIMIT OPG PERIOD_7 PERIOD_20 PlainVanilla PRIMUS_AEL SECONDS SELL SHORT Tif_OPENING CEF_Basket
+// half_day NYSE
+// CRPreNasdaq CRPreNYSE DividendIncreaseSP500 IPOBreakoutLong
 
 // lower_case
 #define and AND
@@ -113,6 +100,8 @@
 #define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
 #define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
 #define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
+// x is the number of days, y is the P value 
+#define days_high_prv(x, y) DayHigh(ALL_VENUES, x, y, NO)
 #define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_high_nsdq DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_high_nyse DayBar_High(ALL_VENUES, 1, YES, '04:00-09:29')
