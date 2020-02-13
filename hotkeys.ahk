@@ -1,16 +1,48 @@
 #include header.ahk
-
-!a:: ; box stats
+#a::
+!a::
+  send, ^a
+  return
+#c::
+!c::
+  send, ^c
+  return
+#f::
+!f::
+  send, ^f
+  return
+#n::
+!n::
+  send, ^n
+  return
+#s::
+!s::
+  send, ^s
+  return
+#v::
+!v::
+  send, ^v
+  return
+#w::
+!w::
+  send, ^w
+  return
+#x::
+!x::
+  send, ^x
+  return
+#z::
+!z::
+  send, ^z
+  return
+#b::
+!b:: ; activate blotter and show box stats
+  WinActivate, D:\Users\
   WinActivate, Statistic Report
   sleep, 100
   WinActivate, Multi-Day Analysis
   return
 
-!b:: ; breakdown and equity curve
-  WinActivate, Breakdown
-  sleep, 100
-  WinActivate, PnL Analysis Charting
-  return
 
 ^b:: ; type branch message
   InputBox, out, question, enter branch name
@@ -70,11 +102,7 @@ convert_to_sniper()
   msgbox done
   return
 
-!c:: ; equity curve
-  WinActivate, PnL Analysis Charting
-  return
-
-
+#d::
 !d:: ; trades and charting
   WinActivate, Execution
   sleep, 100
@@ -83,44 +111,13 @@ convert_to_sniper()
   WinActivate, Trade Analysis Charting
   return
 
-^d:: ; merger dnt (will have to change when you add new boxes)
-  strategy_count := 19
-  Clipboard := StrReplace(Clipboard, "`r", " ")
-  Clipboard := StrReplace(Clipboard, "`n", " ")
-  SetTitleMatchMode, 2
-  WinActivate,  [Shorts 200123]
-  first_row := 135
-  last_row := 499
-  row_count := strategy_count - 1
-  increment := (last_row - first_row) / row_count
-  x := 200
-  Loop % row_count + 1
-  {
-    pause_mechanism()
-    y := first_row + (A_Index - 1) * increment
-    MouseClick, Left, x, y
-    Sleep, 200
-    MouseClick, Right, x, y
-    Sleep, 200
-    MouseClick, Left, 220, y + 95
-    WinWaitActive, Kill Symbol(s)
-    Sleep, 200
-    Send, ^v
-    Sleep, 200
-    MouseClick, Left, 379, 239
-    Sleep, 200
-  }
-  Msgbox % Clipboard
+#e::
+!e:: ; breakdown and equity curve
+  WinActivate, Breakdown
+  sleep, 100
+  WinActivate, PnL Analysis Charting
   return
-
-!e:: ; launcher
-  WinActivate, Primu$ 7.
-  return
-
-!f:: ; blotter
-  WinActivate, D:\Users\
-  return
-
+#g::
 !g:: ; github clone
   InputBox, out, question, enter box name,,,,,,,,%Clipboard%
   if (out = "q")
@@ -131,7 +128,7 @@ convert_to_sniper()
 
   Clipboard := out
   return
-
+#h::
 !h:: ; build or update box
   InputBox, box, q, box name
   if (box = "q")
@@ -167,11 +164,17 @@ convert_to_sniper()
   click_validate_and_close()
   return
 
+/*
 !i:: ; time stamp
   FormatTime, n,, MM/d/yy HH:mm
   send, %n%:
   return
-
+*/
+#i::
+!i:: ; news viewer
+  WinActivate, News Viewer
+  return
+#j::
 !j:: ; job name
   FormatTime, n,, yyMMdHHmm
   send, job%n%.csv
@@ -180,7 +183,7 @@ convert_to_sniper()
 ^j:: ; csv
   send, ,2016,1,1,2019,12,2
   return
-
+#k::
 !k:: ; run tests on a box
   InputBox, sy, q, start year
   if (sy = "q")
@@ -202,7 +205,7 @@ convert_to_sniper()
     return
   run_date_cycle(sy, sm, sh, ey, em, eh)
   return
-
+#l::
 !l:: ; filter primus blotter with box name
   InputBox, out, q, Enter box name version
   if (out = "q")
@@ -223,7 +226,7 @@ convert_to_sniper()
   hour_glass_sleep(200)
   MouseMove, 0, 0
   return
-
+#;::
 !;:: ; selects all boxes in blotter
   activate_blotter()
   hour_glass_sleep(200)
@@ -231,7 +234,7 @@ convert_to_sniper()
   hour_glass_sleep(200)
   MouseClick, Left, 50, 145
   return
-
+#'::
 !':: ; creates a custom blotter
   InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
   if (out = "q")
@@ -258,8 +261,8 @@ convert_to_sniper()
   send, {Space}
   hour_glass_sleep(200)
   return
-
-!/:: ; gilter custom blotters
+#/::
+!/:: ; filter custom blotters
   InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
   if (out = "q")
     return
@@ -270,7 +273,7 @@ convert_to_sniper()
   hour_glass_sleep(200)
   select_custom_blotter(out)
   return
-
+#m::
 !m:: ; basket matrix
   WinActivate, Basket Matrix
   return
@@ -282,82 +285,40 @@ convert_to_sniper()
   Clipboard := "git commit -a -m """ . out . """"
   send, ^v
   return
-
-!n:: ; news viewer
-  WinActivate, News Viewer
+#o::
+!o:: ; launcher
+  WinActivate, Primu$ 7.
   return
-
-!o:: ; atom
-  WinActivate, ahk_exe atom.exe
-  return
-
+#p::
 !p:: ; pause mechanism
   FileDelete, run_state.txt
   FileAppend, False, run_state.txt
   return
 
-!w:: ; q doesn't work on vnc from mac so w is also set to this
+#q::
 !q:: ; task queue manager
   WinActivate, Task Queue Manager
   return
-
+#r::
 !r:: ; Black Box Report
   WinActivate, Black Box Report
   return
 
-^r:: ; start redi
-  sleep, 1000
-  send, {LWin}
-  sleep, 100
-  send, rediplus
-  sleep, 100
-  send, {Enter}
-  WinWait, REDIPlus Login
-  sleep, 100
-  secrets := {}
-  load_csv_dictionary("secret.csv", secrets)
-  send % secrets["redi_password"]
-  sleep, 100
-  send, {Enter}
-  return
 
+#t::
 !t:: ; BlackBox Tree
   WinActivate, BlackBox Tree
   return
 
-^t:: ; start tos
-  sleep, 1000
-  send, {LWin}
-  sleep, 100
-  send, thinkorswim
-  sleep, 100
-  send, {Enter}
-  WinWaitActive, Logon to thinkorswim
-  Click, Left, 60, 90
-  sleep, 100
-  secrets := {}
-  load_csv_dictionary("secret.csv", secrets)
-  send % secrets["tos_userid"]
-  sleep, 100
-  send, {Tab}
-  secrets := {}
-  load_csv_dictionary("secret.csv", secrets)
-  send % secrets["tos_password"]
-  sleep, 100
-  send, {Tab 3}
-  send, {Space}
-  return
 
+#u::
 !u:: ; git upstream
   send, git push --set-upstream origin
   return
 
-!x::
-  WinActivate, Trade Analysis Charting
-  sleep, 100
-  send, !{space}n
-  return
+; w:: ; close window
 
+#y::
 !y:: ; remove dir from primus ahk
   InputBox, out, question, Please enter box name to remove
   if (out = "q")
@@ -374,7 +335,7 @@ OpenAndSave(x, y)
   MouseClick, Left, 532, 478
   sleep 200
 }
-
+#,::
 ^,:: ; open box TODO build
   msgbox, control comma
   /*
@@ -382,7 +343,7 @@ OpenAndSave(x, y)
   */
   msgbox done
   return
-
+#.::
 ^.:: ; pmo fix
   sleep 200
   click_options_tab()
