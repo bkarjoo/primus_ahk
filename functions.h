@@ -53,6 +53,7 @@
 #define maximum_days_from_ipo(x) (DaysFromIPO > -1 AND DaysFromIPO < x)
 #define ipo_price IPOPrice
 #define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
+#define minimum_3_days_from_ipo (DaysFromIPO >= if(DayOfTheWeek <=2, 4, 2))
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
 
 // EXECUTION
