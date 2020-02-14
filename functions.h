@@ -188,6 +188,7 @@
 #define avg_opg_vol avg_open_size(10)
 #define avg_volume_till_now(x) (adv(x)/390) * (TimeFromStockOpenSeconds/60)
 #define day_volume DayVolume(ALL_VENUES,1,CURRENT,NO)
+#define day_volume_prv(x) DayVolume(ALL_VENUES,1,x,NO)
 #define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
