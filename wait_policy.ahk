@@ -71,7 +71,8 @@ pause_release()
 
 pause_only()
 {
-  InputBox, out, paused, "Program is paused. Enter to continue, q to quit."
+  msg := "Program is paused. Enter to continue, q to quit."
+  InputBox, out, paused, %msg%
   if (out = "q")
     ExitApp
   pause_release()
