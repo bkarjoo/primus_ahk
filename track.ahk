@@ -1,16 +1,22 @@
 ; windows
 #include header.ahk
 
+enable_debug := True
+
 live_runs := read_csv_file("Book1.csv")
 yesterday := get_previous_trading_date()
+
+d := date_convert_from_ahk(yesterday)
+InputBox, out, question, enter date,,,,,,,,%d%
+
 
 launcher_activate()
 launcher_click_wrench()
 click_backtesting_time_interval_tab()
 click_one_day_radio_button()
 click_onde_day_date()
-d := date_convert_from_ahk(yesterday)
-send, %d%
+
+send, %out%
 click_configuration_box_save()
 
 loop % live_runs.MaxIndex()
