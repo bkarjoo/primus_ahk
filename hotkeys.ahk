@@ -1,45 +1,86 @@
 #include header.ahk
-#a::
+
+!1:: ;
+  WinActivate, ahk_exe atom.exe
+  return
+
+!2:: ; cmd
+  WinActivate, ahk_exe cmd.exe
+  return
+
+!3:: ; cmd
+  WinActivate, ToDo - WorkFlowy - Google Chrome
+  return
+
+!4:: ; workflowy notes
+  WinActivate, Boxes - WorkFlowy - Google Chrome
+  return
+
+!5:: ; vnc
+  WinActivate, DELL (DESKTOP-KNTE5U6) - VNC Viewer
+  return
+
+!6::
+  WinActivate, DESKTOP-VBBA1D4 (DESKTOP-VBBA1D4) - VNC Viewer
+  return
+
+!7:: ; QSGHub
+  WinActivate, QSG Hub - Google Sheets - Google Chrome
+  return
+
+!8:: ;
+  WinActivate, BKarjoo Portfolio - Google Sheets - Google Chrome
+  return
+
+
 !a::
   send, ^a
   return
-#c::
+
 !c::
   send, ^c
   return
-#f::
+
 !f::
   send, ^f
   return
-#n::
+
 !n::
   send, ^n
   return
-#s::
+
 !s::
   send, ^s
   return
-#v::
+
 !v::
   send, ^v
   return
-#w::
+
 !w::
   send, ^w
   return
-#x::
+
 !x::
   send, ^x
   return
-#z::
+
 !z::
   send, ^z
   return
-#b::
+
 !b:: ; activate blotter and show box stats
   WinActivate, D:\Users\
+  ;sleep, 100
   WinActivate, Statistic Report
-  sleep, 100
+  ;sleep, 100
+  WinActivate, Breakdown
+  ;sleep, 100
+  WinActivate, PnL Analysis Charting
+  ;sleep, 100
+  WinActivate, BlackBox Tree
+  ;sleep, 100
+
   WinActivate, Multi-Day Analysis
   return
 
@@ -102,22 +143,22 @@ convert_to_sniper()
   msgbox done
   return
 
-#d::
 !d:: ; trades and charting
+  WinActivate, News Viewer
+  ;sleep, 100
   WinActivate, Execution
-  sleep, 100
+  ;sleep, 100
   WinActivate, Trade -
-  sleep, 100
+  ;sleep, 100
   WinActivate, Trade Analysis Charting
   return
 
-#e::
 !e:: ; breakdown and equity curve
   WinActivate, Breakdown
   sleep, 100
   WinActivate, PnL Analysis Charting
   return
-#g::
+
 !g:: ; github clone
   InputBox, out, question, enter box name,,,,,,,,%Clipboard%
   if (out = "q")
@@ -128,7 +169,7 @@ convert_to_sniper()
 
   Clipboard := out
   return
-#h::
+
 !h:: ; build or update box
   InputBox, box, q, box name
   if (box = "q")
@@ -164,26 +205,25 @@ convert_to_sniper()
   click_validate_and_close()
   return
 
-/*
+
 !i:: ; time stamp
   FormatTime, n,, MM/d/yy HH:mm
-  send, %n%:
+  Clipboard := n
+  send, ^v
   return
-*/
-#i::
-!i:: ; news viewer
-  WinActivate, News Viewer
-  return
-#j::
+
+
 !j:: ; job name
   FormatTime, n,, yyMMdHHmm
-  send, job%n%.csv
+  Clipboard := "job" . n . ".csv"
+  ;send, job%n%.csv
+  send, ^v
   return
 
 ^j:: ; csv
   send, ,2016,1,1,2019,12,2
   return
-#k::
+
 !k:: ; run tests on a box
   InputBox, sy, q, start year
   if (sy = "q")
@@ -205,7 +245,7 @@ convert_to_sniper()
     return
   run_date_cycle(sy, sm, sh, ey, em, eh)
   return
-#l::
+
 !l:: ; filter primus blotter with box name
   InputBox, out, q, Enter box name version
   if (out = "q")
@@ -226,7 +266,7 @@ convert_to_sniper()
   hour_glass_sleep(200)
   MouseMove, 0, 0
   return
-#;::
+
 !;:: ; selects all boxes in blotter
   activate_blotter()
   hour_glass_sleep(200)
@@ -234,7 +274,7 @@ convert_to_sniper()
   hour_glass_sleep(200)
   MouseClick, Left, 50, 145
   return
-#'::
+
 !':: ; creates a custom blotter
   InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
   if (out = "q")
@@ -261,7 +301,7 @@ convert_to_sniper()
   send, {Space}
   hour_glass_sleep(200)
   return
-#/::
+
 !/:: ; filter custom blotters
   InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
   if (out = "q")
@@ -273,7 +313,7 @@ convert_to_sniper()
   hour_glass_sleep(200)
   select_custom_blotter(out)
   return
-#m::
+
 !m:: ; basket matrix
   WinActivate, Basket Matrix
   return
@@ -285,40 +325,37 @@ convert_to_sniper()
   Clipboard := "git commit -a -m """ . out . """"
   send, ^v
   return
-#o::
+
 !o:: ; launcher
   WinActivate, Primu$ 7.
   return
-#p::
+
 !p:: ; pause mechanism
   FileDelete, run_state.txt
   FileAppend, False, run_state.txt
   return
 
-#q::
+
 !q:: ; task queue manager
   WinActivate, Task Queue Manager
   return
-#r::
+
 !r:: ; Black Box Report
   WinActivate, Black Box Report
   return
 
-
-#t::
 !t:: ; BlackBox Tree
   WinActivate, BlackBox Tree
   return
 
-
-#u::
 !u:: ; git upstream
-  send, git push --set-upstream origin
+  InputBox, out, question, enter version
+  if (out = "q")
+    return
+  Clipboard := "git push --set-upstream origin " . out
+  send, ^v
   return
 
-; w:: ; close window
-
-#y::
 !y:: ; remove dir from primus ahk
   InputBox, out, question, Please enter box name to remove
   if (out = "q")
@@ -335,7 +372,7 @@ OpenAndSave(x, y)
   MouseClick, Left, 532, 478
   sleep 200
 }
-#,::
+
 ^,:: ; open box TODO build
   msgbox, control comma
   /*
@@ -343,7 +380,7 @@ OpenAndSave(x, y)
   */
   msgbox done
   return
-#.::
+
 ^.:: ; pmo fix
   sleep 200
   click_options_tab()
