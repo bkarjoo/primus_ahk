@@ -1,7 +1,4 @@
-#include wait_policy.ahk
-#include inform.ahk
-#window_launcher.ahk
-#include logger.ahk
+#include header.ahk
 
 open_blackbox_activate()
 {

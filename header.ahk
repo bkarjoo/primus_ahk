@@ -27,7 +27,6 @@
 #include dates.ahk
 #include files.ahk
 #include gcc_compile.ahk
-#include inform.ahk
 #include launch_rule_cycle.ahk
 #include logger.ahk
 #include wait_policy.ahk

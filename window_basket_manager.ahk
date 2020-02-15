@@ -1,6 +1,4 @@
-#include wait_policy.ahk
-#include inform.ahk
-#include logger.ahk
+#include header.ahk
 
 confirm_basket_manager_is_open()
 {

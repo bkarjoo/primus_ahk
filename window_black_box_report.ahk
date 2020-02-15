@@ -1,7 +1,4 @@
-#include window_blotter.ahk
-#include wait_policy.ahk
-#include inform.ahk
-#include logger.ahk
+#include header.ahk
 
 
 activate_black_box_report()
@@ -52,4 +49,3 @@ save_black_box_reports()
     inform_timeout(msg, 5)
   }
 }
- 

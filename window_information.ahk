@@ -1,6 +1,4 @@
-#include wait_policy.ahk
-#include inform.ahk
-#include logger.ahk
+#include header.ahk
 
 information_click_ok()
 {

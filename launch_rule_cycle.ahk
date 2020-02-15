@@ -1,8 +1,4 @@
-#include window_task_queue_manager.ahk
-#include inform.ahk
-#include window_launcher.ahk
-#include window_black_box_design.ahk
-#include logger.ahk
+#include header.ahk
 
 create_15_day_launch_rule_slash_style(year, month, half, byref out_start_date, byref out_end_date)
 {

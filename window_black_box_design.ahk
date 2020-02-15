@@ -1,7 +1,4 @@
-#include wait_policy.ahk
-#include inform.ahk
-#include logger.ahk
-#include files.ahk
+#include header.ahk
 
 selected_bbdesign_tab()
 {

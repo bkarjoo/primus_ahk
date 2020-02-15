@@ -1,7 +1,4 @@
-#include wait_policy.ahk
-#include logger.ahk
-#include inform.ahk
-#include files.ahk
+#include header.ahk
 
 Count(H, N)
 {

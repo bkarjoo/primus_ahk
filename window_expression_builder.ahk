@@ -1,6 +1,4 @@
-#include wait_policy.ahk
-#include inform.ahk
-#include logger.ahk
+#include header.ahk
 
 expression_builder_activate()
 {

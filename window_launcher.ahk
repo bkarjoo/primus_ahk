@@ -1,7 +1,5 @@
 ; this module replaces launcher clicks
-#include wait_policy.ahk
-#include inform.ahk
-#include logger.ahk
+#include header.ahk
 
 launcher_activate()
 {
