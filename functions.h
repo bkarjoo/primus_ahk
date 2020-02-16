@@ -210,6 +210,7 @@
 #define imbalance_paired_vol ImbPair
 #define imbalance_at(x) ImbalanceAt(x)
 #define nyse_clear_price ClearPriceAt('09:29:00')
+#define clear_price ClearPrice
 // STUDIES
 #define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))/3
 #define higher_lows_P1_P5(x) MinuteLow_I(ALL_VENUES, x, P4, NO, True) > MinuteLow_I(ALL_VENUES, x, P5, NO, True) AND MinuteLow_I(ALL_VENUES, x, P3, NO, True) > MinuteLow_I(ALL_VENUES, x, P4, NO, True) AND MinuteLow_I(ALL_VENUES, x, P2, NO, True) > MinuteLow_I(ALL_VENUES, x, P3, NO, True) AND MinuteLow_I(ALL_VENUES, x, P1, NO, True) > MinuteLow_I(ALL_VENUES, x, P2, NO, True)
