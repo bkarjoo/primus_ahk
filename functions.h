@@ -401,7 +401,7 @@
 
 #define downgrade (StockNews(News_Current, ACBO, AnySentiment, Downgrade) or RatingsAction(News_Current, ACBO, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Downgrades))
 
-#define proper_buyback (s3_Buybacks OR ((ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')))
+#define proper_buyback (s3_Buybacks OR ((ns_source_type(Source3, Press_Releases, '"Share Repurchase"') or ns_source_type(Source3, Press_Releases, '"Stock Repurchase"')) and not ns_source_type(Source3, Press_Releases, '"update*"') and not ns_source_type(Source3, Press_Releases, '"complet*"') and not ns_source_type(Source3, Press_Releases, '"renew*"')))
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
 #define guidance s3_Guidance
 #define has_dividend_news (s3_Dividend_Reduction or s3_Dividend_Increase or s3_Dividends or s3_Special_Dividends)
@@ -418,8 +418,14 @@
 #define option_news Option_News
 #define earnings_exclude (not has_earnings and not has_earnings_MH)
 
-#define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
-#define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+// #define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
+// #define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+
+#define ns_source_type(source, type, term) NewsSearch(News_Current, ACBO, source, type, AnySentiment, Summary, term)
+#define ns_source(source, term) NewsSearch(News_Current, ACBO, source, AnyGeneralNewsType, AnySentiment, Summary, term)
+#define ns_type(type, term) NewsSearch(News_Current, ACBO, Any, type, AnySentiment, Summary, term)
+#define ns(term) NewsSearch(News_Current, ACBO, Any, AnyGeneralNewsType, AnySentiment, Summary, term)
+
 #define is_secondary SyndicateType(News_Current, ACBO, Secondary)
 #define is_spot_secondary SyndicateType(News_Current, ACBO, SpotSecondary)
 #define syndicate_size SyndicateSize(News_Current, ACBO)
