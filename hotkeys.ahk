@@ -37,6 +37,7 @@
   return
 #b::
 !b:: ; activate blotter and show box stats
+  WinActivate, \\tsclient
   WinActivate, D:\Users\
   WinActivate, Statistic Report
   sleep, 100
