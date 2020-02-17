@@ -403,10 +403,15 @@
 #define downgrade (StockNews(News_Current, ACBO, AnySentiment, Downgrade) or RatingsAction(News_Current, ACBO, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Downgrades))
 
 #define proper_buyback (s3_Buybacks OR ((ns_source_type(Source3, Press_Releases, '"Share Repurchase"') or ns_source_type(Source3, Press_Releases, '"Stock Repurchase"')) and not ns_source_type(Source3, Press_Releases, '"update*"') and not ns_source_type(Source3, Press_Releases, '"complet*"') and not ns_source_type(Source3, Press_Releases, '"renew*"')))
+
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
-#define guidance s3_Guidance or ns('"guidance"')
+
+#define guidance (s3_Guidance or ns('"guidance"'))
+
 #define has_dividend_news (s3_Dividend_Reduction or s3_Dividend_Increase or s3_Dividends or s3_Special_Dividends)
+
 #define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
+
 #define general_news GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType)
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
