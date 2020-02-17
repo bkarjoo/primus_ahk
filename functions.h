@@ -73,6 +73,8 @@
 #define time_minute TickTime
 #define time_sec TickTimeSeconds
 #define time_in_position_sec time_sec - entry_time_sec
+#define time_in_position_minutes (time_in_position_sec / 60)
+#define time_in_position_hours (time_in_position_minutes / 60)
 #define time_from_open TimeFromStockOpenSeconds // use with MINUTES
 #define time_from_open_sec TimeFromStockOpenSeconds
 #define time_from_open_minutes (TimeFromStockOpenSeconds/60)
