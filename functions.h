@@ -518,5 +518,9 @@
 #define has_news (source3_news or fly_news(ACBO) or briefing_news(True))
 #define has_no_news (not general_news and briefing_news(False) and horizon_earnings(ACBO, False) and not trade_news(ACBO) and not fly_news(ACBO) and not conference_call(ACBO) and not source3_news)
 
+#define fly_time(time) StockNews(News_Current, time, AnySentiment, AnyNewsType)
+// type can be Earnings, ...
+#define fly_type(type) StockNews(News_Current, ACBO, AnySentiment, type)
+
 // trade_news was discontinued OCT 2018, so just use for back testing
 #define trade_news(x) TradeNews(News_Current, x, AnySentiment, AnyNewsType)
