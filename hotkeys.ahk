@@ -64,7 +64,7 @@ $!+/::
     send, !+/
   return
 
-!;:: ; selects all boxes in blotter
+$!;:: ; selects all boxes in blotter
   if (WinActive("ahk_exe mstsc.exe"))
   {
     activate_blotter()
@@ -77,7 +77,7 @@ $!+/::
     send, !;
   return
 
-!':: ; creates a custom blotter
+$!':: ; creates a custom blotter
   if (WinActive("ahk_exe mstsc.exe"))
   {
     InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
