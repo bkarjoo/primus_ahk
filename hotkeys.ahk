@@ -290,6 +290,7 @@ $!b:: ; activate blotter and show box stats,
   WinActivate, Statistic Report
   sleep, 100
   WinActivate, Multi-Day Analysis
+  send, !b
   return
 
 $^b:: ; type branch message
@@ -512,7 +513,7 @@ $^h::
     send, ^h
   return
 
-!i:: ; time stamp
+$!i:: ; time stamp
   FormatTime, n,, MM/d/yy HH:mm
   if (WinActive("ahk_exe atom.exe"))
   {
