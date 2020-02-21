@@ -123,7 +123,7 @@
 #define acbo_high max2(pre_mkt_high, post_mkt_high)
 #define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
 #define minute_high_prv(x, y) MinuteHigh(ALL_VENUES, x, y, NO, True)
-#define minute_high_I_prv(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
+#define minute_high_I_prv(minute_count, p_val) MinuteHigh_I(ALL_VENUES, minute_count, p_val, NO, True)
 #define minute_high_I_prv_dis(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
 #define minute_high_ext_dv(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, True)
 #define minute_high_ext(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, False)
