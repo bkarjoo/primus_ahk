@@ -29,18 +29,24 @@ loop % live_runs.MaxIndex()
   pause_mechanism()
 
   open_blackbox_folder_search_mode_toggle()
+  sleep, 500
   pause_mechanism()
   open_blackbox_search_field_focus()
+  sleep, 500
   pause_mechanism()
   Clipboard := tokens[1]
   sleep, 500
   Send, ^v
   open_blackbox_search_click()
+  sleep, 1000
   pause_mechanism()
+  sleep, 500
   open_blackbox_click_open()
+  sleep, 500
   pause_mechanism()
   wait_activate_popup_error("PRIMU$ - Black Box Design", 5, 2)
   click_validate_and_close()
+  sleep, 500
   pause_mechanism()
   while (number_of_free_slots() = 0)
   {
