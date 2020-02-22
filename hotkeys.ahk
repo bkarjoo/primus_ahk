@@ -1,6 +1,6 @@
 #include header.ahk
 
-OpenAndSave(x, y)
+OpenAndSaveOrder(x, y)
 {
   MouseClick, Left, %x%, %y%
   WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
@@ -18,6 +18,20 @@ convert_to_sniper()
   sleep, 200
   click_order_form_save_button()
   sleep, 200
+}
+
+check_mark_cancel_replace()
+{
+  ; open target order
+  target_open_existing_order()
+  ; click if not clicked function
+  cb := [371,426]
+  tp := [380,434]
+  set_check_box("TRUE", cp, tp)
+
+  msgbox, continue
+  ; close order form
+  click_order_form_save_button()
 }
 
 
@@ -405,7 +419,7 @@ $^e::
       sleep, 200
 
       ; set this to what you need to a function that would make box changes desired
-      convert_to_sniper()
+      check_mark_cancel_replace()
 
       click_validate_and_close()
       launcher_click_save_box()
