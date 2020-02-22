@@ -148,14 +148,6 @@ $!`::
     send, !``
   return
 
-$!Down::
-  if (WinActive("ahk_exe emacs.exe"))
-  {
-    send, ^v ; page down
-  }
-  else
-    send, !{Down}
-  return
 
 $^Down::
   if (WinActive("ahk_exe emacs.exe"))
@@ -186,14 +178,6 @@ $!Escape::
     send, !{Esc}
   return
 
-$!Left::
-  if (WinActive("ahk_exe emacs.exe"))
-  {
-    send, ^a ; begining of line
-  }
-  else
-    send, !{Left}
-  return
 
 $^Left::
   if (WinActive("ahk_exe emacs.exe"))
@@ -213,15 +197,6 @@ $^Right::
     send, ^{Right}
   return
 
-$!Right::
-  if (WinActive("ahk_exe emacs.exe"))
-  {
-    send, ^e ; forward word by word
-  }
-  else
-    send, !{Right}
-  return
-
 $!Space::
   if (WinActive("ahk_exe emacs.exe"))
   {
@@ -231,14 +206,6 @@ $!Space::
     send, !{Space}
   return
 
-$!Up::
-  if (WinActive("ahk_exe emacs.exe"))
-  {
-    send, !v ; page up
-  }
-  else
-    send, !{Up}
-  return
 
 $^Up::
   if (WinActive("ahk_exe emacs.exe"))
@@ -281,6 +248,21 @@ $!8:: ;
 
 $!a::
   send, ^a
+  return
+
+$!+a::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !x
+    sleep, 10
+    send, org-agenda
+    sleep, 10
+    send, {Enter}
+    sleep, 10
+    send, a
+  }
+  else
+    send, !+a
   return
 
 $!b:: ; activate blotter and show box stats,
@@ -336,6 +318,17 @@ $!d::
   }
   else
     send, !d
+  return
+
+$!+d::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^e{Enter}
+    sleep, 10
+    send, ** TODO{Space}
+  }
+  else
+    send, !+d
   return
 
 $^d:: ; merger dnt (will have to change when you add new boxes)
@@ -514,10 +507,10 @@ $^h::
   return
 
 $!i:: ; time stamp
-  FormatTime, n,, MM/d/yy HH:mm
+  FormatTime, n,, HH:mm
   if (WinActive("ahk_exe atom.exe"))
   {
-    send, %n%:
+    send, %n%
   }
   else if (WinActive("ahk_exe mstsc.exe"))
   {
@@ -525,11 +518,11 @@ $!i:: ; time stamp
   }
   else if (WinActive("ahk_exe emacs.exe"))
   {
-    send, %n%:
+    send, %n%
   }
   else if (WinActive("cmd"))
   {
-    send, %n%:
+    send, %n%
   }
   else
     send, !i
@@ -657,6 +650,21 @@ $!o::
     send, !o
   return
 
+$!+o::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    sleep, 10
+    send, o ; open file
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Primu$ 7.
+  }
+  else
+    send, !+o
+  return
+
 $!p::
   if (WinActive("ahk_exe mstsc.exe"))
   {
@@ -723,15 +731,15 @@ $!s::
     send, ^s
   return
 
-$^s::
+$!+s::
   if (WinActive("ahk_exe emacs.exe"))
   {
-    send, ^x
+    send, ^c
     sleep, 100
-    send, s ; save all open files, will ask you about each.
+    send, ^s ; allow adding a schedule
   }
   else
-    send, ^s
+    send, !+s
   return
 
 $!t::
