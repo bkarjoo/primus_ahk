@@ -348,15 +348,14 @@ $!+d::
 $^d:: ; merger dnt (will have to change when you add new boxes)
   if (WinActive("Primu$ MB"))
   {
-    strategy_count := 19
+    strategy_count := 20
     Clipboard := StrReplace(Clipboard, "`r", " ")
     Clipboard := StrReplace(Clipboard, "`n", " ")
     SetTitleMatchMode, 2
     WinActivate,  [Shorts 200123]
     first_row := 135
-    last_row := 499
     row_count := strategy_count - 1
-    increment := (last_row - first_row) / row_count
+    increment := 20
     x := 200
     Loop % row_count + 1
     {
