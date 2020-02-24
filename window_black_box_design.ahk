@@ -33,8 +33,19 @@ selected_bbdesign_tab()
     return 5
 }
 
+click_tab(x, y)
+{
+  res := activate_and_wait_only("PRIMU$ - B", 5)
+  if (res != 1)
+    inform("Cannot activate black box design.")
+  MouseClick, Left, %x%, %y%
+  Sleep, 300
+  return 1
+}
+
 click_and_confirm_bbd_tab(x, y, index)
 {
+  return click_tab(x, y)
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   res := activate_and_wait_only("PRIMU$ - B", 5)
   if (res != 1)

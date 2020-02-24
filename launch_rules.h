@@ -1,6 +1,8 @@
 // Launch Rules
 #define cd CurrentDate
 
+#define imbalance_available ((cd >= .2017-03-01. and cd <= .2018-05-25.) or (cd >= .2019-01-03.))
+
 #define eight_twenty_four (cd = .2015-08-24.)
 
 #define buyback_exclude_day (cd = .2016-06-30. or cd = .2017-06-29. or cd = .2018-06-29. or cd = .2019-06-28.)

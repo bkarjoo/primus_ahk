@@ -1,5 +1,97 @@
-#include inform.ahk
 #include logger.ahk
+
+
+inform_timeout_pause_option(msg, seconds)
+{
+  msg_txt := msg . " (waiting for " . seconds . " seconds, enter p to pause, q to quit, enter to skip wait)"
+  InputBox, response, waiting..., %msg_txt%, , , , , , , seconds
+  if (response = "p")
+    pause_only()
+  else if (response = "q")
+    ExitApp
+}
+
+inform_timeout(msg, seconds)
+{
+  msg_txt := msg . " Will resume after " . seconds . " seconds. Press enter to override, q to quit."
+  InputBox, response, waiting..., %msg_txt%, , , , , , , seconds
+  if (response = "q")
+    ExitApp
+}
+
+quick_inform(msg)
+{
+  inform_timeout(msg, 2)
+}
+
+
+; pauses with option to quit or continue
+inform(msg)
+{
+  prompt := msg . " (q to quit or enter to continue)"
+  InputBox, response, question, %prompt%
+  if (response = "q")
+    ExitAPP
+}
+
+inform_activation_error(window_name)
+{
+  prompt := "Cannot activate window: " . window_name
+  inform(prompt)
+}
+
+trace(msg, file, function, line, wait_time := 0)
+{
+  is_enabled := True
+  if (!is_enabled)
+    return
+  msg := file . " " . function . " line: " . line . ". " . msg
+  if (wait_time = 0)
+    inform(msg)
+  else
+    inform_timeout(msg, wait_time)
+}
+
+
+is_paused()
+{
+  FileRead, out, run_state.txt
+  if (out = "False")
+    return True
+  else
+    return False
+}
+
+pause_release()
+{
+  ; pause state is stored in a file, this resets it
+  FileDelete, run_state.txt
+  FileAppend, True, run_state.txt
+}
+
+pause_only()
+{
+  msg := "Program is paused. Enter to continue, q to quit."
+  InputBox, out, paused, %msg%
+  if (out = "q")
+    ExitApp
+  pause_release()
+}
+
+pause_with_message(message)
+{
+  msg := message . " (Program is paused. Enter to continue, q to quit.)"
+  InputBox, out, paused, %msg%
+  if (out = "q")
+    ExitApp
+  pause_release()
+}
+
+pause_mechanism()
+{
+  if (is_paused())
+    pause_only()
+}
 
 wait_only(window_name, wait_seconds)
 {
@@ -39,7 +131,7 @@ wait_activate_popup_error(window_name, wait_seconds, attempts)
       return 1
   }
   if (err = 1)
-    msgbox, was not able to activate %window_name% 
+    msgbox, was not able to activate %window_name%
 }
 
 activate_and_wait_only(window_name, wait_seconds)
@@ -106,7 +198,7 @@ wait_until_with_message(seconds, msg_txt)
   msg_txt := msg_txt . " (waiting for " . seconds . " seconds, enter p to pause, q to quit, enter to skip wait)"
   InputBox, response, waiting..., %msg_txt%, , , , , , , seconds
   if (response = "p")
-    InputBox, response, paused..., "Press enter to continue."
+    pause_only()
   else if (response = "q")
     ExitApp
 }
@@ -121,15 +213,4 @@ hour_glass_sleep(millis)
       break
     sleep, 200
   }
-}
-
-pause_mechanism()
-{
-  FileRead, out, run_state.txt
-  if (out = "False")
-    InputBox, response, paused..., "Press enter to continue. (q to exit app)"
-  FileDelete, run_state.txt
-  FileAppend, True, run_state.txt
-  if (response = "q")
-    ExitApp
 }

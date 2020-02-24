@@ -1,385 +1,844 @@
-; windows
-#include window_launcher.ahk
-#include window_blotter.ahk
-#include window_black_box_design.ahk
-#include window_order_form.ahk
-#include window_expression_builder.ahk
-#include window_basket_manager.ahk
-#include window_edit_basket.ahk
-#include window_save_blackbox.ahk
-#include window_information.ahk
-#include window_btq_action.ahk
-; tabs
-#include tab_design.ahk
-#include tab_symbols.ahk
-#include tab_options.ahk
-#include tab_risk_management.ahk
-#include tab_launch_rule.ahk
-; utilities
-#include box_name_builder.ahk
-#include files.ahk
-#include gcc_compile.ahk
-#include check_boxes.ahk
-#include box_finder.ahk
-#include wait_policy.ahk
-#include inform.ahk
-#include code_parser.ahk
-#include box_builder.ahk
-#include box_updater.ahk
-#include launch_rule_cycle.ahk
-#include receiver.ahk
-#include logger.ahk
-#include dates.ahk
+#include header.ahk
 
-; job name generator for saving job files
+OpenAndSaveOrder(x, y)
+{
+  MouseClick, Left, %x%, %y%
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
+  sleep 200
+  MouseClick, Left, 532, 478
+  sleep 200
+}
+
+convert_to_sniper()
+{
+  ; assumes box is open
+  target_open_existing_order()
+  sleep, 200
+  set_order_form_destination("SNIPER")
+  sleep, 200
+  click_order_form_save_button()
+  sleep, 200
+}
+
+check_mark_cancel_replace()
+{
+  ; open target order
+  target_open_existing_order()
+  ; click if not clicked function
+  cb := [371,426]
+  tp := [380,434]
+  set_check_box("TRUE", cp, tp)
+
+  msgbox, continue
+  ; close order form
+  click_order_form_save_button()
+}
 
 
 
-!a::
+$!/::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^c
+    send, /
+    send, m ; search
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
+    if (out = "q")
+      return
+    Clipboard := out
+    activate_blotter()
+    hour_glass_sleep(200)
+    MouseClick, Left, 112, 85
+    hour_glass_sleep(200)
+    select_custom_blotter(out)
+  }
+  else
+    send, !/
+  return
+
+$!+/::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !x
+    sleep, 100
+    send, org-agenda-remove-restriction-lock{Enter}
+    sleep, 100
+    send, !x
+    sleep, 100
+    send, org-remove-occur-highlights{Enter}
+    sleep, 100
+    send, !x
+    sleep, 100
+    send, widen{Enter}
+  }
+  else
+    send, !+/
+  return
+
+$!;:: ; selects all boxes in blotter
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    activate_blotter()
+    hour_glass_sleep(200)
+    MouseClick, Left, 50, 145
+    hour_glass_sleep(200)
+    MouseClick, Left, 50, 145
+  }
+  else
+    send, !;
+  return
+
+$!':: ; creates a custom blotter
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
+    if (out = "q")
+      return
+    Clipboard := out
+    activate_blotter()
+    hour_glass_sleep(200)
+    MouseClick, Right, 240, 201
+    hour_glass_sleep(200)
+    MouseClick, Left, 301, 278
+    hour_glass_sleep(200)
+    send, {Tab}{Tab}
+    hour_glass_sleep(200)
+    send, ^v
+    hour_glass_sleep(200)
+
+    send, {Tab}{Tab}
+    hour_glass_sleep(200)
+    send, {Space}
+    hour_glass_sleep(200)
+
+    WinWaitActive, Operation completed
+    hour_glass_sleep(200)
+    send, {Space}
+    hour_glass_sleep(200)
+  }
+  else
+    send, !'
+  return
+
+$!=::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    send, n
+    send, s
+  }
+  else
+    send, !=
+  return
+
+
+$!-::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    send, n
+    send, w
+  }
+  else
+    send, !-
+  return
+
+
+$!`::
+  if(WinActive("ahk_exe chrome.exe") or WinActive("ahk_exe atom.exe"))
+    Send, ^{Tab}
+  else if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    sleep, 100
+    send, b
+    sleep, 100
+    send, {Enter}
+  }
+  else
+    send, !``
+  return
+
+
+$^Down::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !> ; end of document
+  }
+  else
+    send, ^{Down}
+  return
+
+$!Enter::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^e
+    sleep, 100
+    send, !{Enter}
+  }
+  else
+    send, !{Enter}
+  return
+
+$!Escape::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^g ; quit command
+  }
+  else
+    send, !{Esc}
+  return
+
+
+$^Left::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !b  ; backward word by word
+  }
+  else
+    send, ^{Left}
+  return
+
+$^Right::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !f ; end
+  }
+  else
+    send, ^{Right}
+  return
+
+$!Space::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^{Space} ; pegs the cursor to position for selecting texts
+  }
+  else
+    send, !{Space}
+  return
+
+
+$^Up::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !< ; begining of doc
+  }
+  else
+    send, ^{Up}
+  return
+
+$!1:: ;
+  WinActivate, ahk_exe atom.exe
+  return
+
+$!2:: ; cmd
+  WinActivate, cmd
+  return
+
+$!3:: ; cmd
+  WinActivate, ahk_exe emacs.exe
+  return
+
+$!4:: ; workflowy notes
+  WinActivate, ahk_exe chrome.exe
+  return
+
+$!5:: ; vnc
+  WinActivate, DELL (DESKTOP-KNTE5U6) - VNC Viewer
+  return
+
+$!6::
+  WinActivate, DESKTOP-VBBA1D4 (DESKTOP-VBBA1D4) - VNC Viewer
+  return
+
+$!7:: ;
+  return
+
+$!8:: ;
+  return
+
+$!a::
+  send, ^a
+  return
+
+$!+a::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !x
+    sleep, 10
+    send, org-agenda
+    sleep, 10
+    send, {Enter}
+    sleep, 10
+    send, a
+  }
+  else
+    send, !+a
+  return
+
+$!b:: ; activate blotter and show box stats,
+  ;blotter must be active to run its shortcuts, so this will activate it
+  WinActivate, \\tsclient
+  WinActivate, D:\Users\
   WinActivate, Statistic Report
   sleep, 100
   WinActivate, Multi-Day Analysis
+  send, !b
   return
 
-; breakdown
-!b::
-  WinActivate, Breakdown
-  sleep, 100
-  WinActivate, PnL Analysis Charting
-  return
-
-^b::
-
-
-  folderX := 138
-  folderY := 243
-
-
-  boxX := 412
-  box_first_row := 81
-  boxY := box_first_row
-
-  box_count := 10
-
-  increment := 22
-
-  Loop, %box_count%
+$^b:: ; type branch message
+  if (WinActive("ahk_exe emacs.exe"))
   {
-    launcher_activate()
-    launcher_click_open_box()
-    MouseClick, Left, folderX, folderY
-    sleep, 200
-    MouseClick, Left, boxX, boxY
-    sleep, 200
-    open_blackbox_click_open()
-    sleep, 200
-    target_open_existing_order()
-    sleep, 200
-    set_order_form_destination("SNIPER")
-    sleep, 200
-    click_order_form_save_button()
-    sleep, 200
-    click_validate_and_close()
-    launcher_click_save_box()
-    sleep, 200
-    send, {Space}
-
-    boxY := boxY + increment
+    send, ^x
+    sleep, 100
+    send, ^b ; show buffer
   }
-
-  msgbox done
-  return
-
-!c::
-WinActivate, PnL Analysis Charting
-return
-
-; workflow for analyzing trades
-!d::
-WinActivate, Execution
-sleep, 100
-WinActivate, Trade -
-sleep, 100
-WinActivate, Trade Analysis Charting
-return
-
-; workflow for line by line exclude of dnt which is in clipboard, takes out line feeds
-^d::
-Clipboard := StrReplace(Clipboard, "`r", " ")
-Clipboard := StrReplace(Clipboard, "`n", " ")
-SetTitleMatchMode, 2
-WinActivate,  [Shorts 200123]
-first_row := 135
-last_row := 479
-row_count := 18 - 1
-increment := (last_row - first_row) / row_count
-x := 200
-Loop % row_count + 1
-{
-  y := first_row + (A_Index - 1) * increment
-  MouseClick, Right, x, y
-  Sleep, 200
-  MouseClick, Left, 220, y + 95
-  WinWaitActive, Kill Symbol(s)
-  Sleep, 200
-  Send, ^v
-  Sleep, 200
-  MouseClick, Left, 379, 239
-  Sleep, 200
-}
-Msgbox % Clipboard
-return
-
-!e::
-WinActivate, Primu$ 7.
-return
-
-!f::
-WinActivate, D:\Users\
-return
-
-; git hub cloner
-!g:: ; github
-  InputBox, out, question, enter box name
-  send, git clone https://github.com/bkarjoo/%out%
-  return
-
-!h::
-  InputBox, box, q, box name
-  InputBox, ver, q, version
-  git_clone(box, ver)
-  msgbox, verify clone of %box% %ver%
-  compile_code_folder(box)
-  msgbox, verify compile of %box%
-  f := find_box(box)
-  if (f)
-    update_box_dynamic_version(box, ver)
+  else if (WinActive("cmd"))
+  {
+    InputBox, out, question, enter branch name
+    if (out = "q")
+      return
+    out := "git checkout -b " . out
+    send, %out%
+  }
   else
-    build_local_box_version(box, ver)
-  msgbox, backing up %box%
-  backup_compiled_files_helper(box, "")
-  git_commit_bu()
-  git_push_bu()
-  msgbox, removing %box%
-  remove_git_dir(box)
-  msgbox, done
+    send, ^b
   return
 
-!i::
-  FormatTime, n,, MM/d/yy HH:mm
-  send, %n%:
+$!c::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !w
+  }
+  else
+    send, ^c
   return
 
-!j:: ; job
-  FormatTime, n,, yyMMdHHmm
-  send, job%n%.csv
+$!d::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Execution
+    sleep, 100
+    WinActivate, Trade -
+    sleep, 100
+    WinActivate, Trade Analysis Charting
+  }
+  else if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^k ; kill from curser to end of line
+  }
+  else
+    send, !d
   return
 
-!k::
-  InputBox, sy, q, start year
-  InputBox, sm, q, start month
-  InputBox, sh, q, start half
-  InputBox, ey, q, end year
-  InputBox, em, q, end month
-  InputBox, eh, q, end half
-  run_date_cycle(sy, sm, sh, ey, em, eh)
+$!+d::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^e{Enter}
+    sleep, 10
+    send, ** TODO{Space}
+  }
+  else
+    send, !+d
   return
 
-!l:: ; types a box name filter in primus blotter
-InputBox, out, q, Enter box name version
-activate_blotter()
-;click_refresh()
-click_primus_blotter_tab()
-hour_glass_sleep(200)
-click_name_box()
-hour_glass_sleep(200)
-send, ^a
-hour_glass_sleep(200)
-Clipboard := out
-send, ^v
-hour_glass_sleep(200)
-click_refresh()
-; double click the check box to select all
-hour_glass_sleep(200)
-
-msgbox done
-return
-
-!;:: ; selects all
-activate_blotter()
-hour_glass_sleep(200)
-MouseClick, Left, 50, 145
-hour_glass_sleep(200)
-MouseClick, Left, 50, 145
-msgbox done
-return
-
-
-!':: ; creates a custom blotter
-InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
-Clipboard := out
-activate_blotter()
-hour_glass_sleep(200)
-MouseClick, Right, 240, 201
-hour_glass_sleep(200)
-MouseClick, Left, 301, 278
-hour_glass_sleep(200)
-send, {Tab}{Tab}
-hour_glass_sleep(200)
-send, ^v
-hour_glass_sleep(200)
-
-send, {Tab}{Tab}
-hour_glass_sleep(200)
-send, {Space}
-hour_glass_sleep(200)
-
-WinWaitActive, Operation completed
-hour_glass_sleep(200)
-send, {Space}
-hour_glass_sleep(200)
-
-msgbox done
-return
-
-
-!/:: ;
-InputBox, out, q, Enter box name version,,,,,,,,%Clipboard%
-Clipboard := out
-activate_blotter()
-hour_glass_sleep(200)
-MouseClick, Left, 112, 85
-hour_glass_sleep(200)
-select_custom_blotter(out)
-
-msgbox done
-return
-
-
-
-+#m::
-!m::
-WinActivate, Basket Matrix
-return
-
-+#n::
-!n::
-WinActivate, News Viewer
-return
-
-+#o::
-!o::
-WinActivate, ahk_exe atom.exe
-return
-
-+#p::
-!p::
-FileDelete, run_state.txt
-FileAppend, False, run_state.txt
-return
-
-+#w::
-!w::
-+#q::
-!q::
-WinActivate, Task Queue Manager
-return
-
-+#r::
-!r::
-WinActivate, Black Box Report
-return
-
-
-
-
-+#s::
-!s::
-InputBox, out, q, Enter box name version
-select_custom_blotter(out)
-return
-
-+#t::
-!t::
-WinActivate, BlackBox Tree
-return
-
-; git upstream
-!u::
-  send, git push --set-upstream origin
+$^d:: ; merger dnt (will have to change when you add new boxes)
+  if (WinActive("Primu$ MB"))
+  {
+    strategy_count := 20
+    Clipboard := StrReplace(Clipboard, "`r", " ")
+    Clipboard := StrReplace(Clipboard, "`n", " ")
+    SetTitleMatchMode, 2
+    WinActivate,  [Shorts 200123]
+    first_row := 135
+    row_count := strategy_count - 1
+    increment := 20
+    x := 200
+    Loop % row_count + 1
+    {
+      y := first_row + (A_Index - 1) * increment
+      MouseClick, Left, x, y
+      Sleep, 200
+      MouseClick, Right, x, y
+      Sleep, 200
+      MouseClick, Left, 220, y + 95
+      WinWaitActive, Kill Symbol(s)
+      Sleep, 200
+      Send, ^v
+      Sleep, 200
+      MouseClick, Left, 379, 239
+      Sleep, 200
+    }
+    Msgbox % Clipboard
+  }
+  else
+    send, ^d
   return
 
-+#v::
-!v::
-WinActivate, Google Chrome
-return
+$!e::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Breakdown
+    sleep, 100
+    WinActivate, PnL Analysis Charting
+  }
+  else
+    send, !e
+  return
 
-!x::
-WinActivate, Trade Analysis Charting
-sleep, 100
-send, !{space}n
-return
+$^e::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    ; opens all the boxes in a folder and then saves, include a function if you need more changes to the boxes
+    InputBox, out, question, this will alter live folders (q to quit)
+    if (out = "q")
+      return
+    folderY := 243 ; set this
+    box_count := 10 ; set this
 
-OpenAndSave(x, y)
-{
-MouseClick, Left, %x%, %y%
-WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
-sleep 200
-MouseClick, Left, 532, 478
-sleep 200
-}
+    ; don't touch the following vars
+    folderX := 138
+    boxX := 412
+    box_first_row := 81
+    boxY := box_first_row
+    increment := 22
 
-; open box
-^,::
-msgbox, control comma
-/*
-launcher_click_edit_box()
-*/
-msgbox done
-return
+    Loop, %box_count%
+    {
+      launcher_activate()
+      launcher_click_open_box()
+      MouseClick, Left, folderX, folderY
+      sleep, 200
+      MouseClick, Left, boxX, boxY
+      sleep, 200
+      open_blackbox_click_open()
+      sleep, 200
 
-; pmo fix
-^.::
-sleep 200
-click_options_tab()
-sleep 200
-MouseClick, Left, 680, 540
-WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
-sleep 200
-; change to sell
-MouseClick, Left, 191, 93
-sleep 200
-MouseClick, Left, 191, 122
-sleep 200
+      ; set this to what you need to a function that would make box changes desired
+      check_mark_cancel_replace()
+
+      click_validate_and_close()
+      launcher_click_save_box()
+      sleep, 200
+      send, {Space}
+
+      boxY := boxY + increment
+    }
+
+    msgbox done
+  }
+  else
+    send, ^e
+  return
+
+$!f::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^s ; forward search
+  }
+  else
+    send, ^f
+  return
+
+$^f::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^r ; reverse search
+  }
+  else
+    send, ^f
+  return
+
+$!g:: ; github clone
+  if (WinActive("cmd"))
+  {
+    InputBox, out, question, enter box name,,,,,,,,%Clipboard%
+    if (out = "q")
+      return
+
+    script := "git clone https://github.com/bkarjoo/" . out
+    send, %script%
+
+    Clipboard := out ; usually needed for next step
+  }
+  else
+    send, !g
+  return
+
+$!h::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, box, q, box name
+    if (box = "q")
+      return
+    InputBox, ver, q, version
+    if (ver = "q")
+      return
+    git_clone(box, ver)
+    msgbox, verify clone of %box% %ver%
+    compile_code_folder(box)
+    msgbox, verify compile of %box%
+    f := find_box(box)
+    if (f)
+      update_box_dynamic_version(box, ver)
+    else
+      build_local_box_version(box, ver)
+    msgbox, backing up %box%
+    backup_compiled_files_helper(box, "")
+    git_commit_bu()
+    git_push_bu()
+    remove_git_dir(box)
+    email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
+  }
+  else if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^c
+    sleep, 100
+    send, ^c ; tag
+  }
+  else
+    send, !h
+  return
+
+$^h::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, box, question, Enter the name of the box to open:
+    if (box = "q")
+      return
+    ; find box don't open?
+
+    f := find_box(box)
+
+    click_validate_and_close()
+  }
+  else
+    send, ^h
+  return
+
+$!i:: ; time stamp
+  FormatTime, n,, HH:mm
+  if (WinActive("ahk_exe atom.exe"))
+  {
+    send, %n%
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, News Viewer
+  }
+  else if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, %n%
+  }
+  else if (WinActive("cmd"))
+  {
+    send, %n%
+  }
+  else
+    send, !i
+  return
+
+$!j:: ; job name
+  if (WinActive("ahk_exe atom.exe"))
+  {
+    FormatTime, n,, yyMMdHHmm
+    Clipboard := "job" . n . ".csv"
+    ;send, job%n%.csv
+    send, ^v
+  }
+  else
+    send, !j
+  return
+
+$^j:: ; csv
+  if (WinActive("ahk_exe atom.exe"))
+  {
+    send, ,2016,1,1,2019,12,2
+  }
+  else
+    send, ^j
+  return
+
+$!k::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, sy, q, start year
+    if (sy = "q")
+      return
+    InputBox, sm, q, start month
+    if (sm = "q")
+      return
+    InputBox, sh, q, start half
+    if (sh = "q")
+      return
+    InputBox, ey, q, end year
+    if (ey = "q")
+      return
+    InputBox, em, q, end month
+    if (em = "q")
+      return
+    InputBox, eh, q, end half
+    if (eh = "q")
+      return
+    run_date_cycle(sy, sm, sh, ey, em, eh)
+  }
+  else
+    send, !k
+  return
+
+$!l::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, out, q, Enter box name version
+    if (out = "q")
+      return
+    activate_blotter()
+    ;click_refresh()
+    click_primus_blotter_tab()
+    hour_glass_sleep(200)
+    click_name_box()
+    hour_glass_sleep(200)
+    send, ^a
+    hour_glass_sleep(200)
+    Clipboard := out
+    send, ^v
+    hour_glass_sleep(200)
+    click_refresh()
+    ; double click the check box to select all
+    hour_glass_sleep(200)
+    MouseMove, 0, 0
+  }
+  else
+    send, !l
+  return
+
+$!m:: ; basket matrix
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Basket Matrix
+  }
+  else
+    send, !M
+  return
+
+$^m:: ;
+  if (WinActive("cmd"))
+  {
+    InputBox, out, question, enter message
+    if (out = "q")
+      return
+    script := "git commit -a -m """ . out . """"
+    sleep, 100
+    send, %script%
+    Clipboard := out
+  }
+  else
+    send, ^m
+  return
+
+$!n::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^n ; down
+  }
+  else
+    send, ^n
+  return
+
+$!o::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    sleep, 100
+    send, ^f ; open file
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Primu$ 7.
+  }
+  else
+    send, !o
+  return
+
+$!+o::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    sleep, 10
+    send, o ; open file
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Primu$ 7.
+  }
+  else
+    send, !+o
+  return
+
+$!p::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    FileDelete, run_state.txt
+    FileAppend, False, run_state.txt
+  }
+  else
+    send, !p
+  return
 
 
-Loop, 6
-{
-	OpenAndSave(548, 203 + (A_Index - 1) * 47)
-	WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
-}
+$+!p::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, !x
+  }
+  else
+    send, +!p
+  return
 
-MouseClick, Left, 529, 479
-sleep 200
-msgbox, done with pmo
-return
+$!q::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinActivate, Task Queue Manager
+  }
+  else
+    send, !q
+  return
+
+$!+q::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    sleep, 100
+    send, ^c
+  }
+  else
+    send, !+q
+  return
+
+$!r::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^a
+    sleep, 100
+    send, !<
+    sleep, 100
+    send, +{Tab}
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+    WinActivate, Black Box Report
+  else
+    send, !r
+  return
+
+$!s::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+    sleep, 100
+    send, ^s ; save
+  }
+  else
+    send, ^s
+  return
+
+$!+s::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^c
+    sleep, 100
+    send, ^s ; allow adding a schedule
+  }
+  else
+    send, !+s
+  return
+
+$!t::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^c
+    sleep, 100
+    send, ^t
+  }
+  else if (WinActive("ahk_exe chrome.exe"))
+  {
+    send, ^t ; this is for a new tab
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+    WinActivate, BlackBox Tree
+  else
+    send, !t
+  return
+
+$!u:: ; git upstream
+  if (WinActive("cmd"))
+  {
+    InputBox, out, question, enter version
+    if (out = "q")
+      return
+    out := "git push --set-upstream origin " . out
+    send, %out%
+  }
+  else if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^p
+  }
+  else
+    send, !u
+  return
+
+$!v::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^y
+  }
+  else
+    send, ^v
+  return
+
+$!w::
+  send, ^w
+  return
+
+$!x::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^w
+  }
+  else
+    send, ^x
+  return
+
+$+!x::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^x
+  }
+  else
+    send, +!x
+  return
+
+$!y::
+  if (WinActive("ahk_exe mstsc.exe"))
+  {
+    InputBox, out, question, Please enter box name to remove
+    if (out = "q")
+      return
+    remove_git_dir(out)
+    msgbox done
+  }
+  else
+    send, !y
+  return
 
 
-; stop fix
-^/::
-msgbox hello
-/*
-click_design_tab()
-stop_open_existing_order()
-
-
-MouseClick, Left, 515, 150
-sleep 400
-MouseClick, Left, 533, 480
-sleep 200
-click_validate_and_close()
-sleep 200
-launcher_click_save_box()
-*/
-msgbox done
-return
+$!z::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^/
+  }
+  else
+    send, ^z
+  return

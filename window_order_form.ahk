@@ -274,8 +274,10 @@ get_order_form_check_boxes(checkboxes)
   checkboxes["ael_on_second_check_box"] := [472,332]
   checkboxes["ael_on_bid_check_box"] := [370,351]
   checkboxes["ael_convert_to_stop_check_box"] := [373,384]
+  checkboxes["ael_cancel_replace_check_box"] := [371,426]
   checkboxes["ael_on_last_trigger_point"] := [382,344]
   checkboxes["ael_on_second_trigger_point"] := [482,342]
   checkboxes["ael_on_bid_trigger_point"] := [381,363]
   checkboxes["ael_convert_to_stop_trigger_point"] := [382,392]
+  checkboxes["ael_cancel_replace_trigger_point"] := [380,434]
 }

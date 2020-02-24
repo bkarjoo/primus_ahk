@@ -53,6 +53,7 @@
 #define maximum_days_from_ipo(x) (DaysFromIPO > -1 AND DaysFromIPO < x)
 #define ipo_price IPOPrice
 #define ipo_day_2 if(DayOfTheWeek = 1, DaysFromIPO = 3, DaysFromIPO = 1)
+#define minimum_3_days_from_ipo (DaysFromIPO >= if(DayOfTheWeek <=2, 4, 2))
 #define not_exdiv AdjustedClosePrice(p1) = ClosePrice(PRIMARY, p1, NO)
 
 // EXECUTION
@@ -72,6 +73,8 @@
 #define time_minute TickTime
 #define time_sec TickTimeSeconds
 #define time_in_position_sec time_sec - entry_time_sec
+#define time_in_position_minutes (time_in_position_sec / 60)
+#define time_in_position_hours (time_in_position_minutes / 60)
 #define time_from_open TimeFromStockOpenSeconds // use with MINUTES
 #define time_from_open_sec TimeFromStockOpenSeconds
 #define time_from_open_minutes (TimeFromStockOpenSeconds/60)
@@ -104,6 +107,9 @@
 // OPEN
 #define open OpenPrice(PRIMARY, CURRENT, NO)
 #define open_prv(x) OpenPrice(PRIMARY, x, NO)
+#define gapping_down (open < close)
+#define gapping_up (open > close)
+#define opening_unch (open = close)
 // HIGH
 #define day_high DayHigh(ALL_VENUES,1,CURRENT,NO)
 #define day_highest_high(x) DayHigh(ALL_VENUES ,x ,CURRENT, NO)
@@ -117,7 +123,7 @@
 #define acbo_high max2(pre_mkt_high, post_mkt_high)
 #define minute_high(x) MinuteHigh(ALL_VENUES, x, CURRENT, NO, True)
 #define minute_high_prv(x, y) MinuteHigh(ALL_VENUES, x, y, NO, True)
-#define minute_high_I_prv(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
+#define minute_high_I_prv(minute_count, p_val) MinuteHigh_I(ALL_VENUES, minute_count, p_val, NO, True)
 #define minute_high_I_prv_dis(x, y) MinuteHigh_I(ALL_VENUES, x, y, NO, True)
 #define minute_high_ext_dv(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, True)
 #define minute_high_ext(x) MinuteHigh(ALL_VENUES, x, CURRENT, YES, False)
@@ -184,6 +190,7 @@
 #define avg_opg_vol avg_open_size(10)
 #define avg_volume_till_now(x) (adv(x)/390) * (TimeFromStockOpenSeconds/60)
 #define day_volume DayVolume(ALL_VENUES,1,CURRENT,NO)
+#define day_volume_prv(x) DayVolume(ALL_VENUES,1,x,NO)
 #define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
@@ -205,6 +212,7 @@
 #define imbalance_paired_vol ImbPair
 #define imbalance_at(x) ImbalanceAt(x)
 #define nyse_clear_price ClearPriceAt('09:29:00')
+#define clear_price ClearPrice
 // STUDIES
 #define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))/3
 #define higher_lows_P1_P5(x) MinuteLow_I(ALL_VENUES, x, P4, NO, True) > MinuteLow_I(ALL_VENUES, x, P5, NO, True) AND MinuteLow_I(ALL_VENUES, x, P3, NO, True) > MinuteLow_I(ALL_VENUES, x, P4, NO, True) AND MinuteLow_I(ALL_VENUES, x, P2, NO, True) > MinuteLow_I(ALL_VENUES, x, P3, NO, True) AND MinuteLow_I(ALL_VENUES, x, P1, NO, True) > MinuteLow_I(ALL_VENUES, x, P2, NO, True)
@@ -391,24 +399,41 @@
 #define spinoff s3_Spinoff_News
 #define managment_change s3_Mgmt_Changes
 #define ratings (StockNews(News_Current, ACBO, AnySentiment, Recommendations) OR StockNews(News_Current, ACBO, AnySentiment, Upgrade) OR StockNews(News_Current, ACBO, AnySentiment, Downgrade) OR StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Analyst_Research) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Revision) OR Source3(News_Current, ACBO, AnySentiment, Analyst_EPS_Reiteration) OR Source3(News_Current, ACBO, AnySentiment, Analyst_PT_Change) OR Source3(News_Current, ACBO, AnySentiment, Downgrades) OR Source3(News_Current, ACBO, AnySentiment, Initiations) OR Source3(News_Current, ACBO, AnySentiment, Upgrades) OR Source3(News_Current, ACBO, AnySentiment, Analyst_News))
-#define upgrade (StockNews(News_Current, ACBO, AnySentiment, Upgrade) or RatingsAction(News_Current, BeforeOpen, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Upgrades))
-#define proper_buyback (ns_press_release('"Share Repurchase"') or ns_press_release('"Stock Repurchase"')) and not ns_press_release('"update*"') and not ns_press_release('"complet*"') and not ns_press_release('"renew*"')
+
+#define upgrade (StockNews(News_Current, ACBO, AnySentiment, Upgrade) or RatingsAction(News_Current, ACBO, Upgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Upgrades))
+
+#define downgrade (StockNews(News_Current, ACBO, AnySentiment, Downgrade) or RatingsAction(News_Current, ACBO, Downgrade, AnyTierFirm, FromAny, ToAny, AnyTargetValue, '') or Source3(News_Current, ACBO, AnySentiment, Downgrades))
+
+#define proper_buyback (s3_Buybacks OR ((ns_source_type(Source3, Press_Releases, '"Share Repurchase"') or ns_source_type(Source3, Press_Releases, '"Stock Repurchase"')) and not ns_source_type(Source3, Press_Releases, '"update*"') and not ns_source_type(Source3, Press_Releases, '"complet*"') and not ns_source_type(Source3, Press_Releases, '"renew*"')))
+
 #define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
-#define guidance s3_Guidance
+
+#define guidance (s3_Guidance or ns('"guidance"'))
+
 #define has_dividend_news (s3_Dividend_Reduction or s3_Dividend_Increase or s3_Dividends or s3_Special_Dividends)
+
 #define initiated (StockNews(News_Current, ACBO, AnySentiment, Initiation) OR Source3(News_Current, ACBO, AnySentiment, Initiations))
+
 #define general_news GeneralNews(News_Current, ACBO, AnySentiment, AnyGeneralNewsType)
 // horizon_earnings takes ACBO, AfterClose BeforeOpen and True False
 #define horizon_earnings(x, y) EarningsNewsEvent(News_Current,x,y,Any)
 #define source3_earnings Source3(News_Current, ACBO, AnySentiment, Earnings)
-#define has_earnings (horizon_earnings(ACBO, True) or source3_earnings)
-#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings))
-#define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings))
-#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings))
+#define has_earnings earnings
+#define has_earnings_prv ( EarningsNewsEvent(News_P1, ACBO, True, Any) or Source3(News_P1, ACBO, AnySentiment, Earnings) or StockNews(News_P1, ACBO, AnySentiment, Earnings))
+#define has_earnings_AC (EarningsNewsEvent(News_P1, AfterClose, True, Any) or Source3(News_P1, AfterClose, AnySentiment, Earnings) or StockNews(News_P1, AfterClose, AnySentiment, Earnings))
+#define has_earnings_BO (EarningsNewsEvent(News_Current, BeforeOpen, True, Any) or Source3(News_Current, BeforeOpen, AnySentiment, Earnings) or StockNews(News_Current, BeforeOpen, AnySentiment, Earnings))
+#define has_earnings_MH (EarningsNewsEvent(News_Current, MarketHours, True, Any) or Source3(News_Current, MarketHours, AnySentiment, Earnings) or StockNews(News_Current, MarketHours, AnySentiment, Earnings))
 #define option_news Option_News
+#define earnings_exclude (not has_earnings and not has_earnings_MH)
 
-#define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
-#define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+// #define ns(x) NewsSearch(News_Current, ACBO, Source4, AnyGeneralNewsType, AnySentiment, Summary, x)
+// #define ns_press_release(x) NewsSearch(News_Current, ACBO, Source3, Press_Releases, AnySentiment, Summary, x)
+
+#define ns_source_type(source, type, term) NewsSearch(News_Current, ACBO, source, type, AnySentiment, Summary, term)
+#define ns_source(source, term) NewsSearch(News_Current, ACBO, source, AnyGeneralNewsType, AnySentiment, Summary, term)
+#define ns_type(type, term) NewsSearch(News_Current, ACBO, Any, type, AnySentiment, Summary, term)
+#define ns(term) NewsSearch(News_Current, ACBO, Any, AnyGeneralNewsType, AnySentiment, Summary, term)
+
 #define is_secondary SyndicateType(News_Current, ACBO, Secondary)
 #define is_spot_secondary SyndicateType(News_Current, ACBO, SpotSecondary)
 #define syndicate_size SyndicateSize(News_Current, ACBO)
@@ -499,6 +524,10 @@
 #define fly_news(x) StockNews(News_Current, x, AnySentiment, AnyNewsType)
 #define has_news (source3_news or fly_news(ACBO) or briefing_news(True))
 #define has_no_news (not general_news and briefing_news(False) and horizon_earnings(ACBO, False) and not trade_news(ACBO) and not fly_news(ACBO) and not conference_call(ACBO) and not source3_news)
+
+#define fly_time(time) StockNews(News_Current, time, AnySentiment, AnyNewsType)
+// type can be Earnings, ...
+#define fly_type(type) StockNews(News_Current, ACBO, AnySentiment, type)
 
 // trade_news was discontinued OCT 2018, so just use for back testing
 #define trade_news(x) TradeNews(News_Current, x, AnySentiment, AnyNewsType)

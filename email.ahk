@@ -29,3 +29,4 @@ email_attachment(subj,msg,file)
   load_csv_dictionary("secret.csv", creds)
   send_mail(creds["email"], creds["password"],creds["email"],subj,msg,file)
 }
+ 
