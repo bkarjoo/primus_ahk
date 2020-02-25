@@ -740,6 +740,127 @@ $!s::
     sleep, 100
     send, ^s ; save
   }
+  else if (WinActive("ahk_exe Redi.exe"))
+  {
+    WinActivate, Message ; assumes only one message monitor is open
+    WinWaitActive, Message
+    ; click order tab
+    MouseClick, Left, 95, 59
+    sleep, 200
+    ; make sure symbol is clear
+    MouseClick, Left, 282, 30
+    sleep, 200
+    Send, {Backspace 6}
+    sleep, 200
+    ; click export
+    MouseClick, Left, 436, 30
+    WinWaitActive, ahk_exe EXCEL.EXE
+    sleep, 2000
+    ; excel saves as csv
+    MouseClick, Left, 28, 38
+    sleep, 500
+    ; click save as
+    MouseClick, Left, 64, 99
+    WinWaitActive, Save As
+    sleep, 200
+    ; chose correct folder
+    MouseClick, Left, 75, 258
+    sleep, 200
+    ; chose csv
+    MouseClick, Left, 345, 756
+    sleep, 200
+    send, {Down 14}
+    send, {Enter}
+    sleep, 200
+    MouseClick, Left, 320, 731
+    sleep, 200
+    ; name the save as file
+    FormatTime, n,, yyMMd
+    save_as := "redi_orders_" . n
+    send, %save_as%
+    ; click save button
+    MouseClick, Left, 625, 838
+    WinWaitActive, Microsoft Excel
+    sleep, 200
+    send, {Space}
+    ; close excel
+    ; click file tab
+    MouseClick, Left, 30, 36
+    sleep, 200
+    MouseClick, Left, 56, 438
+    sleep, 200
+    Send, {Tab}
+    sleep, 200
+    Send, {Space}
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
+  {
+    WinWaitActive, PRIMU$ - Positions / Orders / Executions (Primus)
+    MouseClick, Left, 241, 112
+    sleep, 200
+    send, ^a
+    sleep, 200
+    send, ^c
+    ; open excel
+    Send, {LWin}
+    sleep, 200
+    Send, excel
+    sleep, 200
+    Send, {Enter}
+    WinWaitActive, Microsoft Excel
+    Sleep, 200
+    send, ^v
+    Sleep, 200
+    ; save sheet
+    ; excel saves as csv
+    MouseClick, Left, 28, 38
+    sleep, 500
+    ; click save as
+    MouseClick, Left, 64, 99
+    WinWaitActive, Save As
+    sleep, 200
+    ; chose correct folder
+    MouseClick, Left, 75, 281
+    sleep, 200
+    ; chose csv
+    MouseClick, Left, 345, 756
+    sleep, 200
+    send, {Down 14}
+    send, {Enter}
+    sleep, 200
+    MouseClick, Left, 320, 731
+    sleep, 200
+    ; name the save as file
+    InputBox, out, question, "Short side? (y/n/q)"
+    if (out = "q")
+      return
+    side := "shorts_"
+
+    if (out != "y")
+      side := "longs_"
+    FormatTime, n,, yyMMd
+    save_as := "primus_orders_" . side . n
+    WinWaitActive, Save As
+    Sleep, 200
+    send, %save_as%
+    ; click save button
+    MouseClick, Left, 625, 838
+    WinWaitActive, Microsoft Excel
+    sleep, 200
+    send, {Space}
+    sleep, 200
+    send, {Space}
+    ; close excel
+    ; click file tab
+    MouseClick, Left, 30, 36
+    sleep, 200
+    MouseClick, Left, 56, 438
+    sleep, 200
+    Send, {Tab}
+    sleep, 200
+    Send, {Space}
+    Msgbox, done
+  }
   else
     send, ^s
   return

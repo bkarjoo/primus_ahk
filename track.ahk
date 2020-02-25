@@ -38,7 +38,7 @@ loop % live_runs.MaxIndex()
   sleep, 500
   Send, ^v
   open_blackbox_search_click()
-  sleep, 1000
+  sleep, 2000
   pause_mechanism()
   sleep, 500
   open_blackbox_click_open()
