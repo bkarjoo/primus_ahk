@@ -38,13 +38,13 @@ loop % live_runs.MaxIndex()
   sleep, 500
   Send, ^v
   open_blackbox_search_click()
-  sleep, 2000
+  inform_timeout_pause_option("Waiting 2 seconds for box to be found. If found you can press enter.", 2)
   pause_mechanism()
   sleep, 500
   open_blackbox_click_open()
   sleep, 500
   pause_mechanism()
-  wait_activate_popup_error("PRIMU$ - Black Box Design", 5, 2)
+  wait_activate_popup_error("PRIMU$ - Black Box Design", 2, 2)
   click_validate_and_close()
   sleep, 500
   pause_mechanism()

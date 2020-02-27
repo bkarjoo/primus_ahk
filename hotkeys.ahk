@@ -196,7 +196,11 @@ $!Escape::
 $^Left::
   if (WinActive("ahk_exe emacs.exe"))
   {
-    send, !b  ; backward word by word
+    send, ^x ; unfocus
+    sleep, 200
+    send, n
+    sleep, 200
+    send, w
   }
   else
     send, ^{Left}
@@ -205,7 +209,11 @@ $^Left::
 $^Right::
   if (WinActive("ahk_exe emacs.exe"))
   {
-    send, !f ; end
+    send, ^x ; focus
+    sleep, 200
+    send, n
+    sleep, 200
+    send, s
   }
   else
     send, ^{Right}
@@ -250,15 +258,29 @@ $!5:: ; vnc
   WinActivate, DELL (DESKTOP-KNTE5U6) - VNC Viewer
   return
 
-$!6::
-  WinActivate, DESKTOP-VBBA1D4 (DESKTOP-VBBA1D4) - VNC Viewer
+$!6:: ; multiboxes
+  SetTitleMatchMode, 2
+  WinActivate, [Longs
+  WinActivate, [Shorts
   return
 
-$!7:: ;
+$!7:: ; think or swim
+  WinActivate, ahk_exe thinkorswim.exe
   return
 
-$!8:: ;
+$!8:: ; redi
+  WinActivate, ahk_class Redi_Message Monitor
+  WinActivate, Position-5
+  WinActivate, Position-2
+  WinActivate, ahk_class Redi_Price Ticker
+  WinActivate, ahk_class Redi_Montage Monitor
   return
+
+$!9:: ; excel
+  WinActivate, ahk_exe EXCEL.EXE
+  return
+
+
 
 $!a::
   send, ^a
@@ -354,23 +376,25 @@ $^d:: ; merger dnt (will have to change when you add new boxes)
     SetTitleMatchMode, 2
     WinActivate,  [Shorts 200123]
     first_row := 135
-    row_count := strategy_count - 1
     increment := 20
     x := 200
-    Loop % row_count + 1
+    r := first_row
+    Loop % strategy_count
     {
-      y := first_row + (A_Index - 1) * increment
-      MouseClick, Left, x, y
+      MouseClick, Left, %x%, %r%
       Sleep, 200
-      MouseClick, Right, x, y
-      Sleep, 200
-      MouseClick, Left, 220, y + 95
+      MouseClick, Right, %x%, %r%
+      Sleep, 1000
+      ;kill_pixel := r + 95
+      ;MouseClick, Left, 250, %kill_pixel%
+      send, {Down 4}{Enter}
       WinWaitActive, Kill Symbol(s)
       Sleep, 200
       Send, ^v
       Sleep, 200
       MouseClick, Left, 379, 239
       Sleep, 200
+      r := r + increment
     }
     Msgbox % Clipboard
   }
