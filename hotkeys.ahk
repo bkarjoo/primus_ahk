@@ -35,6 +35,11 @@ check_mark_cancel_replace()
 }
 
 
+$RAlt::LButton
+return
+
+$RWin::RButton
+return
 
 $!/::
   if (WinActive("ahk_exe emacs.exe"))
@@ -266,6 +271,9 @@ $!6:: ; multiboxes
 
 $!7:: ; think or swim
   WinActivate, ahk_exe thinkorswim.exe
+  WinWaitActive, ahk_exe thinkorswim.exe
+  MouseClick, Left, 80,94
+  send, ^a{Backspace}
   return
 
 $!8:: ; redi
@@ -303,12 +311,13 @@ $!+a::
 
 $!b:: ; activate blotter and show box stats,
   ;blotter must be active to run its shortcuts, so this will activate it
-  WinActivate, \\tsclient
-  WinActivate, D:\Users\
+
   WinActivate, Statistic Report
   sleep, 100
   WinActivate, Multi-Day Analysis
   send, !b
+  WinActivate, \\tsclient
+  WinActivate, D:\Users\
   return
 
 $^b:: ; type branch message
