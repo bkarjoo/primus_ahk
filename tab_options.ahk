@@ -15,10 +15,12 @@ get_options_variables(ops)
   ops["cancel_all_pending_orders_trigger_point"] := [175,166]
   ops["close_all_open_positions_trigger_point"] := [175,189]
   ops["place_OPG_orders_trigger_point"] := [175,211]
+  ops["close_box_save_results_trigger_point"] := [175,236]
   ops["enable_position_sizing_scheme_check_box"] := [19,336]
   ops["enable_position_sizing_scheme_trigger_point"] := [27,341]
+  ops["place_MOC_instead_of_close_position_check_box"] := [479,69]
+  ops["place_MOC_instead_of_close_position_trigger_point"] := [480,76]
 }
-
 
 set_time_option(trigger_point, time)
 {
@@ -70,12 +72,15 @@ set_options_helper(timeo, pos)
 
   click_options_tab()
   set_check_box_confirm("PRIMU$ - Black", 1, timeo["use_time_options"], vars["use_time_options_check_box"], vars["use_time_options_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, timeo["place_MOC_instead_of_close_position"], vars["place_MOC_instead_of_close_position_check_box"], vars["place_MOC_instead_of_close_position_trigger_point"])
+
   set_time_option(vars["start_subscription_trigger_point"], timeo["start_subscription"])
   set_time_option(vars["start_entering_positions_trigger_point"], timeo["start_entering_positions"])
   set_time_option(vars["stop_entering_positions_trigger_point"], timeo["stop_entering_positions"])
   set_time_option(vars["cancel_all_pending_orders_trigger_point"], timeo["cancel_all_pending_orders"])
   set_time_option(vars["close_all_open_positions_trigger_point"], timeo["close_all_open_positions"])
   set_time_option(vars["place_OPG_orders_trigger_point"], timeo["place_OPG_orders"])
+  set_time_option(vars["close_box_save_results_trigger_point"], timeo["close_box_save_results"])
   set_check_box_confirm("PRIMU$ - Black", 1,pos["enable_position_sizing_scheme"], vars["enable_position_sizing_scheme_check_box"], vars["enable_position_sizing_scheme_trigger_point"])
   set_position_sizing_scheme(pos["position_sizing"])
 }
@@ -107,6 +112,8 @@ options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars)
     return 1
   if (ti_vars["place_OPG_orders"] != tbu_vars["place_OPG_orders"])
     return 1
+  if (ti_vars["close_box_save_results"] != tbu_vars["close_box_save_results"])
+    return 1
   if (pi_vars["enable_position_sizing_scheme"] != pbu_vars["enable_position_sizing_scheme"])
     return 1
   if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])
@@ -125,6 +132,7 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 
   click_options_tab()
   set_check_box_confirm("PRIMU$ - Black", 1, ti_vars["use_time_options"], ot_vars["use_time_options_check_box"], ot_vars["use_time_options_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, ti_vars["use_time_options"], ot_vars["place_MOC_instead_of_close_position_check_box"], ot_vars["place_MOC_instead_of_close_position_trigger_point"])
 
   if (ti_vars["start_subscription"] != tbu_vars["start_subscription"])
     set_time_option(ot_vars["start_subscription_trigger_point"], ti_vars["start_subscription"])
@@ -138,6 +146,9 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
     set_time_option(ot_vars["close_all_open_positions_trigger_point"], ti_vars["close_all_open_positions"])
   if (ti_vars["place_OPG_orders"] != tbu_vars["place_OPG_orders"])
     set_time_option(ot_vars["place_OPG_orders_trigger_point"], ti_vars["place_OPG_orders"])
+  if (ti_vars["close_box_save_results"] != tbu_vars["close_box_save_results"])
+    set_time_option(ot_vars["close_box_save_results_trigger_point"], ti_vars["close_box_save_results"])
+
 
   set_check_box_confirm("PRIMU$ - Black", 1,pi_vars["enable_position_sizing_scheme"], ot_vars["enable_position_sizing_scheme_check_box"], ot_vars["enable_position_sizing_scheme_trigger_point"])
   if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])

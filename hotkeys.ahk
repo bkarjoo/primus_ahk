@@ -41,6 +41,14 @@ return
 $RWin::RButton
 return
 
+$F1::LButton
+return
+
+$F2::RButton
+return
+
+
+
 $!/::
   if (WinActive("ahk_exe emacs.exe"))
   {
@@ -132,8 +140,7 @@ $!=::
   if (WinActive("ahk_exe emacs.exe"))
   {
     send, ^x
-    send, n
-    send, s
+    send, ^=
   }
   else
     send, !=
@@ -144,8 +151,7 @@ $!-::
   if (WinActive("ahk_exe emacs.exe"))
   {
     send, ^x
-    send, n
-    send, w
+    send, ^-
   }
   else
     send, !-
@@ -186,6 +192,18 @@ $!Enter::
   }
   else
     send, !{Enter}
+  return
+
+$+Enter::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^e
+    sleep, 100
+    send, !+{Enter}
+    sleep, 100
+  }
+  else
+    send, +{Enter}
   return
 
 $!Escape::
@@ -346,6 +364,16 @@ $!c::
   }
   else
     send, ^c
+  return
+
+$!+c::
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^c
+    send, ^c
+  }
+  else
+    send, !+c
   return
 
 $!d::
@@ -521,8 +549,8 @@ $!h::
       build_local_box_version(box, ver)
     msgbox, backing up %box%
     backup_compiled_files_helper(box, "")
-    git_commit_bu()
-    git_push_bu()
+    ;git_commit_bu()
+    ;git_push_bu()
     remove_git_dir(box)
     email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
   }
@@ -676,6 +704,12 @@ $!n::
   if (WinActive("ahk_exe emacs.exe"))
   {
     send, ^n ; down
+  }
+  else if (WinActive("cmd"))
+  {
+    send, #w
+    WinWaitActive, Create new console
+    send, {Enter}
   }
   else
     send, ^n
@@ -952,7 +986,27 @@ $!v::
     send, ^v
   return
 
+$^v::
+  keywait Control
+  MouseClick, Left
+  sleep, 100
+
+  if (WinActive("ahk_exe emacs.exe"))
+  {
+    send, ^y
+  }
+  else
+    send, ^v
+  return
+
 $!w::
+if (WinActive("cmd"))
+{
+  send, #{Delete}
+  WinWaitActive, ConEmu
+  send, {Enter}
+}
+else
   send, ^w
   return
 
@@ -995,4 +1049,13 @@ $!z::
   }
   else
     send, ^z
+  return
+
+$!+z::
+  if (WinActive("ahk_exe atom.exe"))
+  {
+    send, ^y
+  }
+  else
+    send, !+z
   return

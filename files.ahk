@@ -62,7 +62,11 @@ backup(file_name, name, i_folder)
     source := name . "/" . file_name . ".i"
   else
     source := i_folder . "/" . file_name . ".i"
-  target := "../bu/" . name . "/" . file_name . "_bu.i"
+
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  bu_folder := creds["bu_path"]
+  target := bu_folder . name . "/" . file_name . "_bu.i"
 
   FileCopy, %source%, %target%, 1
 }

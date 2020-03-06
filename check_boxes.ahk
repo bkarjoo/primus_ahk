@@ -1,6 +1,7 @@
 #include wait_policy.ahk
 #include logger.ahk
 
+/*
 ; takes a point array with x being first item and y the second
 is_checked(checkbox_point)
 {
@@ -11,6 +12,18 @@ is_checked(checkbox_point)
   image_path := creds["image_path"] . "checked.PNG"
   ImageSearch,  LocX, LocY, checkbox_point[1], checkbox_point[2], checkbox_point[1]+41, checkbox_point[2]+30, %image_path%
   return (ErrorLevel = 0)
+}
+*/
+
+is_checked(checkbox_point)
+{
+  x := checkbox_point[1]
+  y := checkbox_point[2]
+  p := x + 18
+  q := y + 18
+  PixelSearch, out1, out2, %x%, %y%, %p%, %q%, 000
+
+  return out1 > 0
 }
 
 trigger_check_box(checkbox_point)

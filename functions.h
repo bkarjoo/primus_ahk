@@ -521,6 +521,7 @@
 // briefing_news takes True or False
 #define briefing_news(x) StockNewsEvent(News_Current, ACBO, x)
 #define source3_news Source3(News_Current, ACBO, AnySentiment, AnyNewsType)
+#define si_news Source3(News_Current, ACBO, AnySentiment, AnyNewsType)
 // takes ACBO ...
 #define fly_news(x) StockNews(News_Current, x, AnySentiment, AnyNewsType)
 #define has_news (source3_news or fly_news(ACBO) or briefing_news(True))
