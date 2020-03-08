@@ -11,7 +11,9 @@ local_compiled_path(box_name, component)
 backup_compiled_path(box_name, component)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  p := "..\bu\" . box_name "\" . component . "_bu.i"
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  p := creds["bu_path"] . box_name "\" . component . "_bu.i"
   return p
 }
 

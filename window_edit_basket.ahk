@@ -29,9 +29,9 @@ set_basket_description(desc)
 get_edit_basket_checkboxes(checkboxes)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  checkboxes["activate_dynamic_basket_rules_check_box"] := [20,147]
+  checkboxes["activate_dynamic_basket_rules_check_box"] := [25, 151]
   checkboxes["activate_dynamic_basket_rules_trigger_point"]  := [28,153]
-  checkboxes["apply_dynamic_basket_rules_to_all_available_symbols_check_box"] := [193,147]
+  checkboxes["apply_dynamic_basket_rules_to_all_available_symbols_check_box"] := [200, 152]
   checkboxes["apply_dynamic_basket_rules_to_all_available_symbols_trigger_point"] := [200,153]
 }
 

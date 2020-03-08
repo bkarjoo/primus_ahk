@@ -190,16 +190,16 @@ stop_open_existing_order()
 get_design_tab_checkboxes(checkbox_array)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  checkbox_array["permit_backtesting_check_box"] := [616, 120]
-  checkbox_array["enter_on_last_check_box"] := [760, 69]
-  checkbox_array["enter_on_bid_check_box"] := [760, 94]
-  checkbox_array["enter_on_ask_check_box"] := [760, 119]
-  checkbox_array["enter_on_pmi_check_box"] := [760, 144]
-  checkbox_array["enter_on_imbalance_check_box"] := [760, 193]
-  checkbox_array["enter_on_snapshot_check_box"] := [867, 192]
-  checkbox_array["enter_on_new_minute_check_box"] := [867, 170]
-  checkbox_array["enter_on_stock_event_check_box"] := [760, 170]
-  checkbox_array["use_strict_mode_check_box"] := [618, 197]
+  checkbox_array["permit_backtesting_check_box"] := [626, 127]
+  checkbox_array["enter_on_last_check_box"] := [768, 76]
+  checkbox_array["enter_on_bid_check_box"] := [767, 101]
+  checkbox_array["enter_on_ask_check_box"] := [767, 127]
+  checkbox_array["enter_on_pmi_check_box"] := [767, 155]
+  checkbox_array["enter_on_imbalance_check_box"] := [767, 201]
+  checkbox_array["enter_on_snapshot_check_box"] := [875, 201]
+  checkbox_array["enter_on_new_minute_check_box"] := [875, 177]
+  checkbox_array["enter_on_stock_event_check_box"] := [767, 177]
+  checkbox_array["use_strict_mode_check_box"] := [625, 204]
   checkbox_array["enable_stop_trailing_on_new_second_check_box"] := [12,825]
   checkbox_array["verify_code_during_validate_procedure_check_box"] := [523,909]
 
@@ -286,12 +286,15 @@ update_general_setting_helper_version(i_vars, bu_vars, version)
   bname := build_box_name(i_vars["box_name"], version)
   update_box_name(bname)
   desc := build_box_description(i_vars["launch_rule_name"], i_vars["black_box_description"], i_vars["basket_description"])
+
   if(i_vars["launch_rule_name"] != bu_vars["launch_rule_name"] or i_vars["black_box_description"] != bu_vars["black_box_description"] or i_vars["basket_description"] != bu_vars["basket_description"])
     update_box_description(desc)
+
   if(i_vars["black_box_side"] != bu_vars["black_box_side"])
     set_black_box_side(i_vars["black_box_side"])
   if(i_vars["black_box_scheme"] != bu_vars["black_box_scheme"])
     set_black_box_scheme(i_vars["black_box_scheme"])
+
   ; make sure it's still true, doesn't hurt
   set_check_box_confirm("PRIMU$ - Black", 1,"TRUE", checkboxes["permit_backtesting_check_box"], checkboxes["permit_backtesting_trigger_point"])
   ;if(i_vars["enter_on_last" != bu_vars["enter_on_last")

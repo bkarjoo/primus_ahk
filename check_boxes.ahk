@@ -19,8 +19,8 @@ is_checked(checkbox_point)
 {
   x := checkbox_point[1]
   y := checkbox_point[2]
-  p := x + 18
-  q := y + 18
+  p := x + 5
+  q := y + 5
   PixelSearch, out1, out2, %x%, %y%, %p%, %q%, 000
 
   return out1 > 0
@@ -36,22 +36,20 @@ trigger_check_box(checkbox_point)
 
 set_check_box(value, check_box, trigger_point)
 {
-  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  cb_state := is_checked(check_box)
+
   if (value = "TRUE")
   {
-    if (!is_checked(check_box))
+    if (!cb_state)
       trigger_check_box(trigger_point)
   } else {
-    if (is_checked(check_box))
+    if (cb_state)
       trigger_check_box(trigger_point)
   }
 }
 
 set_check_box_confirm(caller_window, wait_delay, value, check_box, trigger_point)
 {
-  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  err := wait_only(caller_window, wait_delay)
-  if (err != 0)
-    inform(caller_window . " could not be activated. set_check_box_confirm failed.")
+
   set_check_box(value, check_box, trigger_point)
 }

@@ -261,23 +261,23 @@ $^Up::
     send, ^{Up}
   return
 
-$!1:: ;
+$!1::
   WinActivate, ahk_exe atom.exe
   return
 
-$!2:: ; cmd
+$!2::
   WinActivate, cmd
   return
 
-$!3:: ; cmd
+$!3::
   WinActivate, ahk_exe emacs.exe
   return
 
-$!4:: ; workflowy notes
+$!4::
   WinActivate, ahk_exe chrome.exe
   return
 
-$!5:: ; vnc
+$!5::
   WinActivate, DELL (DESKTOP-KNTE5U6) - VNC Viewer
   return
 
@@ -927,6 +927,10 @@ $!s::
     sleep, 200
     Send, {Space}
     Msgbox, done
+  }
+  else if (WinActive("ahk_exe atom.exe"))
+  {
+    send, ^s
   }
   else
     send, ^s

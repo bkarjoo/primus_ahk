@@ -3,7 +3,7 @@
 get_launch_rule_tab_vars(vars)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  vars["enable_black_box_launch_rule_check_box"] := [14,49]
+  vars["enable_black_box_launch_rule_check_box"] := [19, 54]
   vars["enable_black_box_launch_rule_trigger_point"] := [21,57]
 }
 

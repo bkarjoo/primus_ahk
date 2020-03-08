@@ -183,7 +183,9 @@ generic_code_parser(file_name, array)
 create_backup_folder_helper(box_name)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  bu_md_cmd := "if not exist ..\bu\" . box_name . " md ..\bu\" . box_name
+  creds := {}
+  load_csv_dictionary("secret.csv", creds)
+  bu_md_cmd := "if not exist " . creds["bu_path"] . box_name . " md " . creds["bu_path"] . box_name
   run_cmd(bu_md_cmd)
 }
 

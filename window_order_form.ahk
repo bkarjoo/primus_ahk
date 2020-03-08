@@ -255,26 +255,28 @@ if (res = 0)
 get_order_form_check_boxes(checkboxes)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  checkboxes["aggregated_tif_check_box"] := [310, 359]
-  checkboxes["calc_lmt_prc_durng_ord_plcmnt_check_box"] := [12, 288]
-  checkboxes["is_proactive_check_box"] := [12, 311]
+  checkboxes["aggregated_tif_check_box"] := [328, 276]
+  checkboxes["calc_lmt_prc_durng_ord_plcmnt_check_box"] := [33, 298]
+  checkboxes["is_proactive_check_box"] := [32, 320]
 
   checkboxes["aggregated_tif_trigger_point"] := [330, 277]
   checkboxes["calc_lmt_prc_durng_ord_plcmnt_trigger_point"] := [35,301]
   checkboxes["is_proactive_trigger_point"] := [35,324]
 
-  checkboxes["enable_trailing_check_box"] := [27,214]
-  checkboxes["trail_after_entry_complete_check_box"] := [128,213]
-  checkboxes["trail_once_check_box"] := [280, 214]
+  checkboxes["enable_trailing_check_box"] := [33,219]
+  checkboxes["trail_after_entry_complete_check_box"] := [134,219]
+  checkboxes["trail_once_check_box"] := [286, 219]
+
   checkboxes["enable_trailing_trigger_point"] := [36,221]
   checkboxes["trail_after_entry_complete_trigger_point"] := [138,221]
   checkboxes["trail_once_trigger_point"] := [288,221]
 
-  checkboxes["ael_on_last_check_box"] := [370,330]
-  checkboxes["ael_on_second_check_box"] := [472,332]
-  checkboxes["ael_on_bid_check_box"] := [370,351]
-  checkboxes["ael_convert_to_stop_check_box"] := [373,384]
-  checkboxes["ael_cancel_replace_check_box"] := [371,426]
+  checkboxes["ael_on_last_check_box"] := [380,343]
+  checkboxes["ael_on_second_check_box"] := [479, 339]
+  checkboxes["ael_on_bid_check_box"] := [379, 360]
+  checkboxes["ael_convert_to_stop_check_box"] := [380, 389]
+  checkboxes["ael_cancel_replace_check_box"] := [379, 433]
+
   checkboxes["ael_on_last_trigger_point"] := [382,344]
   checkboxes["ael_on_second_trigger_point"] := [482,342]
   checkboxes["ael_on_bid_trigger_point"] := [381,363]

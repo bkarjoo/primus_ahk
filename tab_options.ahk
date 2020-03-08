@@ -7,8 +7,9 @@
 get_options_variables(ops)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  ops["use_time_options_check_box"] := [17,65]
+  ops["use_time_options_check_box"] := [23, 76]
   ops["use_time_options_trigger_point"] := [25,77]
+
   ops["start_subscription_trigger_point"] := [175,93]
   ops["start_entering_positions_trigger_point"] := [175,118]
   ops["stop_entering_positions_trigger_point"] := [175,142]
@@ -16,9 +17,11 @@ get_options_variables(ops)
   ops["close_all_open_positions_trigger_point"] := [175,189]
   ops["place_OPG_orders_trigger_point"] := [175,211]
   ops["close_box_save_results_trigger_point"] := [175,236]
-  ops["enable_position_sizing_scheme_check_box"] := [19,336]
+
+  ops["enable_position_sizing_scheme_check_box"] := [25, 339]
   ops["enable_position_sizing_scheme_trigger_point"] := [27,341]
-  ops["place_MOC_instead_of_close_position_check_box"] := [479,69]
+
+  ops["place_MOC_instead_of_close_position_check_box"] := [479,74]
   ops["place_MOC_instead_of_close_position_trigger_point"] := [480,76]
 }
 
