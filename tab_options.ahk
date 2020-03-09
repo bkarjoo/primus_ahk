@@ -117,10 +117,13 @@ options_vars_changed(ti_vars, pi_vars, tbu_vars, pbu_vars)
     return 1
   if (ti_vars["close_box_save_results"] != tbu_vars["close_box_save_results"])
     return 1
+  if (ti_vars["place_MOC_instead_of_close_position"] != tbu_vars["place_MOC_instead_of_close_position"])
+    return 1
   if (pi_vars["enable_position_sizing_scheme"] != pbu_vars["enable_position_sizing_scheme"])
     return 1
   if (pi_vars["position_sizing"] != pbu_vars["position_sizing"])
     return 1
+
   return 0
 }
 
@@ -135,7 +138,7 @@ update_options_helper(ti_vars, pi_vars, tbu_vars, pbu_vars)
 
   click_options_tab()
   set_check_box_confirm("PRIMU$ - Black", 1, ti_vars["use_time_options"], ot_vars["use_time_options_check_box"], ot_vars["use_time_options_trigger_point"])
-  set_check_box_confirm("PRIMU$ - Black", 1, ti_vars["use_time_options"], ot_vars["place_MOC_instead_of_close_position_check_box"], ot_vars["place_MOC_instead_of_close_position_trigger_point"])
+  set_check_box_confirm("PRIMU$ - Black", 1, ti_vars["place_MOC_instead_of_close_position"], ot_vars["place_MOC_instead_of_close_position_check_box"], ot_vars["place_MOC_instead_of_close_position_trigger_point"])
 
   if (ti_vars["start_subscription"] != tbu_vars["start_subscription"])
     set_time_option(ot_vars["start_subscription_trigger_point"], ti_vars["start_subscription"])
