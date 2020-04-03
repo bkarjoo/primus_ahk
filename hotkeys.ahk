@@ -269,22 +269,29 @@ $!2::
   WinActivate, cmd
   return
 
-$!3::
-  WinActivate, ahk_exe emacs.exe
+$!3:: ; Nirvana Gmail Personal Gmail QS
+  WinActivate, Nirvana
+  WinActivate, Inbox
+  WinActivate, "research"
+  WinActivate, [research]
   return
 
-$!4::
-  WinActivate, ahk_exe chrome.exe
+$!4:: ; Slack and Whatsapp
+  WinActivate, Slack
+  WinActivate, WhatsApp
   return
 
-$!5::
-  WinActivate, DELL (DESKTOP-KNTE5U6) - VNC Viewer
+$!5:: ; QSG Hub and Portfolio
+  WinActivate, QSG Hub
+  WinActivate, BKarjoo Portfolio
   return
 
 $!6:: ; multiboxes
   SetTitleMatchMode, 2
   WinActivate, [Longs
   WinActivate, [Shorts
+  WinActivate, [double long
+  WinActivate, [double short
   return
 
 $!7:: ; think or swim
@@ -303,7 +310,7 @@ $!8:: ; redi
   return
 
 $!9:: ; excel
-  WinActivate, ahk_exe EXCEL.EXE
+  WinActivate, ahk_exe MarkdownMonster.exe
   return
 
 
@@ -327,18 +334,18 @@ $!+a::
     send, !+a
   return
 
-$!b:: ; activate blotter and show box stats,
+$!0::
+$^b:: ; activate blotter and show box stats,
   ;blotter must be active to run its shortcuts, so this will activate it
 
   WinActivate, Statistic Report
   sleep, 100
   WinActivate, Multi-Day Analysis
-  send, !b
   WinActivate, \\tsclient
   WinActivate, D:\Users\
   return
 
-$^b:: ; type branch message
+$!b:: ; type branch message
   if (WinActive("ahk_exe emacs.exe"))
   {
     send, ^x
@@ -388,6 +395,10 @@ $!d::
   else if (WinActive("ahk_exe emacs.exe"))
   {
     send, ^k ; kill from curser to end of line
+  }
+  else if (WinActive("ahk_exe atom.exe"))
+  {
+    send, ^+k
   }
   else
     send, !d
@@ -681,14 +692,24 @@ $!m:: ; basket matrix
   {
     WinActivate, Basket Matrix
   }
+  else if (WinActive("cmd"))
+  {
+    InputBox, out, q, enter message,,,,,,,,%Clipboard%
+    if (out = "q")
+      return
+    script := "git commit -a -m """ . out . """"
+    sleep, 100
+    send, %script%
+    Clipboard := out
+  }
   else
-    send, !M
+    send, !m
   return
 
 $^m:: ;
   if (WinActive("cmd"))
   {
-    InputBox, out, question, enter message
+    InputBox, out, q, enter message,,,,,,,,%Clipboard%
     if (out = "q")
       return
     script := "git commit -a -m """ . out . """"
@@ -707,9 +728,13 @@ $!n::
   }
   else if (WinActive("cmd"))
   {
-    send, #w
+    send, !n
     WinWaitActive, Create new console
     send, {Enter}
+  }
+  else if (WinActive("ahk_exe chrome.exe"))
+  {
+    send, ^t ; this is for a new tab
   }
   else
     send, ^n
@@ -1004,13 +1029,6 @@ $^v::
   return
 
 $!w::
-if (WinActive("cmd"))
-{
-  send, #{Delete}
-  WinWaitActive, ConEmu
-  send, {Enter}
-}
-else
   send, ^w
   return
 

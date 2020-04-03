@@ -48,6 +48,9 @@
 #define instrument_type(x) IsInstrumentType(x)
 #define warrant IsInstrumentType(WARRANT)
 #define is_halted IsHalt
+
+// It's 5 minutes after a halt if p5 has volume
+#define no_halt_last_5_min minute_volume_prv(1, P5) > 0
 #define is_hard_to_borrow IsHardToBorrow
 #define minimum_days_from_ipo(x) (DaysFromIPO > x OR DaysFromIPO < 0)
 #define maximum_days_from_ipo(x) (DaysFromIPO > -1 AND DaysFromIPO < x)
@@ -66,6 +69,7 @@
 #define entry_trigs_hr(x) EntryTriggersCount(HOURS, x)
 #define execution ExecutionPrice
 #define position_count_open PositionCount(OPEN)
+#define not_likely_to_be_broken ((execution <= 25 and execution > open * .91) or (execution > 25 and execution <= 50 and execution > open * .955) or (execution > 50 and execution > open * .975))
 
 // BLACKBOX
 // DATE
@@ -114,8 +118,10 @@
 #define day_high DayHigh(ALL_VENUES,1,CURRENT,NO)
 #define day_highest_high(x) DayHigh(ALL_VENUES ,x ,CURRENT, NO)
 #define day_high_ext DayHigh(ALL_VENUES,1,CURRENT,YES)
+#define prev_day_high day_high_prv(P1)
 #define day_high_prv(x) DayHigh(ALL_VENUES,1,x,NO)
 #define day_high_ext_prv(x) DayHigh(ALL_VENUES,1,x,YES)
+#define min_high_pm_30 DayBar_High(ALL_VENUES, 1, YES, '09:00-09:27')
 #define pre_mkt_high DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_high_nsdq DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_high_nyse DayBar_High(ALL_VENUES, 1, YES, '04:00-09:29')
@@ -139,9 +145,11 @@
 #define day_low DayLow(ALL_VENUES,1,CURRENT,NO)
 #define day_lowest_low(x) DayLow(ALL_VENUES, x, CURRENT, NO)
 #define day_low_ext DayLow(ALL_VENUES,1,CURRENT,YES)
+#define prev_day_low day_low_prv(P1)
 #define day_low_prv(x) DayLow(ALL_VENUES,1,x,NO)
 #define day_low_ext_prv(x) DayLow(ALL_VENUES,1,x,YES)
 #define pre_mkt_low DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
+#define min_low_pm_30 DayBar_Low(ALL_VENUES, 1, YES, '09:00-09:27')
 #define pre_mkt_low_nsdq DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_low_nyse DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:29')
 #define post_mkt_low DayBar_LowP(ALL_VENUES, 1, YES, '16:05-20:00', P1)
@@ -195,6 +203,7 @@
 #define day_volume_ext DayVolume(ALL_VENUES, 1, CURRENT, YES)
 #define min_vol_p1_p5(x) volume(P1) > x AND volume(P2) > x AND volume(P3) > x AND volume(P4) > x AND volume(P5) > x
 #define minute_volume(x) MinuteVolume(ALL_VENUES, x, CURRENT, NO)
+#define minute_volume_prv(x, y) MinuteVolume(ALL_VENUES, x, y, NO)
 #define post_close_volume DayBar_VolumeP(ALL_VENUES, 1, YES, '16:05-19:59', P1)
 #define pre_mkt_volume DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
 #define pre_mkt_volume_nsdq DayBar_Volume(ALL_VENUES, 1, YES, '04:00-09:27')
@@ -213,6 +222,8 @@
 #define imbalance_paired_vol ImbPair
 #define imbalance_at(x) ImbalanceAt(x)
 #define nyse_clear_price ClearPriceAt('09:29:00')
+#define imbalance_size_350 ImbalanceAt('15:50:01')
+#define paired_size_350 ImbPairAt('15:50:01')
 #define clear_price ClearPrice
 // STUDIES
 #define pre_mkt_avg_hlc (DayBar_High(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Low(ALL_VENUES, 1, YES, '04:00-09:27')+DayBar_Close(ALL_VENUES, 1, YES, '04:00-09:27'))/3
@@ -220,6 +231,7 @@
 #define lower_highs_P1_P5(x) MinuteHigh_I(ALL_VENUES, x, P4, NO, True) < MinuteHigh_I(ALL_VENUES, x, P5, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P3, NO, True) < MinuteHigh_I(ALL_VENUES, x, P4, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P2, NO, True) < MinuteHigh_I(ALL_VENUES, x, P3, NO, True) AND MinuteHigh_I(ALL_VENUES, x, P1, NO, True) < MinuteHigh_I(ALL_VENUES, x, P2, NO, True)
 // takes PERIOD_7 PERIOD_14 PERIOD_20 PERIOD_50 PERIOD_100 PERIOD_200
 #define SMA_daily(x) SMAStock(ALL_VENUES, NO, DAILY, x, CURRENT)
+#define ema(x) EMAStock(ALL_VENUES, NO, MINUTES_1, x, CURRENT)
 #define EMA_5(x) EMAStock(ALL_VENUES, NO, MINUTES_5, x, CURRENT)
 #define EMA_1_EH(x) EMAStock(ALL_VENUES, YES, MINUTES_1, x, CURRENT)
 #define RSI_1(x) RSIStock(ALL_VENUES, NO, MINUTES_1, x, CURRENT)
@@ -351,14 +363,49 @@
 // REF SPY
 #define SPY_n(x) RefStockNumericValue('SPY', x)
 #define USO_n(x) RefStockNumericValue('USO', x)
+#define GLD_n(x) RefStockNumericValue('GLD', x)
+#define UGAZ_n(x) RefStockNumericValue('UGAZ', x)
+
+#define spy_close SPY_n(close)
+#define uso_close USO_n(close)
+#define gld_close GLD_n(close)
+#define ugaz_close UGAZ_n(close)
+
+#define spy_premkt_last RefStockNumericValue('SPY', pre_mkt_last)
+#define uso_premkt_last RefStockNumericValue('USO', pre_mkt_last)
+#define gld_premkt_last RefStockNumericValue('GLD', pre_mkt_last)
+#define ugaz_premkt_last RefStockNumericValue('UGAZ', pre_mkt_last)
+
 #define spy_premkt_perc_chg ((spy_premkt_last - spy_close) / spy_close)
+#define uso_premkt_perc_chg ((uso_premkt_last - uso_close) / uso_close)
+#define gld_premkt_perc_chg ((gld_premkt_last - gld_close) / gld_close)
+#define ugaz_premkt_perc_chg ((ugaz_premkt_last - ugaz_close) / ugaz_close)
+
 #define spy_adjusted_close (close * (1 + spy_premkt_perc_chg))
+#define uso_adjusted_close (close * (1 + uso_premkt_perc_chg))
+#define gld_adjusted_close (close * (1 + gld_premkt_perc_chg))
+#define ugaz_adjusted_close (close * (1 + ugaz_premkt_perc_chg))
+
+#define normal_volatility (adr(180) / close)
+#define recent_volatility (max3(adr(5), pre_mkt_range, prev_day_high - prev_day_low) / close)
+#define volatility_factor (max3(adr(5), pre_mkt_range, prev_day_high - prev_day_low) / adr(180)) // took out the (/ close) as it's both in the numerator and denominator
+
+#define spy_adr(x) SPY_n(adr(x))
+
+#define spy_premkt_range SPY_n(pre_mkt_range)
+
+#define spy_prev_day_range (SPY_n(prev_day_high - prev_day_low))
+
+#define spy_volatility_factor (max3(spy_adr(5), spy_premkt_range, spy_prev_day_range) / spy_adr(180))
+
+
+
 #define spy_day_high SPY_n(day_high)
 #define spy_day_low SPY_n(day_low)
 #define spy_day_range (spy_day_high - spy_day_low )
 #define spy_last SPY_n(last)
-#define spy_premkt_last SPY_n(pre_mkt_last)
-#define spy_close SPY_n(close)
+
+
 
 
 // SIZING

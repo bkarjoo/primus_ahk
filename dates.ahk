@@ -73,10 +73,12 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     click_multi_day_radio_button()
     click_start_date()
     ; MsgBox % start_cycles[A_Index]
+    SetKeyDelay, 100 ; because sometimes it misfires when it types fast
     Send % start_cycles[A_Index]
     ; MsgBox % end_cycles[A_Index]
     click_end_date()
     Send % end_cycles[A_Index]
+    SetKeyDelay, 10 ; back to default
     click_configuration_box_save()
 
     launcher_click_play()
@@ -85,7 +87,9 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     if (succeeded)
     {
       btq_action_press_ok()
-      Sleep, 1000
+      ; msgbox, QuickFix pausing for you to confirm doesn't complete immediately
+      Sleep, 500
+
       i := i + 1
       if (i > schedule_cycles.MaxIndex())
         break
@@ -95,6 +99,7 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
     {
       inform("Problem with run.")
     }
+
   }
 
   done_message := "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
