@@ -265,6 +265,11 @@ $!1::
   WinActivate, ahk_exe atom.exe
   return
 
+$^1::
+  SetTitleMatchMode, 2
+  WinActivate, ahk_exe mstsc.exe,, primus
+  return
+
 $!2::
   WinActivate, cmd
   return

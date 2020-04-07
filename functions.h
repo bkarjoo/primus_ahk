@@ -390,6 +390,14 @@
 #define recent_volatility (max3(adr(5), pre_mkt_range, prev_day_high - prev_day_low) / close)
 #define volatility_factor (max3(adr(5), pre_mkt_range, prev_day_high - prev_day_low) / adr(180)) // took out the (/ close) as it's both in the numerator and denominator
 
+#define percent_adr (adrs / close)
+#define spy_adjusted_adrs (adrs / SPY_n(adrs))
+#define spy_normalized_percent_adr (percent_adr / SPY_n(percent_adr))
+#define spy_volatility_adjusted_close (close * (1 + spy_premkt_perc_chg * spy_normalized_percent_adr))
+// version 2 takes a variable called vol_adj_sensitivity which is from 0 to 1
+#define spy_volatility_adjusted_close_2 (close * (1 + spy_premkt_perc_chg * spy_normalized_percent_adr * vol_adj_sensitivity))
+
+
 #define spy_adr(x) SPY_n(adr(x))
 
 #define spy_premkt_range SPY_n(pre_mkt_range)
