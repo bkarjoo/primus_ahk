@@ -289,6 +289,7 @@ $!4:: ; Slack and Whatsapp
 $!5:: ; QSG Hub and Portfolio
   WinActivate, QSG Hub
   WinActivate, BKarjoo Portfolio
+  WinActivate, Team Leaders
   return
 
 $!6:: ; multiboxes
@@ -315,7 +316,7 @@ $!8:: ; redi
   return
 
 $!9:: ; excel
-  WinActivate, ahk_exe MarkdownMonster.exe
+  WinActivate, ahk_exe notepad.exe
   return
 
 
@@ -546,7 +547,11 @@ $!g:: ; github clone
   return
 
 $!h::
-  if (WinActive("ahk_exe mstsc.exe"))
+  if (WinActive("App - GTDNext!"))
+  {
+    return 
+  }
+  else if (WinActive("ahk_exe mstsc.exe"))
   {
     InputBox, box, q, box name
     if (box = "q")
