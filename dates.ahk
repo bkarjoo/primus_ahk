@@ -103,7 +103,7 @@ run_date_cycle(start_year, start_month, start_half, end_year, end_month, end_hal
   }
 
   done_message := "Done " . start_year . "," . start_month . "," . start_half . "," . end_year . "," . end_month . "," . end_half
-  email_message(" completed.", done_message)
+  ; email_message(" completed.", done_message)
 }
 
 get_previous_trading_date()

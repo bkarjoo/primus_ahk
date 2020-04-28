@@ -20,6 +20,144 @@ convert_to_sniper()
   sleep, 200
 }
 
+convert_to_sniper_stop()
+{
+  ; check the pmo stop tab opetions tab
+  MouseClick, Left, 121, 27
+  sleep, 200
+  MouseClick, Left, 694, 537
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
+
+  MouseClick, Left, 541, 201 ; first order
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
+  MouseClick, Left, 372, 62
+  sleep, 500
+  MouseClick, Left, 306, 134
+  sleep, 500
+  MouseClick, Left, 237, 274
+  send, ^a
+  sleep, 200
+  send, 10
+  MouseClick, Left, 131, 387
+  sleep, 200
+  MouseClick, Left, 224, 388
+  send, ^a
+  sleep, 200
+  send, 20
+  MouseClick, Left, 238, 411
+  sleep, 200
+  MouseClick, Left, 178, 470 ; execution style normal
+  sleep, 200
+  MouseClick, Left, 532, 481
+  sleep, 500
+
+  MouseClick, Left, 541, 249 ; second order
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
+  MouseClick, Left, 372, 62
+  sleep, 500
+  MouseClick, Left, 306, 134
+  sleep, 500
+  MouseClick, Left, 237, 274
+  send, ^a
+  sleep, 200
+  send, 10
+  MouseClick, Left, 131, 387
+  sleep, 200
+  MouseClick, Left, 224, 388
+  send, ^a
+  sleep, 200
+  send, 20
+  MouseClick, Left, 238, 411
+  sleep, 200
+  MouseClick, Left, 178, 483 ; execution style aggressive
+  sleep, 200
+  MouseClick, Left, 532, 481
+  sleep, 500
+
+  MouseClick, Left, 541, 298 ; third order
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <NATIVE_ORDERS_ONLY>
+  MouseClick, Left, 372, 62
+  sleep, 500
+  MouseClick, Left, 306, 134
+  sleep, 500
+  MouseClick, Left, 237, 274
+  send, ^a
+  sleep, 200
+  send, 10
+  MouseClick, Left, 131, 387
+  sleep, 200
+  MouseClick, Left, 224, 388
+  send, ^a
+  sleep, 200
+  send, 20
+  MouseClick, Left, 238, 411
+  sleep, 200
+  MouseClick, Left, 178, 495 ; execution style very aggressive
+  sleep, 200
+  MouseClick, Left, 532, 481
+  sleep, 500
+
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <GENERAL>
+  MouseClick, Left, 530, 480
+}
+
+just_click_option_button_and_wait()
+{
+  MouseClick, Left, 121, 27
+  sleep, 200
+  inputbox, out, change?
+  if (out = "y")
+  {
+    convert_to_moc()
+  }
+}
+
+convert_to_moc()
+{
+  PixelGetColor, OutputVar, 482, 74
+  if (OutputVar != "0x000000")
+  {
+    MouseClick, Left, 482, 74
+    sleep, 200
+  }
+  MouseClick, Left, 175, 164
+  sleep, 200
+  send, 15:48:30
+  sleep, 200
+  MouseClick, Left, 175, 185
+  sleep, 200
+  send, 15:49:00
+  sleep, 200
+  MouseClick, Left, 175, 236
+  sleep, 200
+  send, 16:15:00
+  sleep, 200
+
+}
+
+copy_pmo_order_in_stop()
+{
+  MouseClick, Left, 656, 722
+  MouseClick, Left, 898, 728
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <EXIT_STOP_ORDER>
+  MouseClick, Left, 546, 160
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <FINAL_STOP_ORDER>
+  MouseClick, Left, 514, 151
+  sleep, 1000
+  MouseClick, Left, 535, 476
+  WinWaitActive, PRIMU$ - Add/Edit Order Form <EXIT_STOP_ORDER>
+  MouseClick, Left, 522, 479
+  sleep, 1000
+
+
+
+
+}
+
+^k::
+  copy_pmo_order_in_stop()
+  return
+
 check_mark_cancel_replace()
 {
   ; open target order
@@ -275,10 +413,13 @@ $!2::
   return
 
 $!3:: ; Nirvana Gmail Personal Gmail QS
+  SetTitleMatchMode, 2
   WinActivate, Nirvana
+  WinActivate, Evernote
   WinActivate, Inbox
   WinActivate, "research"
   WinActivate, [research]
+  WinActivate, Mint
   return
 
 $!4:: ; Slack and Whatsapp
@@ -424,7 +565,7 @@ $!+d::
 $^d:: ; merger dnt (will have to change when you add new boxes)
   if (WinActive("Primu$ MB"))
   {
-    strategy_count := 20
+    strategy_count := 19
     Clipboard := StrReplace(Clipboard, "`r", " ")
     Clipboard := StrReplace(Clipboard, "`n", " ")
     SetTitleMatchMode, 2
@@ -474,7 +615,7 @@ $^e::
     InputBox, out, question, this will alter live folders (q to quit)
     if (out = "q")
       return
-    folderY := 243 ; set this
+    folderY := 225 ; set this
     box_count := 10 ; set this
 
     ; don't touch the following vars
@@ -496,7 +637,7 @@ $^e::
       sleep, 200
 
       ; set this to what you need to a function that would make box changes desired
-      check_mark_cancel_replace()
+      copy_pmo_order_in_stop()
 
       click_validate_and_close()
       launcher_click_save_box()
@@ -549,20 +690,24 @@ $!g:: ; github clone
 $!h::
   if (WinActive("App - GTDNext!"))
   {
-    return 
+    return
   }
   else if (WinActive("ahk_exe mstsc.exe"))
   {
+    quick_inform("debug mode")
+
     InputBox, box, q, box name
     if (box = "q")
       return
     InputBox, ver, q, version
     if (ver = "q")
       return
+    /*
     git_clone(box, ver)
     msgbox, verify clone of %box% %ver%
     compile_code_folder(box)
     msgbox, verify compile of %box%
+    */
     f := find_box(box)
     if (f)
       update_box_dynamic_version(box, ver)
@@ -573,7 +718,7 @@ $!h::
     ;git_commit_bu()
     ;git_push_bu()
     remove_git_dir(box)
-    email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
+    ; email_message("Boxed box " . box . " " . ver . ".", box . " " . ver)
   }
   else if (WinActive("ahk_exe emacs.exe"))
   {
@@ -775,6 +920,10 @@ $!+o::
   else if (WinActive("ahk_exe mstsc.exe"))
   {
     WinActivate, Primu$ 7.
+    WinWaitActive, Primu$ 7.
+    MouseClick, Left, 82, 51
+    WinWaitActive, Open BlackBox
+    MouseClick, Left, 108, 277
   }
   else
     send, !+o
@@ -981,6 +1130,11 @@ $!+s::
   else
     send, !+s
   return
+
+:*:ttt::
+  FormatTime, Time, , hh:mm:ss
+  SendInput, %Time%
+  Return
 
 $!t::
   if (WinActive("ahk_exe emacs.exe"))

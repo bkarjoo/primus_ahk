@@ -31,6 +31,8 @@
 
 // SAFETY
 #define server_crash_fail_safe entry_trigs_sec(10) = 0
+#define nyse_collar_filter_long if(exchange(NYSE), open < close * .9 - .01 or open > close * .9 + .01, 2 > 1)
+#define nyse_collar_filter_short if(exchange(NYSE), open < close * 1.1 - .01 or open > close * 1.1 + .01, 2 > 1)
 
 // INSTRUMENT and EXCHANGE
 #define exchange(x) PrimaryExchange(x)
@@ -40,7 +42,7 @@
 #define is_arca PrimaryExchange(ARCA)
 #define etp_prefered_exclude etp_exclude AND NOT IsInstrumentType(PREFERRED_STOCK)
 #define etp_exclude NOT IsInstrumentType(EXCHANGE_TRADED_FUND) AND NOT IsInstrumentType(EXCHANGE_TRADED_NOTE)
-#define is_ipo IsIPO and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE)
+#define is_ipo ((IsIPO OR SyndicateType(News_Current, ACBO, IPO)) and not IsInstrumentType(PREFERRED_STOCK) and not IsInstrumentType(WARRANT) and not IsInstrumentType(RIGHT) and not IsInstrumentType(EXCHANGE_TRADED_FUND) and not IsInstrumentType(EXCHANGE_TRADED_NOTE))
 #define is_common_stock etp_prefered_exclude
 #define ETF EXCHANGE_TRADED_FUND
 #define ETN EXCHANGE_TRADED_NOTE
@@ -462,9 +464,9 @@
 
 #define proper_buyback (s3_Buybacks OR ((ns_source_type(Source3, Press_Releases, '"Share Repurchase"') or ns_source_type(Source3, Press_Releases, '"Stock Repurchase"')) and not ns_source_type(Source3, Press_Releases, '"update*"') and not ns_source_type(Source3, Press_Releases, '"complet*"') and not ns_source_type(Source3, Press_Releases, '"renew*"')))
 
-#define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings) or StockNews(News_Current, ACBO, AnySentiment, Earnings))
+#define earnings (EarningsNewsEvent(News_Current, ACBO, True, Any) or Source3(News_Current, ACBO, AnySentiment, Earnings))
 
-#define guidance (s3_Guidance or ns('"guidance"'))
+#define guidance (StockNews(News_Current, ACBO, AnySentiment, Earnings) or s3_Guidance) and not earnings
 
 #define has_dividend_news (s3_Dividend_Reduction or s3_Dividend_Increase or s3_Dividends or s3_Special_Dividends)
 

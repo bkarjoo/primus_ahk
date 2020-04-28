@@ -44,8 +44,13 @@ loop % live_runs.MaxIndex()
   open_blackbox_click_open()
   sleep, 500
   pause_mechanism()
-  wait_activate_popup_error("PRIMU$ - Black Box Design", 2, 2)
-  click_validate_and_close()
+
+  win_activate_black_box_design()
+  win_wait_active_black_box_design()
+  MouseClick, Left, 930, 910
+
+  WinWaitActive, OK
+  send, {Space}
   sleep, 500
   pause_mechanism()
   while (number_of_free_slots() = 0)

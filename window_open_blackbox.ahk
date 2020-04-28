@@ -1,7 +1,8 @@
 #include wait_policy.ahk
 #include inform.ahk
-#window_launcher.ahk
+#include window_launcher.ahk
 #include logger.ahk
+#include window_black_box_design.ahk
 
 open_blackbox_activate()
 {
@@ -47,9 +48,7 @@ open_blackbox_click_open()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
   Click, Left, 1080, 710
-  err := wait_only("PRIMU$ - B", 60)
-  if (err != 0)
-    inform("open_blackbox_click_open failed")
+  Sleep, 3000 
 }
 
 open_blackbox_click_close()

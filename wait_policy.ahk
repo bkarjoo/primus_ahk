@@ -117,9 +117,33 @@ wait_activate_if_error(window_name, wait_seconds, attempts)
     return 0
 }
 
+wait_activate_popup_error_black_box(wait_seconds, attempts)
+{
+  SetTitleMatchMode, 2
+
+  log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  WinWaitActive , ahk_exe mstsc.exe, , %wait_seconds%, primus
+  if (ErrorLevel = 0)
+    return 1
+
+  Loop, %attempts%
+  {
+    WinActivate, ahk_exe mstsc.exe,, primus
+    WinWaitActive , ahk_exe mstsc.exe, , %wait_seconds%, primus
+    if (ErrorLevel = 0)
+      return 1
+  }
+  if (err = 1)
+    msgbox, was not able to activate %window_name%
+}
+
 wait_activate_popup_error(window_name, wait_seconds, attempts)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+
+  if (window_name = "PRIMU$ - B")
+    return wait_activate_popup_error_black_box(wait_seconds, attempts)
+
   if (wait_only(window_name, wait_seconds) = 0)
     return 1
 
@@ -134,9 +158,21 @@ wait_activate_popup_error(window_name, wait_seconds, attempts)
     msgbox, was not able to activate %window_name%
 }
 
+activate_and_wait_black_box()
+{
+  SetTitleMatchMode, 2
+  WinActivate, ahk_exe mstsc.exe,, primus
+  WinWaitActive , ahk_exe mstsc.exe, , , primus
+}
+
 activate_and_wait_only(window_name, wait_seconds)
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
+  ; exceptions
+  if (window_name = "PRIMU$ - B")
+  {
+    return activate_and_wait_black_box()
+  }
   WinActivate, %window_name%
   err := wait_only(window_name, wait_seconds)
   if (err = 0)

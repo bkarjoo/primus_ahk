@@ -5,7 +5,11 @@
 click_order_form_save_button()
 {
   log_trace("entered", A_ScriptName, A_ThisFunc, A_LineNumber)
-  res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Black", 530, 480, 2, 1)
+  ; res := click_activate_and_wait("PRIMU$ - Add/Edit Order Form", "PRIMU$ - Black", 530, 480, 2, 1)
+
+  MouseClick, Left, 530, 480
+  return
+
   if (res = 0)
     inform("click_order_form_save_button failed.")
 }

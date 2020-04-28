@@ -3,6 +3,7 @@
 #include clipboard_paste.ahk
 #include logger.ahk
 #include wait_policy.ahk
+#include files.ahk
 
 find_box(box_name)
 {
@@ -30,3 +31,6 @@ find_box(box_name)
   open_blackbox_click_open()
   return 1
 }
+
+; find_box("mmRateS")
+; msgbox done

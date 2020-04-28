@@ -12,7 +12,7 @@ activate_blotter()
   SetTitleMatchMode, 2
   WinActivate, PrimusBlotter
   WinWaitActive, PrimusBlotter
-} 
+}
 
 click_refresh()
 {
@@ -252,7 +252,7 @@ process_test_results(box_name)
   ;capture_equity_curve()
   ;email_attachment(box_name, box_name, "image.png")
   ; TODO delete image.png
-  email_message(box_name . " completed.", "Time to create a custom blotter!")
+  ; email_message(box_name . " completed.", "Time to create a custom blotter!")
 }
 
 ; TODO must check if AllRecords is checked, if not check it

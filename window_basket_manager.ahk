@@ -1,6 +1,7 @@
 #include wait_policy.ahk
 #include inform.ahk
 #include logger.ahk
+#include window_black_box_design.ahk
 
 confirm_basket_manager_is_open()
 {
@@ -137,7 +138,7 @@ click_basket_manager_ok_button()
   if (res = 0)
     inform("click_basket_manager_ok_button can't activate basket manager")
   MouseClick, Left, 646, 509
-  err := wait_only("PRIMU$ - B", 5)
+
   if (err != 0)
     inform("click_basket_manager_ok_button can't close basket manager")
 }
